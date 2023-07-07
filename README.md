@@ -1,6 +1,6 @@
 # NUS-SWS
 
-Home-Work Traffic
+## Singapore Travel Guide
 
 ● An application that can tell users how crowded the traffic is (to work, or home –
 
