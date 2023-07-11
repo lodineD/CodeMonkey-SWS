@@ -3,6 +3,7 @@
 
 <head>
     <title>OneMap Static Map Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         #map {
             width: 100%;
@@ -12,16 +13,20 @@
 </head>
 
 <body>
+    <!-- <div id="result"></div> -->
     <div id="map"></div>
+    
 
     <script>
+        var startlat;
+        var startlng;
+
         function initMap() {
-            var startlat = '1.31955';
-            var startlng = '103.84223';
+            
+            // startlat= '1.31955';
+            // startlng = '103.84223';
             var endlat = '1.31801';
             var endlng = '103.84224';
-
-
 
             var mapDiv = document.getElementById('map');
             var mapUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&';
@@ -47,9 +52,32 @@
     </script>
 
     <script>
-        window.addEventListener('DOMContentLoaded', initMap);
-        
+        // 当页面加载完成后执行
+        $(document).ready(function () {
+            var location = "Singapore";
+
+            // 调用API的端点URL
+            var apiUrl = "https://developers.onemap.sg/";
+
+            // 构建API请求URL
+            var requestUrl = apiUrl + "commonapi/search?searchVal=" + location + "&returnGeom=Y&getAddrDetails=N";
+
+            // 发送GET请求
+            $.get(requestUrl, function (data) {
+                // 提取LATITUDE和LONGITUDE信息
+                startlat = data.results[0].LATITUDE;
+                startlng = data.results[0].LONGITUDE;
+
+                // var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+                // $("#result").html(resultText);
+                initMap();
+            });
+        });
     </script>
+
+   <!-- <script>
+        window.addEventListener('DOMContentLoaded', initMap);
+    </script>  -->
 </body>
 
 </html>

@@ -1,44 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OneMaps API Demo</title>
-    <meta charset="UTF-8">
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>OneMap API Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <h1>获取地图数据</h1>
-    <p>请输入地址：</p>
-    <input type="text" id="address">
-    <button id="searchBtn">查询</button>
+    <h1>OneMap API Example</h1>
+
     <div id="result"></div>
+
     <script>
-        $(function(){
-            $('#searchBtn').click(function(){
-                var address = $('#address').val();
-                $.ajax({
-                    url: 'https://developers.onemap.sg/commonapi/search?searchVal=' + address + '&returnGeom=Y&getAddrDetails=Y&pageNum=1',
-                    dataType: 'json',
-                    success: function(data){
-                        var latitude = data.results[0].LATITUDE;
-                        var longitude = data.results[0].LONGITUDE;
-                        $.ajax({
-                            url: 'https://developers.onemap.sg/privateapi/popapi/getPopulation?location=' + latitude + ',' + longitude + '&buffer=500',
-                            dataType: 'json',
-                            success: function(data){
-                                var population = data.SearchedLocation[0].Population;
-                                $('#result').html(address + '附近500米内的人口数量为：' + population + '人');
-                            },
-                            error: function(){
-                                $('#result').html('查询失败，请输入正确的地址');
-                            }
-                        })
-                    },
-                    error: function(){
-                        $('#result').html('查询失败，请输入正确的地址');
-                    }
-                })
-            })
-        })
+        // 当页面加载完成后执行
+        $(document).ready(function() {
+            // 调用API的端点URL
+            var apiUrl = "https://developers.onemap.sg/";
+
+            // 构建API请求URL
+            var requestUrl = apiUrl + "commonapi/search?searchVal=Singapore&returnGeom=Y&getAddrDetails=Y";
+
+            // 发送GET请求
+            $.get(requestUrl, function(data) {
+                // 处理返回的数据
+                $("#result").text(JSON.stringify(data));
+            });
+        });
     </script>
 </body>
 </html>
