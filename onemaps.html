@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>OneMap Static Map Example</title>
     <style>
@@ -9,22 +10,35 @@
         }
     </style>
 </head>
+
 <body>
     <div id="map"></div>
 
     <script>
         function initMap() {
+            var startlat = '1.31955';
+            var startlng = '103.84223';
+            var endlat = '1.31801';
+            var endlng = '103.84224';
+
+
+
             var mapDiv = document.getElementById('map');
             var mapUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&';
-            
+
             var lat = '1.31955';
             var lng = '103.84223';
             var zoom = '17';
             var height = '512';
             var width = '512';
+            var startpoint = '[' + startlat + ',' + startlng + ',"255,255,178","B"]';
+            var endpoint = '[' + endlat + ',' + endlng + ',"175,50,0","A"]';
+            // var startpoint = '[1.31955,103.84223,"255,255,178","B"]';
+            // var endpoint = '[1.31801,103.84224,"175,50,0","A"]';
+            var imageUrl = mapUrl + 'lat=' + lat + '&lng=' + lng + '&zoom=' + zoom + '&height=' + height + '&width=' + width + '&ploygons=' + '&lines=' + '&points=' + startpoint + '|' + endpoint;
 
-            var imageUrl = mapUrl + 'lat=' + lat + '&lng=' + lng + '&zoom=' + zoom + '&height=' + height + '&width=' + width;
-
+            // var imageUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=1.31955&lng=103.84223&zoom=17&height=512&width=512&polygons=&lines=&points=[1.31955,103.84223,"255,255,178","B"]|[1.31801,103.84224,"175,50,0","A"]&color=&fillColor=';
+            // document.writeln(imageUrl);
             var mapImg = document.createElement('img');
             mapImg.src = imageUrl;
 
@@ -34,6 +48,8 @@
 
     <script>
         window.addEventListener('DOMContentLoaded', initMap);
+        
     </script>
 </body>
+
 </html>
