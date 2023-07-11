@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OneMap Static Map Example</title>
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        function initMap() {
+            var mapDiv = document.getElementById('map');
+            var mapUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&';
+            
+            var lat = '1.31955';
+            var lng = '103.84223';
+            var zoom = '17';
+            var height = '512';
+            var width = '512';
+
+            var imageUrl = mapUrl + 'lat=' + lat + '&lng=' + lng + '&zoom=' + zoom + '&height=' + height + '&width=' + width;
+
+            var mapImg = document.createElement('img');
+            mapImg.src = imageUrl;
+
+            mapDiv.appendChild(mapImg);
+        }
+    </script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+</html>
