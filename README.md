@@ -1,27 +1,13 @@
-## Synopsis
+# NUS-SWS3004 Code Monkey Team
 
-In this example, we would demostrate the way to decode routes generated from our routing services.
+## Singapore Travel Guide
 
+● An application that can tell users how crowded the traffic is (to work, or home – similar to what google maps/waze does)
 
-## Code Example
+● Use an ML model that counts the number of vehicles from each available camera on the road journey that the user inputs (start/end points)
 
-From our index.html, you would be able to see a sample route being decoded and place onto our basemap
+● Use an API that shows live traffic pictures around Singapore at data.gov.sg
 
-## Motivation
+● Use a threshold/heuristic of some sort to decide if the traffic is crowded or not at the moment based on the number of cars across all pictures extracted for the input journey
 
-Making our routing services work for you! ;>
-
-## API Reference
-
-If you really like our routing services (Driving/Walking/Public Transports). Do visit http://docs.onemap.sg to take look!
-
-For maps visit our micro site @ http://docs.onemap.sg/maps/ . 
-
-
-## Contributors
-
-One Map 2.0 Dev Team. 
-
-## Feedbacks
-
-It is always great to receive valuable feedbacks to help us improve! :)
+● Have the way to work and back home saved as a preference and display the current status so that the user does not have to input it every time
