@@ -5,23 +5,52 @@
     <title>OneMap Static Map Example</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@latest"></script>
-    <!-- <style>
+    <style>
         #map {
-            width: 100%;
+            width: 70%;
             height: 400px;
+            float: left;
         }
-    </style> -->
+
+        #controls {
+            width: 30%;
+            height: 400px;
+            float: left;
+            padding: 120px;
+        }
+
+        #controls input[type="text"],
+        #controls button {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
     <div id="map"></div>
     <!-- <div id="result"></div> -->
 
+    <div id="controls">
+        <p> <label for="startlat">起点纬度：</label>
+            <input type="text" id="startlat" placeholder="请输入起点纬度">
+        </p>
+        <p>
+            <label for="startlng">起点经度：</label>
+            <input type="text" id="startlng" placeholder="请输入起点经度">
+        </p>
+        <button onclick="updateMap()">生成地图</button>
+    </div>
+
+
     <script>
-        var startlat = '1.31955';
+        var startlat = '1.30000';
         var startlng = '103.84223';
         var endlat = '1.31801';
         var endlng = '103.84224';
+        // var startlat;
+        // var startlng;
+        // var endlat;
+        // var endlng;
         var zoom = 19;
         var height = '512';
         var width = '512';
@@ -36,10 +65,12 @@
             var imageUrl = mapUrl + 'lat=' + midlat + '&lng=' + midlng + '&zoom=' + zoom + '&height=' + height + '&width=' + width + '&ploygons=' + '&lines=' + '&points=' + startpoint + '|' + endpoint;
 
             var mapImg = document.createElement('img');
-            var max = 8;
+            var max = 5;
             var count = 0;
 
             mapImg.onload = function () {
+
+                mapDiv.appendChild(mapImg);
                 // 图像加载完成后执行此回调函数，用于判断起点是否在地图中
                 var imageBounds = mapImg.getBoundingClientRect();
                 var mapBounds = mapDiv.getBoundingClientRect();
@@ -57,7 +88,7 @@
 
 
 
-                if (((endx < 0 || endx > mapBounds.width || endy < 0 || endy > mapBounds.height) || (startx < 0 || startx > mapBounds.width || starty < 0 || starty > mapBounds.height)) && max > 0) {
+                if (((endx < 0 || endx > mapBounds.width || endy < 0 || endy > mapBounds.height) || (startx < 0 || startx > mapBounds.width || starty < 0 || starty > mapBounds.height)) && max >= 0) {
                     zoom--; // 递减缩放级别
                     // 更新地图图像URL和位置信息
                     imageUrl = mapUrl + 'lat=' + midlat + '&lng=' + midlng + '&zoom=' + zoom + '&height=' + height + '&width=' + width + '&ploygons=' + '&lines=' + '&points=' + startpoint + '|' + endpoint;
@@ -75,8 +106,24 @@
             mapImg.src = imageUrl;
             mapDiv.appendChild(mapImg);
         }
+
+        $(document).ready(function () {
+            initMap();
+        });
     </script>
 
+    <script>
+        function updateMap() {
+            console.log("updating");
+            startlat = document.getElementById('startlat').value;
+            startlng = document.getElementById('startlng').value;
+            console.log(startlat);
+            console.log(startlng);
+            mapDiv.innerHTML = '';
+            zoom = 19;
+            initMap();
+        }
+    </script>
     <!-- <script>
         // 当页面加载完成后执行
         $(document).ready(function () {
@@ -100,11 +147,7 @@
             });
         });
     </script> -->
-    <script>
-        $(document).ready(function () {
-            initMap();
-        });
-    </script>
+
 </body>
 
 </html>

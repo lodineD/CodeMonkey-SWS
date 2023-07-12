@@ -69,6 +69,8 @@
             var count = 0;
 
             mapImg.onload = function () {
+
+                mapDiv.appendChild(mapImg);
                 // 图像加载完成后执行此回调函数，用于判断起点是否在地图中
                 var imageBounds = mapImg.getBoundingClientRect();
                 var mapBounds = mapDiv.getBoundingClientRect();
@@ -109,9 +111,17 @@
             initMap();
         });
     </script>
+
     <script>
-        function updateMap(){
-            
+        function updateMap() {
+            console.log("updating");
+            startlat = document.getElementById('startlat').value;
+            startlng = document.getElementById('startlng').value;
+            console.log(startlat);
+            console.log(startlng);
+            mapDiv.innerHTML = '';
+            zoom = 19;
+            initMap();
         }
     </script>
     <!-- <script>
