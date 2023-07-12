@@ -39,6 +39,7 @@
             <input type="text" id="startlng" placeholder="请输入起点经度">
         </p>
         <button onclick="updateMap()">生成地图</button>
+        <p><button onclick="updateroute()">生成路线</button></p>
     </div>
 
 
@@ -147,7 +148,21 @@
             });
         });
     </script> -->
-
+    <script>
+       function updateroute(){
+            var startlat_wgs84 = '1.30000';
+            var startlng_wgs84 = '103.84223';
+            var endlat_wgs84 = '1.31801';
+            var endlng_wgs84 = '103.84224';
+            var routetype = 'drive';
+            var apiurl = "https://developers.onemap.sg/";
+            var requestUrl = apiurl + "privateapi/routingsvc/route?start=" + startlat_wgs84 + "," + startlng_wgs84 + "&end=" + endlat_wgs84 + "," + endlng_wgs84 + "&routeType=" + routetype + "&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwNTU4LCJ1c2VyX2lkIjoxMDU1OCwiZW1haWwiOiJjaGVuZ2hhbmcwNTE2QDE2My5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2ODkxNTIwNjYsImV4cCI6MTY4OTU4NDA2NiwibmJmIjoxNjg5MTUyMDY2LCJqdGkiOiJiZTQ2ZDI3NzA4NzJmNjI3ZjgzMmRmMGJjZDhiMzk4NCJ9.r0G8a9kIx5lZ5N40EtVya2ysoSIx5UHSYLDah_2Hp1I"
+            $.get(requestUrl, function (data) {
+                console.log(data);
+                
+            });
+        };
+    </script>
 </body>
 
 </html>
