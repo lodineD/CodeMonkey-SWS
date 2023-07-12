@@ -54,7 +54,8 @@ def Car_Detection(path):
 
 for i in range (0,int(num/1000)):
     image_url = data["items"][0]["cameras"][i]["image"]
-    loc = data["items"][0]["cameras"][i]["location"]
+    latitude = data["items"][0]["cameras"][i]["location"]["latitude"]
+    longitude = data["items"][0]["cameras"][i]["location"]["longitude"]
     response = requests.get(image_url)
     if response.status_code == 200:
         img_name = "./img/img"+str(i+1)+".jpg"
@@ -65,7 +66,7 @@ for i in range (0,int(num/1000)):
     print(img_name)
     car_num = Car_Detection(img_name)
     print("car : " + str(car_num))
-    result["body"].append({"location":loc,"car_num":car_num,"image_name":img_name})
+    result["body"].append({"pic_id":i,"latitude":latitude,"longitude":longitude,"car_num":car_num,"image_name":img_name})
 
 with open("result.json", "w") as file:
     json.dump(result, file,indent=4)
