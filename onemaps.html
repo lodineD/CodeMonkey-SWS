@@ -4,54 +4,80 @@
 <head>
     <title>OneMap Static Map Example</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <style>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@latest"></script>
+    <!-- <style>
         #map {
             width: 100%;
             height: 400px;
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
-    <!-- <div id="result"></div> -->
     <div id="map"></div>
-    
+    <!-- <div id="result"></div> -->
 
     <script>
-        var startlat;
-        var startlng;
+        var startlat = '1.31955';
+        var startlng = '103.84223';
+        var endlat = '1.31801';
+        var endlng = '103.84224';
+        var zoom = 19;
+        var height = '512';
+        var width = '512';
+        var mapDiv = document.getElementById('map');
+        var mapUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&';
 
         function initMap() {
-            
-            // startlat= '1.31955';
-            // startlng = '103.84223';
-            var endlat = '1.31801';
-            var endlng = '103.84224';
+            var midlat = (parseFloat(startlat) + parseFloat(endlat)) / 2;
+            var midlng = (parseFloat(startlng) + parseFloat(endlng)) / 2;
+            var startpoint = '[' + startlat + ',' + startlng + ',"255,255,178","A"]';
+            var endpoint = '[' + endlat + ',' + endlng + ',"175,50,0","B"]';
+            var imageUrl = mapUrl + 'lat=' + midlat + '&lng=' + midlng + '&zoom=' + zoom + '&height=' + height + '&width=' + width + '&ploygons=' + '&lines=' + '&points=' + startpoint + '|' + endpoint;
 
-            var mapDiv = document.getElementById('map');
-            var mapUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&';
-
-            var lat = '1.31955';
-            var lng = '103.84223';
-            var zoom = '17';
-            var height = '512';
-            var width = '512';
-            var startpoint = '[' + startlat + ',' + startlng + ',"255,255,178","B"]';
-            var endpoint = '[' + endlat + ',' + endlng + ',"175,50,0","A"]';
-            // var startpoint = '[1.31955,103.84223,"255,255,178","B"]';
-            // var endpoint = '[1.31801,103.84224,"175,50,0","A"]';
-            var imageUrl = mapUrl + 'lat=' + lat + '&lng=' + lng + '&zoom=' + zoom + '&height=' + height + '&width=' + width + '&ploygons=' + '&lines=' + '&points=' + startpoint + '|' + endpoint;
-
-            // var imageUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&lat=1.31955&lng=103.84223&zoom=17&height=512&width=512&polygons=&lines=&points=[1.31955,103.84223,"255,255,178","B"]|[1.31801,103.84224,"175,50,0","A"]&color=&fillColor=';
-            // document.writeln(imageUrl);
             var mapImg = document.createElement('img');
-            mapImg.src = imageUrl;
+            var max = 8;
+            var count = 0;
 
+            mapImg.onload = function () {
+                // 图像加载完成后执行此回调函数，用于判断起点是否在地图中
+                var imageBounds = mapImg.getBoundingClientRect();
+                var mapBounds = mapDiv.getBoundingClientRect();
+
+                var startCoordinates = [parseFloat(startlng), parseFloat(startlat)];
+                var endCoordinates = [parseFloat(endlng), parseFloat(endlat)];
+
+                var transformedStartCoordinates = turf.toMercator(turf.point(startCoordinates));
+                var transformedEndCoordinates = turf.toMercator(turf.point(endCoordinates));
+                var startx = (transformedStartCoordinates.geometry.coordinates[0] - midlng) * imageBounds.width / (imageBounds.width * 2) + mapBounds.width / 2;
+                var starty = (transformedStartCoordinates.geometry.coordinates[1] - midlat) * imageBounds.height / (imageBounds.height * 2) + mapBounds.height / 2;
+
+                var endx = (transformedEndCoordinates.geometry.coordinates[0] - midlng) * imageBounds.width / (imageBounds.width * 2) + mapBounds.width / 2;
+                var endy = (transformedEndCoordinates.geometry.coordinates[1] - midlat) * imageBounds.height / (imageBounds.height * 2) + mapBounds.height / 2;
+
+
+
+                if (((endx < 0 || endx > mapBounds.width || endy < 0 || endy > mapBounds.height) || (startx < 0 || startx > mapBounds.width || starty < 0 || starty > mapBounds.height)) && max > 0) {
+                    zoom--; // 递减缩放级别
+                    // 更新地图图像URL和位置信息
+                    imageUrl = mapUrl + 'lat=' + midlat + '&lng=' + midlng + '&zoom=' + zoom + '&height=' + height + '&width=' + width + '&ploygons=' + '&lines=' + '&points=' + startpoint + '|' + endpoint;
+                    mapImg.src = imageUrl;
+                    max--;
+                    count++;
+                    console.log("out the map", zoom);
+                }
+                else {
+                    mapDiv.appendChild(mapImg);
+                    console.log("in the map:", count);
+                }
+            };
+
+            mapImg.src = imageUrl;
             mapDiv.appendChild(mapImg);
         }
     </script>
 
-    <script>
+    <!-- <script>
         // 当页面加载完成后执行
         $(document).ready(function () {
             var location = "Singapore";
@@ -73,11 +99,12 @@
                 initMap();
             });
         });
+    </script> -->
+    <script>
+        $(document).ready(function () {
+            initMap();
+        });
     </script>
-
-   <!-- <script>
-        window.addEventListener('DOMContentLoaded', initMap);
-    </script>  -->
 </body>
 
 </html>
