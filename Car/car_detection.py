@@ -11,7 +11,6 @@ def get_response():
     formatted_time = time1.strftime("%Y-%m-%dT%H:%M:%S")
     print(formatted_time)    
 
-
     url = 'https://api.data.gov.sg/v1/transport/traffic-images'
     headers = {
         'Accept': 'application/json'
@@ -26,14 +25,9 @@ def get_response():
 
     if response.status_code == 200:
         data = response.json()
-        # 在这里处理返回的数据
-        # print(json.dumps(data, indent=2))
-        header = response.headers
-        print(header["Content-Length"])
-        num = int(header["Content-Length"])
     else:
         print('请求失败:', response.status_code)
-    result = {"num" : num,"body" : []}
+    result = {"body" : []}
     return data,result
 
 def Car_Detection(path):
@@ -55,10 +49,12 @@ def Car_Detection(path):
 
 def cal():
     data , result = get_response()
+
     for i in range (0,len(data["items"][0]["cameras"])):
         image_url = data["items"][0]["cameras"][i]["image"]
         latitude = data["items"][0]["cameras"][i]["location"]["latitude"]
         longitude = data["items"][0]["cameras"][i]["location"]["longitude"]
+        camera_id = data["items"][0]["cameras"][i]["camera_id"]
         response = requests.get(image_url)
         if response.status_code == 200:
             img_name = "./img/img"+str(i+1)+".jpg"
@@ -69,7 +65,7 @@ def cal():
         print(img_name)
         car_num = Car_Detection(img_name)
         print("car : " + str(car_num))
-        result["body"].append({"pic_id":i,"latitude":latitude,"longitude":longitude,"car_num":car_num,"image_name":img_name})
-
+        result["body"].append({"pic_id":camera_id,"latitude":latitude,"longitude":longitude,"car_num":car_num,"image_name":img_name})
+    
     with open("result.json", "w") as file:
         json.dump(result, file,indent=4)
