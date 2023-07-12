@@ -5,6 +5,9 @@
     <title>OneMap Static Map Example</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.2/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-proj4leaflet/1.0.2/proj4leaflet.js"></script>
+
     <style>
         #map {
             width: 70%;
@@ -41,6 +44,7 @@
         <button onclick="updateMap()">生成地图</button>
     </div>
 
+    <p><button onclick="changexy()">转换函数</button></p>
 
     <script>
         var startlat = '1.30000';
@@ -124,29 +128,6 @@
             initMap();
         }
     </script>
-    <!-- <script>
-        // 当页面加载完成后执行
-        $(document).ready(function () {
-            var location = "Singapore";
-
-            // 调用API的端点URL
-            var apiUrl = "https://developers.onemap.sg/";
-
-            // 构建API请求URL
-            var requestUrl = apiUrl + "commonapi/search?searchVal=" + location + "&returnGeom=Y&getAddrDetails=N";
-
-            // 发送GET请求
-            $.get(requestUrl, function (data) {
-                // 提取LATITUDE和LONGITUDE信息
-                startlat = data.results[0].LATITUDE;
-                startlng = data.results[0].LONGITUDE;
-
-                // var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-                // $("#result").html(resultText);
-                initMap();
-            });
-        });
-    </script> -->
 
 </body>
 

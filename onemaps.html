@@ -30,6 +30,7 @@
     <div id="map"></div>
     <!-- <div id="result"></div> -->
 
+
     <div id="controls">
         <p> <label for="startlat">起点纬度：</label>
             <input type="text" id="startlat" placeholder="请输入起点纬度">
@@ -41,6 +42,8 @@
         <button onclick="updateMap()">生成地图</button>
     </div>
 
+    <p><button onclick="changexy()">转换函数</button></p>
+
 
     <script>
         var startlat = '1.30000';
@@ -51,9 +54,9 @@
         // var startlng;
         // var endlat;
         // var endlng;
-        var zoom = 19;
-        var height = '512';
-        var width = '512';
+        var zoom = 19;// 11~19
+        var height = '512';// max = 512
+        var width = '512';// min = 512
         var mapDiv = document.getElementById('map');
         var mapUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&';
 
@@ -148,6 +151,25 @@
         });
     </script> -->
 
+    <script>
+        function changexy() {
+            console.log('startx=', startlat);
+            console.log('starty=', startlng);
+            var api_change = "https://developers.onemap.sg/commonapi/convert/4326to3857?";
+            var request_change = api_change + "latitude=" + startlat + "&longitude=" + startlng;
+            var requestData = {
+                X: startlng,
+                Y: startlat
+            };
+            $.post(api_change, requestData, function (data) {
+                var WGS84_X = data.longitude;
+                var WGS84_Y = data.latitude;
+
+                console.log('WGS84 Longitude:', WGS84_X);
+                console.log('WGS84 Latitude:', WGS84_Y);
+            });
+        };
+    </script>
 </body>
 
 </html>
