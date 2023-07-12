@@ -1,3 +1,4 @@
-Car/
+Car/img
 *.json
 .pptx
+.DS_Store
