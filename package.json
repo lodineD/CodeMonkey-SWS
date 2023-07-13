@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "mysql": "^2.18.1",
+    "polyline-encoded": "^0.0.9"
+  },
+  "name": "codemonkey-sws",
+  "description": "## Singapore Travel Guide",
+  "version": "1.0.0",
+  "main": "connect_db.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
