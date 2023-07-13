@@ -25,34 +25,45 @@ $(document).ready(function getRoute() {
 });
 
 function decodeGeometry(sampleRoute) {
-    var baseMaps = {
-        "Default": L.tileLayer.provider('OneMap.Default'),
-        "Original": L.tileLayer.provider('OneMap.Original'),
-        "Night": L.tileLayer.provider('OneMap.Night'),
-        "Grey": L.tileLayer.provider('OneMap.Grey')
-    };
+    // var baseMaps = {
+    //     "Default": L.tileLayer.provider('OneMap.Default'),
+    //     "Original": L.tileLayer.provider('OneMap.Original'),
+    //     "Night": L.tileLayer.provider('OneMap.Night'),
+    //     "Grey": L.tileLayer.provider('OneMap.Grey')
+    // };
 
 
     var center = L.bounds([startlat, startlat], [endlat, endlat]).getCenter();
 
-    var map = L.map('mapdiv');
+    // var map = L.map('mapdiv');
 
-    L.tileLayer.provider('OneMap.Grey').addTo(map);
+    // L.tileLayer.provider('OneMap.Grey').addTo(map);
 
-    L.control.layers(baseMaps).addTo(map);
+    // L.control.layers(baseMaps).addTo(map);
 
-//图标生成与颜色设置   
-var greenIcon = new L.Icon({
-    iconUrl: './images/marker-icon-green.png',
-    shadowUrl: './images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-  });  
-    var startmarker = L.marker([startlat, startlng]).addTo(map);
-    var endmarker = L.marker([endlat, endlng],{icon: greenIcon}).addTo(map);
-    
+    //图标生成与颜色设置   
+    var greenIcon = new L.Icon({
+        iconUrl: './images/marker-icon-green.png',
+        shadowUrl: './images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    var blackIcon = new L.Icon({
+        iconUrl: './images/marker-icon-black.png',
+        shadowUrl: './images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    var startmarker = L.marker([startlat, startlng], { icon: blackIcon }).addTo(map);
+    var endmarker = L.marker([endlat, endlng], { icon: greenIcon }).addTo(map);
+    // var asdf = L.marker([1.30011, 103.8422]).addTo(map);
+
 
     //得到route（未编译）
     var geometryOfRoute = sampleRoute.route_geometry;
