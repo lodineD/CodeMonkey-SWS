@@ -1,22 +1,22 @@
 let mysql = require("mysql");
 
 let connection = mysql.createConnection({
-    host: "localhost",
+    host: "",
     port: 22,
-    user: "root",
+    user: "",
     password: "",
     database: "",
 });
 
 export default connection;
 
-// connection.connect((error) => {
-//     if (error){
-//         console.error("connect failed: "+error.stack);
-//         return;
-//     }
-//     console.log("connect success!");
-// });
+connection.connect((error) => {
+    if (error){
+        console.error("connect failed: "+error.stack);
+        return;
+    }
+    console.log("connect success!");
+});
 
 // connection.query("select * from student", (error, result)=>{
 //     if (error){
