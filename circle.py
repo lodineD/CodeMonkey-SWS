@@ -4,7 +4,7 @@ import time
 import json
 import mysql.connector
 
-def insert_sql(connection):
+def insert_or_update_sql(connection):
     cur = connection.cursor()
     with open('result.json', 'r') as f:
         data = json.load(f)
@@ -15,8 +15,8 @@ def insert_sql(connection):
         longitude = item["longitude"]
         car_num = item["car_num"]
         image_name = item["image_name"]
-        sql = 'insert into car (pic_id,latitude,longitude,car_num,image_name) value (%s,%s,%s,%s,%s)'
-        db_data = (camera_id,latitude, longitude, car_num, image_name)
+        sql = "insert into cars (pic_id,latitude,longitude,car_num,image_name) value (%s,%s,%s,%s,%s) on duplicate key update latitude = %s, longitude = %s, car_num = %s, image_name = %s"
+        db_data = (camera_id,latitude, longitude, car_num, image_name, latitude, longitude, car_num, image_name)
 
         try:
             # Execute the SQL command
@@ -26,34 +26,6 @@ def insert_sql(connection):
         except:
             # Rollback in case there is any error
             connection.rollback()
-
-
-def update_sql(connection):
-    cur = connection.cursor()
-    with open('result.json', 'r') as f:
-        data = json.load(f)
-
-    for item in data["body"]:
-        camera_id = item["pic_id"]
-        latitude = item["latitude"]
-        longitude = item["longitude"]
-        car_num = item["car_num"]
-        image_name = item["image_name"]
-        sql = 'update car set latitude = %s, longitude = %s, car_num = %s, image_name = %s WHERE pic_id = %s'
-        db_data = (latitude, longitude, car_num, image_name, camera_id)
-        
-
-        try:
-            # Execute the SQL command
-            cur.execute(sql,db_data)
-            # Commit your changes in the database
-            connection.commit()
-        except:
-            # Rollback in case there is any error
-            connection.rollback()
-
-
-
 
 if __name__ == "__main__":
     connection = mysql.connector.connect(
@@ -66,10 +38,10 @@ if __name__ == "__main__":
 
     while True:
         cal()
-        insert_sql(connection)
+        insert_or_update_sql(connection)
         now = datetime.datetime.now()
         if now.minute % 5 == 0:
             cal()
-            update_sql(connection)
+            insert_or_update_sqls(connection)
         print("Will cal 5 minutes later")
         time.sleep(60)

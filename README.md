@@ -11,3 +11,5 @@
 ● Use a threshold/heuristic of some sort to decide if the traffic is crowded or not at the moment based on the number of cars across all pictures extracted for the input journey
 
 ● Have the way to work and back home saved as a preference and display the current status so that the user does not have to input it every time
+
+●  Use bash ./requirement to prepare for the environment
