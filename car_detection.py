@@ -1,10 +1,12 @@
 from PIL import Image
+from PIL import ImageFile
 import cv2
 import numpy as np
 import requests
 import json
 import requests
 from datetime import datetime
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def get_response():
     time1 = datetime.now()
