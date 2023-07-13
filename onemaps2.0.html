@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>OneMap 2.0</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="leaflet.css" />
+	<script src="leaflet.js"></script>
+	<script src="jquery.min.js"></script>
+	<script src="leaflet-providers-added-onemap.js"></script>
+	<script src="Polyline.encoded.js"></script>
+	<style>
+        #map {
+            width: 70%;
+            height: 400px;
+            float: left;
+        }
+
+        #controls {
+            width: 30%;
+            height: 400px;
+            float: left;
+            padding: 120px;
+        }
+        #controls input[type="text"],
+        #controls button {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+	<h1>Singapore Map</h1>
+	<div id='mapdiv' style='height:700px;'></div>
+	<div id="controls">
+        <p> <label for="startlat">起点纬度：</label>
+            <input type="text" id="startlat" placeholder="请输入起点纬度">
+        </p>
+        <p>
+            <label for="startlng">起点经度：</label>
+            <input type="text" id="startlng" placeholder="请输入起点经度">
+        </p>
+        <button onclick="updateMap()">生成地图</button>
+    </div>
+	<script src="Routing.js"></script>
+</body>
+
+</html>
