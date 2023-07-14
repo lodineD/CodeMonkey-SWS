@@ -71,6 +71,3 @@ def cal():
     
     with open("result.json", "w") as file:
         json.dump(result, file,indent=4)
-
-if __name__ == "__main__":
-    cal()
