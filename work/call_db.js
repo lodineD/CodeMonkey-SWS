@@ -14,7 +14,9 @@ function fetchData() {
     axios.get("/get-data")
         .then(response => {
             const data = response.data;
-
+            // 全局变量，用于传送值
+            window.processData = data;
+            
             data.forEach((data) => {
                 const { latitude, longitude, car_num } = data;
                 console.log("Latitude:", latitude);
