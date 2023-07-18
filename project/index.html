@@ -1,0 +1,50 @@
+<html>
+
+<head>
+	<title>OneMap 2.0</title>
+
+	<link rel="stylesheet" href="./assets/leaflet.css" />
+	<script src="./library/leaflet.js"></script>
+	<script src="./library/jquery.min.js"></script>
+	<script src="./library/leaflet-providers-added-onemap.js"></script>
+	<script src="./library/Polyline.encoded.js"></script>
+	<script src="./library/axios.min.js"></script>
+
+</head>
+
+<body>
+	<h1>Singapore Map</h1>
+	<div id='mapdiv' style='height:700px;'></div>
+
+	<script src="./work/initmap.js"></script>
+	<script src="./work/call_db.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// 加载initmap.js脚本
+			var script = document.createElement('script');
+			script.src = './work/initmap.js';
+			script.onload = function () {
+				console.log('initmap.js loaded');
+				// 在initmap.js加载完成后执行回调函数
+				loadCallDBScript();
+			};
+			document.head.appendChild(script);
+		});
+
+		function loadCallDBScript() {
+			// 加载call_db.js脚本
+			var script = document.createElement('script');
+			script.src = './work/call_db.js';
+			script.onload = function () {
+				console.log('call_db.js loaded');
+				// 在call_db.js加载完成后执行逻辑
+				// ...
+			};
+			document.head.appendChild(script);
+		}
+	</script>
+	<!-- <script src="./work/Routing.js"></script> -->
+
+</body>
+
+</html>

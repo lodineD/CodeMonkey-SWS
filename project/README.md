@@ -1,13 +1,16 @@
-# NUS-SWS3004 Code Monkey Team
+## asset
+这个文件夹主要是css文件，用于美化网页
 
-## Singapore Travel Guide
+## history
+这个文件夹用于储存过去的版本文件或者弃用的文件`（说不定以后有用呢？）`
 
-● An application that can tell users how crowded the traffic is (to work, or home – similar to what google maps/waze does)
+## images
+这个文件夹用于储存图片，储存画图的素材
 
-● Use an ML model that counts the number of vehicles from each available camera on the road journey that the user inputs (start/end points)
+## library
+这个文件夹用于储存库
 
-● Use an API that shows live traffic pictures around Singapore at data.gov.sg
+## work
+函数存放文件，前后端的基本上都在这
 
-● Use a threshold/heuristic of some sort to decide if the traffic is crowded or not at the moment based on the number of cars across all pictures extracted for the input journey
-
-● Have the way to work and back home saved as a preference and display the current status so that the user does not have to input it every time
+![image](./images/1.gif)
