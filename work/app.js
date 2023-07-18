@@ -3,14 +3,12 @@ const express = require("express");
 const app = express();
 
 
-// let axios = require("axios");
-
 let connection = mysql.createConnection({
-    host: 'car.cocfi12ed6lp.us-east-1.rds.amazonaws.com',
+    host: 'my-database-01.cgt9kgv3zopt.us-east-1.rds.amazonaws.com',
     port: 3306,
     user: 'admin',
-    password: 'ycx030830',
-    database: 'CAR',
+    password: 'adminpassword',
+    database: 'WebAppDatabase',
 });
 
 
@@ -39,6 +37,10 @@ app.get('/onemaps2.0.html', (req, res) => {
 })
 
 app.use(express.static('../'));
+
+app.get('onemaps2.0.html', (req, res)=>{
+    res.status(200).send('OK');
+});
 
 app.listen(80, () => {
     console.log("Server is running on port 80");
