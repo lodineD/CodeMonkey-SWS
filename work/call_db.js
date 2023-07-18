@@ -1,4 +1,3 @@
-const dataContainer = document.getElementById("dataContainer");
 
 var blueIcon = new L.Icon({
     iconUrl: './images/marker-icon.png',
