@@ -20,6 +20,24 @@ connection.connect((error) => {
     console.log("connect success!");
 });
 
+const sql = `
+    CREATE TABLE IF NOT EXISTS cars (
+      camera_id INT NOT NULL PRIMARY KEY,
+      latitude DOUBLE NOT NULL,
+      longitude DOUBLE NOT NULL,
+      car_num INT NOT NULL,
+      image_name NOT NULL
+    )
+`;
+
+connection.query(sql, error => {
+    if (error) {
+        console.error('Error creating table: ', error);
+      } else {
+        console.log('Table created successfully');
+      }
+});
+
 app.get("/get-data", (req, res) => {
     connection.query("SELECT latitude, longitude, car_num FROM car", (error, results) => {
         if (error) {
