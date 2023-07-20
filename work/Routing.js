@@ -1,20 +1,20 @@
-var startlat = '1.30000';
-var startlng = '103.84223';
-var endlat = '1.31801';
-var endlng = '103.84224';
+// var startlat = '1.30000';
+// var startlng = '103.84223';
+// var endlat = '1.31801';
+// var endlng = '103.84224';
 // 1.30000,103.84223
 // 1.31801,103.84224
-// var startlat = window.startingPointLatitude;
-// var startlng = window.startingPointLongitude;
-// var endlat = window.destinationLatitude;
-// var endlng = window.destinationLongitude;
+var startlat = window.startingPointLatitude;
+var startlng = window.startingPointLongitude;
+var endlat = window.destinationLatitude;
+var endlng = window.destinationLongitude;
 
-// console.log(startlat, startlng);
-// console.log(endlat, endlng);
+console.log(startlat, startlng);
+console.log(endlat, endlng);
 
 $(document).ready(function getRoute() {
 
-    var api_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwNTU4LCJ1c2VyX2lkIjoxMDU1OCwiZW1haWwiOiJjaGVuZ2hhbmcwNTE2QDE2My5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2ODkxNTIwNjYsImV4cCI6MTY4OTU4NDA2NiwibmJmIjoxNjg5MTUyMDY2LCJqdGkiOiJiZTQ2ZDI3NzA4NzJmNjI3ZjgzMmRmMGJjZDhiMzk4NCJ9.r0G8a9kIx5lZ5N40EtVya2ysoSIx5UHSYLDah_2Hp1I'; // 替换为您的API Token
+    var api_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5MjM1NGI5ZThhYmVjNDE4YWUzNWQ1YjQwMjE3M2MxMyIsImlzcyI6Imh0dHA6Ly9pbnRlcm5hbC1hbGItb20tcHJkZXppdC1pdC0xMjIzNjk4OTkyLmFwLXNvdXRoZWFzdC0xLmVsYi5hbWF6b25hd3MuY29tL2FwaS92Mi91c2VyL3Bhc3N3b3JkIiwiaWF0IjoxNjg5ODU2MDUxLCJleHAiOjE2OTAxMTUyNTEsIm5iZiI6MTY4OTg1NjA1MSwianRpIjoiOUo5YXFTeldhOEVHckdyMiIsInVzZXJfaWQiOjExNiwiZm9yZXZlciI6ZmFsc2V9.kBJ0hGo5shw5KrkmtjNf-XBMMkjexH7hZtH-Ep5TgGg'; // 替换为您的API Token
 
     var url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${startlat},${startlng}&end=${endlat},${endlng}&routeType=drive&token=${api_token}`;
 

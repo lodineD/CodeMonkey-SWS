@@ -32,15 +32,11 @@ app.get("/get-data", (req, res) => {
     });
 });
 
-app.get('/onemaps2.0.html', (req, res) => {
+app.get('/README.html', (req, res) => {
     res.status(200).send('0K');
 })
 
 app.use(express.static('../'));
-
-app.get('onemaps2.0.html', (req, res)=>{
-    res.status(200).send('OK');
-});
 
 app.listen(80, () => {
     console.log("Server is running on port 80");
