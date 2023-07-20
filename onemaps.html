@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>OneMap Static Map Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@latest"></script>
+    <style>
+        #map {
+            width: 70%;
+            height: 400px;
+            float: left;
+        }
+
+        #controls {
+            width: 30%;
+            height: 400px;
+            float: left;
+            padding: 120px;
+        }
+
+        #controls input[type="text"],
+        #controls button {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <!-- <div id="result"></div> -->
+
+    <div id="controls">
+        <p> <label for="startlat">起点纬度：</label>
+            <input type="text" id="startlat" placeholder="请输入起点纬度">
+        </p>
+        <p>
+            <label for="startlng">起点经度：</label>
+            <input type="text" id="startlng" placeholder="请输入起点经度">
+        </p>
+        <button onclick="updateMap()">生成地图</button>
+        <p><button onclick="updateroute()">生成路线</button></p>
+    </div>
+
+
+    <script>
+        var startlat = '1.30000';
+        var startlng = '103.84223';
+        var endlat = '1.31801';
+        var endlng = '103.84224';
+        // var startlat;
+        // var startlng;
+        // var endlat;
+        // var endlng;
+        var zoom = 19;
+        var height = '512';
+        var width = '512';
+        var mapDiv = document.getElementById('map');
+        var mapUrl = 'https://developers.onemap.sg/commonapi/staticmap/getStaticImage?layerchosen=default&';
+
+        function initMap() {
+            var midlat = (parseFloat(startlat) + parseFloat(endlat)) / 2;
+            var midlng = (parseFloat(startlng) + parseFloat(endlng)) / 2;
+            var startpoint = '[' + startlat + ',' + startlng + ',"255,255,178","A"]';
+            var endpoint = '[' + endlat + ',' + endlng + ',"175,50,0","B"]';
+            var imageUrl = mapUrl + 'lat=' + midlat + '&lng=' + midlng + '&zoom=' + zoom + '&height=' + height + '&width=' + width + '&ploygons=' + '&lines=' + '&points=' + startpoint + '|' + endpoint;
+
+            var mapImg = document.createElement('img');
+            var max = 5;
+            var count = 0;
+
+            mapImg.onload = function () {
+
+                mapDiv.appendChild(mapImg);
+                // 图像加载完成后执行此回调函数，用于判断起点是否在地图中
+                var imageBounds = mapImg.getBoundingClientRect();
+                var mapBounds = mapDiv.getBoundingClientRect();
+
+                var startCoordinates = [parseFloat(startlng), parseFloat(startlat)];
+                var endCoordinates = [parseFloat(endlng), parseFloat(endlat)];
+
+                var transformedStartCoordinates = turf.toMercator(turf.point(startCoordinates));
+                var transformedEndCoordinates = turf.toMercator(turf.point(endCoordinates));
+                var startx = (transformedStartCoordinates.geometry.coordinates[0] - midlng) * imageBounds.width / (imageBounds.width * 2) + mapBounds.width / 2;
+                var starty = (transformedStartCoordinates.geometry.coordinates[1] - midlat) * imageBounds.height / (imageBounds.height * 2) + mapBounds.height / 2;
+
+                var endx = (transformedEndCoordinates.geometry.coordinates[0] - midlng) * imageBounds.width / (imageBounds.width * 2) + mapBounds.width / 2;
+                var endy = (transformedEndCoordinates.geometry.coordinates[1] - midlat) * imageBounds.height / (imageBounds.height * 2) + mapBounds.height / 2;
+
+
+
+                if (((endx < 0 || endx > mapBounds.width || endy < 0 || endy > mapBounds.height) || (startx < 0 || startx > mapBounds.width || starty < 0 || starty > mapBounds.height)) && max >= 0) {
+                    zoom--; // 递减缩放级别
+                    // 更新地图图像URL和位置信息
+                    imageUrl = mapUrl + 'lat=' + midlat + '&lng=' + midlng + '&zoom=' + zoom + '&height=' + height + '&width=' + width + '&ploygons=' + '&lines=' + '&points=' + startpoint + '|' + endpoint;
+                    mapImg.src = imageUrl;
+                    max--;
+                    count++;
+                    console.log("out the map", zoom);
+                }
+                else {
+                    mapDiv.appendChild(mapImg);
+                    console.log("in the map:", count);
+                }
+            };
+
+            mapImg.src = imageUrl;
+            mapDiv.appendChild(mapImg);
+        }
+
+        $(document).ready(function () {
+            initMap();
+        });
+    </script>
+
+    <script>
+        function updateMap() {
+            console.log("updating");
+            startlat = document.getElementById('startlat').value;
+            startlng = document.getElementById('startlng').value;
+            console.log(startlat);
+            console.log(startlng);
+            mapDiv.innerHTML = '';
+            zoom = 19;
+            initMap();
+        }
+    </script>
+    <!-- <script>
+        // 当页面加载完成后执行
+        $(document).ready(function () {
+            var location = "Singapore";
+
+            // 调用API的端点URL
+            var apiUrl = "https://developers.onemap.sg/";
+
+            // 构建API请求URL
+            var requestUrl = apiUrl + "commonapi/search?searchVal=" + location + "&returnGeom=Y&getAddrDetails=N";
+
+            // 发送GET请求
+            $.get(requestUrl, function (data) {
+                // 提取LATITUDE和LONGITUDE信息
+                startlat = data.results[0].LATITUDE;
+                startlng = data.results[0].LONGITUDE;
+
+                // var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+                // $("#result").html(resultText);
+                initMap();
+            });
+        });
+    </script> -->
+    <script>
+       function updateroute(){
+            var startlat_wgs84 = '1.30000';
+            var startlng_wgs84 = '103.84223';
+            var endlat_wgs84 = '1.31801';
+            var endlng_wgs84 = '103.84224';
+            var routetype = 'drive';
+            var apiurl = "https://developers.onemap.sg/";
+            var requestUrl = apiurl + "privateapi/routingsvc/route?start=" + startlat_wgs84 + "," + startlng_wgs84 + "&end=" + endlat_wgs84 + "," + endlng_wgs84 + "&routeType=" + routetype + "&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwNTU4LCJ1c2VyX2lkIjoxMDU1OCwiZW1haWwiOiJjaGVuZ2hhbmcwNTE2QDE2My5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2ODkxNTIwNjYsImV4cCI6MTY4OTU4NDA2NiwibmJmIjoxNjg5MTUyMDY2LCJqdGkiOiJiZTQ2ZDI3NzA4NzJmNjI3ZjgzMmRmMGJjZDhiMzk4NCJ9.r0G8a9kIx5lZ5N40EtVya2ysoSIx5UHSYLDah_2Hp1I"
+            $.get(requestUrl, function (data) {
+                console.log(data);
+                
+            });
+        };
+    </script>
+</body>
+
+</html>
