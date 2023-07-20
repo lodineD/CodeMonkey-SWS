@@ -15,6 +15,11 @@ import sys
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+image_dir = sys.argv[1]
+sub_path = sys.argv[2]
+car_path = sys.argv[3]
+output_path = sys.argv[4]
+
 def get_response():
     time1 = datetime.now()
     formatted_time = time1.strftime("%Y-%m-%dT%H:%M:%S")
@@ -49,7 +54,7 @@ for i in range (0,len(data["items"][0]["cameras"])):
         camera_id = data["items"][0]["cameras"][i]["camera_id"]
         response = requests.get(image_url)
         if response.status_code == 200:
-            img_name = "./img/"+str(camera_id)+".jpg"
+            img_name = image_dir+"/"+str(camera_id)+".jpg"
             with open(img_name, "wb") as f:
                 f.write(response.content)
             result[camera_id]={"latitude":latitude,"longitude":longitude,"car_num":0,"image_name":img_name}
@@ -64,15 +69,14 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 # 读取图像列表
-image_paths = ["./img/" + img_name for img_name in os.listdir("./img")]
+
+image_paths = [image_dir + "/" +img_name for img_name in os.listdir(image_dir)]
 
 # 将图像路径列表转换为Spark DataFrame
 image_df = spark.createDataFrame(image_paths, "string").toDF("path")
-
-
 def Car_Detection(path):
-    result = subprocess.run(["python", "sub.py", path],capture_output=True, text=True)
-    return int(result.returncode)
+    result = subprocess.run(["python", sub_path, path , car_path],capture_output=True, text=True)
+    return 2*int(result.returncode)
 
 
 # 使用UDF并行处理图像
@@ -85,12 +89,11 @@ res = df_desc.collect()
 for path,num in res:
     result[path[6:10]]["car_num"] = num
 
-with open("result.json", "w") as file:
+with open(output_path+"/result.json", "w") as file:
         json.dump(result, file,indent=4)
 
 
 # 将 DataFrame 保存为 CSV 文件
-output_path = "./output"  
 df_desc.write.csv(output_path,mode="overwrite")
 # 停止 SparkSession
 spark.stop()
