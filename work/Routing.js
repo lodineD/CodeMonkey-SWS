@@ -2,6 +2,15 @@ var startlat = '1.30000';
 var startlng = '103.84223';
 var endlat = '1.31801';
 var endlng = '103.84224';
+// 1.30000,103.84223
+// 1.31801,103.84224
+// var startlat = window.startingPointLatitude;
+// var startlng = window.startingPointLongitude;
+// var endlat = window.destinationLatitude;
+// var endlng = window.destinationLongitude;
+
+// console.log(startlat, startlng);
+// console.log(endlat, endlng);
 
 $(document).ready(function getRoute() {
 

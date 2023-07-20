@@ -4,21 +4,80 @@
 	<title>OneMap 2.0</title>
 
 	<link rel="stylesheet" href="./assets/leaflet.css" />
+	<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+	<link rel="stylesheet" href="./assets/memu.css">
+
 	<script src="./library/leaflet.js"></script>
 	<script src="./library/jquery.min.js"></script>
 	<script src="./library/leaflet-providers-added-onemap.js"></script>
 	<script src="./library/Polyline.encoded.js"></script>
 	<script src="./library/axios.min.js"></script>
 
+
 </head>
 
 <body>
-	<h1>Singapore Map</h1>
-	<div id='mapdiv' style='height:700px;'></div>
+	<div class="sidebar-expanded">
+		<ul id="main-feature">
+			<li class="menu-item toggle" onclick="toggleSidebar()">
+				<i class="ri-arrow-right-s-line arrow-rotate" id="arrow-icon"></i>
+			</li>
+			<li class="menu-item" onclick="toggleOptionTraffic()">
+				<i class="ri-compass-discover-line"></i>
+
+				<span class="menu-text">Traffic Info</span>
+				<div class="inline-arrow inline-arrow-rotate" id="traffic-arrow">
+					<i class="ri-arrow-right-s-line"></i>
+				</div>
+			</li>
+			<li class="sub-menu-traffic-expanded" id="traffic-expanded">
+
+				<i class="ri-send-plane-line"></i>
+				<div>
+					<span>Enter starting point:</span>
+					<input class="input-style" type="text" id="starting-point" placeholder="coordinate or place name"
+						v-model="username" required><br>
+					<span>Enter destination:</span>
+					<input class="input-style" type="text" id="destination" placeholder="coordinate or place name"
+						v-model="password" required><br>
+				</div>
+				<button class="button-style" type="submit" onclick="submit()">Searching</button>
+			</li>
+			<li class="menu-item" onclick="toggleOptionHistory(toggleOptionHistory(event))">
+				<i class="ri-history-line"></i>
+				<span class="menu-text">History</span>
+				<div class="inline-arrow inline-arrow-rotate" id="history-arrow">
+					<i class="ri-arrow-right-s-line"></i>
+				</div>
+			</li>
+			<li class="sub-menu-history" id="history-expanded">
+				<!-- Add History Submenu Content Here -->
+			</li>
+			<li class="menu-item" onclick="toggleOptionLocation()">
+				<i class="ri-user-location-line"></i>
+				<span class="menu-text">Current Location</span>
+				<div class="inline-arrow inline-arrow-rotate" id="location-arrow">
+					<i class="ri-arrow-right-s-line"></i>
+				</div>
+			</li>
+			<li class="sub-menu-location" id="location-expanded">
+				<!-- Add Current Location Submenu Content Here -->
+			</li>
+		</ul>
+	</div>
+
+	<div id='mapdiv' style='position: fixed;
+    	top: 0;
+    	left: 0;
+   	 	height: 100vh;
+    	width: calc(100% - 270px); 
+    	margin-left: 270px'></div>
+
+
 
 	<script src="./work/initmap.js"></script>
-	<script src="./work/call_db.js"></script>
-	<script>
+	<!-- <script src="./work/call_db.js"></script> -->
+	<!-- <script>
 		document.addEventListener("DOMContentLoaded", function () {
 			// 加载initmap.js脚本
 			var script = document.createElement('script');
@@ -42,9 +101,73 @@
 			};
 			document.head.appendChild(script);
 		}
-	</script>
-	<!-- <script src="./work/Routing.js"></script> -->
+	</script> -->
 
+	<script>
+		function toggleSidebar() {
+			const mainFeature = document.getElementById('main-feature');
+			mainFeature.classList.toggle('not-expand');
+
+			const arrowIcon = document.getElementById('arrow-icon');
+			arrowIcon.classList.toggle('arrow-rotate');
+		}
+		function toggleOptionTraffic() {
+			const trafficExpanded = document.getElementById('traffic-expanded');
+			trafficExpanded.classList.toggle('sub-menu-traffic-expanded');
+
+			const trafficArrow = document.getElementById('traffic-arrow');
+			trafficArrow.classList.toggle('inline-arrow-rotate');
+
+			// 获取"Traffic Info"子菜单中的内容元素
+			const contentElements = trafficExpanded.querySelectorAll('input, button, span, .ri-send-plane-line');
+
+			// 遍历内容元素并切换其可见性
+			for (const element of contentElements) {
+				element.classList.toggle('hidden');
+			}
+
+		}
+
+		function toggleOptionHistory(event) {
+			event.stopPropagation();
+
+			const historyExpanded = document.getElementById('history-expanded');
+			historyExpanded.classList.toggle('sub-menu-history');
+
+			const historyArrow = document.getElementById('history-arrow');
+			historyArrow.classList.toggle('inline-arrow-rotate');
+		}
+
+		function toggleOptionLocation() {
+			const locationExpanded = document.getElementById('location-expanded');
+			locationExpanded.classList.toggle('sub-menu-location');
+
+			const locationArrow = document.getElementById('location-arrow');
+			locationArrow.classList.toggle('inline-arrow-rotate');
+		}
+
+		function submit() {
+			const startingPointInput = document.getElementById('starting-point');
+			const destinationInput = document.getElementById('destination');
+
+			const startingPoint = startingPointInput.value;
+			const destination = destinationInput.value;
+
+			const startingPointCoords = startingPoint.split(',');
+			const destinationCoords = destination.split(',');
+
+			window.startingPointLatitude = parseFloat(startingPointCoords[0]);
+			window.startingPointLongitude = parseFloat(startingPointCoords[1]);
+			window.destinationLatitude = parseFloat(destinationCoords[0]);
+			window.destinationLongitude = parseFloat(destinationCoords[1]);
+
+			console.log('Starting Point Latitude:', startingPointLatitude);
+			console.log('Starting Point Longitude:', startingPointLongitude);
+			console.log('Destination Latitude:', destinationLatitude);
+			console.log('Destination Longitude:', destinationLongitude);
+		} 
+	</script>
+	<script src="./work/Routing.js"></script>
 </body>
 
 </html>
