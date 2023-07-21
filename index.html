@@ -17,9 +17,15 @@
 
 <body>
 	<div id="sidebar" class="sidebar-expanded">
-		<li class="menu-item toggle" onclick="toggleSidebar()">
-			<i class="ri-arrow-right-s-line arrow-rotate" id="arrow-icon"></i>
+		<li class="menu-item toggle">
+			<i class="ri-arrow-right-s-line arrow-rotate" id="arrow-icon" onclick="toggleSidebar()"></i>
+			
 		</li>
+		<div class="checkbox" id="switch">
+				<div class="inner" id="switch-inner" onclick="toggleSwitch()">
+					<div class = "switch"></div>
+				</div>
+			</div>
 		<ul class="main-feature" id="main-feature">
 			<li class="menu-item" onclick="toggleOptionTraffic()">
 				<i class="ri-compass-discover-line"></i>
@@ -101,6 +107,16 @@
 		let isHistoryExpanded = true;
 		let isLocationExpanded = true;
 		let ismapExpanded = true;
+		function toggleSwitch() {
+			const switchContainer = document.getElementById('switch-inner');
+			const isOn = Array.from(switchContainer.classList).includes('on');
+			if (isOn) {
+				switchContainer.classList.remove('on');
+			} else {
+				switchContainer.classList.add('on');
+				showData();
+			}
+		}
 		function toggleSidebar() {
 			const mapContainer = document.getElementById('mapdiv');
 			mapContainer.classList.toggle('map-style-begame');
@@ -128,6 +144,8 @@
 			menuFeature = document.getElementById('main-feature');
 			menuFeature.classList.toggle('not-expand');
 
+			Switch = document.getElementById('switch');
+			Switch.classList.toggle('hidden');
 			// mapfeature = document.getElementById('mapdiv');
 			// mapfeature.classList.toggle('map-style')
 
@@ -336,6 +354,27 @@
 				//缩放到边界
 				map.fitBounds(bounds);
 			}
+		}
+		function showData() {
+			const data = window.processData;
+			data.forEach((data) => {
+				const { latitude, longitude, car_num } = data;
+				var num = car_num * 2;
+				console.log("Latitude:", latitude);
+				console.log("Longitude:", longitude);
+				console.log("Car Number:", num);
+				// 显示标记点，并弹出窗口
+				if (num > 9) {
+					var point = L.marker([latitude, longitude], { icon: RedIcon }).addTo(map);
+					point.bindPopup(`Car Number: ${num}`);
+				} else if (num > 5) {
+					var point = L.marker([latitude, longitude], { icon: yellowIcon }).addTo(map);
+					point.bindPopup(`Car Number: ${num}`);
+				} else {
+					var point = L.marker([latitude, longitude], { icon: greenIcon }).addTo(map);
+					point.bindPopup(`Car Number: ${num}`);
+				}
+			});
 		}
 	</script>
 </body>
