@@ -13,7 +13,6 @@
 	<script src="./library/Polyline.encoded.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-
 </head>
 
 <body>
@@ -43,7 +42,7 @@
 				</div>
 				<button class="button-style" type="submit" onclick="submit()">Searching</button>
 			</li>
-			<li class="menu-item" onclick="toggleOptionHistory(toggleOptionHistory(event))">
+			<li class="menu-item" onclick="toggleOptionHistory(event)">
 				<i class="ri-history-line"></i>
 				<span class="menu-text">History</span>
 				<div class="inline-arrow inline-arrow-rotate" id="history-arrow">
@@ -73,10 +72,9 @@
     	width: calc(100% - 270px); 
     	margin-left: 270px'></div>
 
-
-
 	<script src="./work/initmap.js"></script>
 	<script src="./work/call_db.js"></script>
+	
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 			// 加载initmap.js脚本
@@ -161,10 +159,10 @@
 			window.destinationLatitude = parseFloat(destinationCoords[0]);
 			window.destinationLongitude = parseFloat(destinationCoords[1]);
 
-			console.log('Starting Point Latitude:', startingPointLatitude);
-			console.log('Starting Point Longitude:', startingPointLongitude);
-			console.log('Destination Latitude:', destinationLatitude);
-			console.log('Destination Longitude:', destinationLongitude);
+			console.log('Starting Point Latitude:', window.startingPointLatitude);
+			console.log('Starting Point Longitude:', window.startingPointLongitude);
+			console.log('Destination Latitude:', window.destinationLatitude);
+			console.log('Destination Longitude:', window.destinationLongitude);
 
 			Routing();
 		}
@@ -177,7 +175,6 @@
 
 		function Routing() {
 
-
 			var startlat = window.startingPointLatitude;
 			var startlng = window.startingPointLongitude;
 			var endlat = window.destinationLatitude;
@@ -185,6 +182,9 @@
 
 			console.log(startlat);
 			console.log(endlat);
+
+			getRoute();
+			decodeGeometry(sampleRoute);
 
 			function getRoute() {
 
@@ -245,6 +245,7 @@
 
 				var startmarker = L.marker([startlat, startlng], { icon: blackIcon }).addTo(map);
 				var endmarker = L.marker([endlat, endlng], { icon: greenIcon }).addTo(map);
+				console.log("ready pointing!");
 				// startmarker.bindPopup(`Car Number: 5`);
 				// var startmarker = L.marker([1.30011, 103.8422],{ icon: greenIcon }).addTo(map);
 
