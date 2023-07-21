@@ -200,7 +200,8 @@
 			var location_2 = destination;
 			// const startingPointCoords = startingPoint.split(',');
 			// const destinationCoords = destination.split(',');
-			// var location = "Singapore";
+			// var location_1 = 118402
+			// var location_2 = 117418
 
             // 调用API的端点URL
             var apiUrl = "https://developers.onemap.sg/";
@@ -241,7 +242,9 @@
 			console.log('Starting Point Longitude:', window.startingPointLongitude);
 			console.log('Destination Latitude:', window.destinationLatitude);
 			console.log('Destination Longitude:', window.destinationLongitude);
-
+			
+			// 当前的路线储存
+			let CurrentPolyline = null;
 
 			Routing();
 		}
@@ -261,7 +264,7 @@
 
 			console.log(startlat);
 			console.log(endlat);
-
+			
 			getRoute();
 
 			function getRoute() {
@@ -320,8 +323,14 @@
 				//得到route（未编译）
 				var geometryOfRoute = sampleRoute.route_geometry;
 
+				
 				//解码
-				var polyline = L.polyline(L.PolylineUtil.decode(geometryOfRoute, 5), {
+				if (!polyline){
+					map.remove(polyline);
+					console.log("remove the polyline");
+				}
+
+				polyline = L.polyline(L.PolylineUtil.decode(geometryOfRoute, 5), {
 					color: "purple",
 					weight: 5,
 					smoothFactor: 1
