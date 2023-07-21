@@ -4,24 +4,24 @@ const app = express();
 
 let connection = null;
 
+connection = mysql.createConnection({
+    host: 'my-database-01.cgt9kgv3zopt.us-east-1.rds.amazonaws.com',
+    port: 3306,
+    user: 'admin',
+    password: 'adminpassword',
+    database: 'WebAppDatabase',
+});
+
+
+connection.connect((error) => {
+    if (error) {
+        console.error("connect failed: " + error.stack);
+        return;
+    }
+    console.log("connect success!");
+});
+
 function database() {
-
-    connection = mysql.createConnection({
-        host: 'my-database-01.cgt9kgv3zopt.us-east-1.rds.amazonaws.com',
-        port: 3306,
-        user: 'admin',
-        password: 'adminpassword',
-        database: 'WebAppDatabase',
-    });
-
-
-    connection.connect((error) => {
-        if (error) {
-            console.error("connect failed: " + error.stack);
-            return;
-        }
-        console.log("connect success!");
-    });
 
     app.get("/get-data", (req, res) => {
         connection.query("SELECT latitude, longitude, car_num FROM car", (error, results) => {
@@ -35,12 +35,11 @@ function database() {
         });
     });
 
-    connection.end();
 }
 
 database();
 
-setInterval(database, 10000);
+setInterval(database, 100000);
 
 app.get('/README.html', (req, res) => {
     res.status(200).send('0K');
