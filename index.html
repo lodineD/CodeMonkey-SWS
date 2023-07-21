@@ -107,11 +107,13 @@
 		let isHistoryExpanded = true;
 		let isLocationExpanded = true;
 		let ismapExpanded = true;
+		let pointArray = [];
 		function toggleSwitch() {
 			const switchContainer = document.getElementById('switch-inner');
 			const isOn = Array.from(switchContainer.classList).includes('on');
 			if (isOn) {
 				switchContainer.classList.remove('on');
+				clearData();
 			} else {
 				switchContainer.classList.add('on');
 				showData();
@@ -363,17 +365,24 @@
 				console.log("Latitude:", latitude);
 				console.log("Longitude:", longitude);
 				console.log("Car Number:", num);
+				let point;
 				// 显示标记点，并弹出窗口
 				if (num > 9) {
-					var point = L.marker([latitude, longitude], { icon: RedIcon }).addTo(map);
+					point = L.marker([latitude, longitude], { icon: RedIcon }).addTo(map);
 					point.bindPopup(`Car Number: ${num}`);
 				} else if (num > 5) {
-					var point = L.marker([latitude, longitude], { icon: yellowIcon }).addTo(map);
+					point = L.marker([latitude, longitude], { icon: yellowIcon }).addTo(map);
 					point.bindPopup(`Car Number: ${num}`);
 				} else {
-					var point = L.marker([latitude, longitude], { icon: greenIcon }).addTo(map);
+					point = L.marker([latitude, longitude], { icon: greenIcon }).addTo(map);
 					point.bindPopup(`Car Number: ${num}`);
 				}
+				pointArray.push(point);
+			});
+		}
+		function clearData() {
+			pointArray.forEach((point) => {
+				map.removeLayer(point);
 			});
 		}
 	</script>
