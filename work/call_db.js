@@ -66,5 +66,5 @@ function fetchData() {
 // 初始加载数据
 fetchData();
 
-// 每10秒重新加载数据
-setInterval(fetchData, 10000);
+// 每300秒重新加载数据
+setInterval(fetchData, 300000);
