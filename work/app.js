@@ -39,7 +39,7 @@ function database() {
 
 database();
 
-setInterval(database, 3000000);
+setInterval(database, 300000);
 
 app.get('/README.html', (req, res) => {
     res.status(200).send('0K');

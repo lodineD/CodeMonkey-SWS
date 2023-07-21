@@ -36,10 +36,10 @@ function fetchData() {
 
             data.forEach((data) => {
                 const { latitude, longitude, car_num } = data;
-                var num = car_num * 2;
+                
                 console.log("Latitude:", latitude);
                 console.log("Longitude:", longitude);
-                console.log("Car Number:", num);
+                console.log("Car Number:", car_num);
 
                 // 显示标记点，并弹出窗口
                 if (num > 9) {

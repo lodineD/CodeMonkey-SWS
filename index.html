@@ -193,16 +193,49 @@
 
 			const startingPoint = startingPointInput.value;
 			const destination = destinationInput.value;
+			console.log(startingPoint);
+			console.log(destination);
 
 			var location_1 = startingPoint;
 			var location_2 = destination;
-			const startingPointCoords = startingPoint.split(',');
-			const destinationCoords = destination.split(',');
+			// const startingPointCoords = startingPoint.split(',');
+			// const destinationCoords = destination.split(',');
+			// var location = "Singapore";
 
-			window.startingPointLatitude = parseFloat(startingPointCoords[0]);
-			window.startingPointLongitude = parseFloat(startingPointCoords[1]);
-			window.destinationLatitude = parseFloat(destinationCoords[0]);
-			window.destinationLongitude = parseFloat(destinationCoords[1]);
+            // 调用API的端点URL
+            var apiUrl = "https://developers.onemap.sg/";
+
+            // 构建API请求URL
+            var requestUrl_1 = apiUrl + "commonapi/search?searchVal=" + location_1 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
+
+            // 发送GET请求
+            $.get(requestUrl_1, function (data) {
+                console.log(data);
+                // 提取LATITUDE和LONGITUDE信息
+                window.startingPointLatitude = data.results[0].LATITUDE;
+                window.startingPointLongitude = data.results[0].LONGITUDE;
+
+                // var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+                // $("#result").html(resultText);
+                
+            });
+
+            var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + location_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
+			$.get(requestUrl_2, function (data) {
+                console.log(data);
+                // 提取LATITUDE和LONGITUDE信息
+                window.destinationLatitude = data.results[0].LATITUDE;
+                window.destinationLongitude = data.results[0].LONGITUDE;
+
+                // var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+                // $("#result").html(resultText);
+                
+            });
+
+			// window.startingPointLatitude = parseFloat(startingPointCoords[0]);
+			// window.startingPointLongitude = parseFloat(startingPointCoords[1]);
+			// window.destinationLatitude = parseFloat(destinationCoords[0]);
+			// window.destinationLongitude = parseFloat(destinationCoords[1]);
 
 			console.log('Starting Point Latitude:', window.startingPointLatitude);
 			console.log('Starting Point Longitude:', window.startingPointLongitude);
