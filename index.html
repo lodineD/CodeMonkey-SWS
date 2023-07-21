@@ -74,7 +74,7 @@
 
 	<script src="./work/initmap.js"></script>
 	<script src="./work/call_db.js"></script>
-	
+
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 			// 加载initmap.js脚本
@@ -184,7 +184,6 @@
 			console.log(endlat);
 
 			getRoute();
-			decodeGeometry(sampleRoute);
 
 			function getRoute() {
 
@@ -208,21 +207,8 @@
 			};
 
 			function decodeGeometry(sampleRoute) {
-				// var baseMaps = {
-				//     "Default": L.tileLayer.provider('OneMap.Default'),
-				//     "Original": L.tileLayer.provider('OneMap.Original'),
-				//     "Night": L.tileLayer.provider('OneMap.Night'),
-				//     "Grey": L.tileLayer.provider('OneMap.Grey')
-				// };
-
 
 				var center = L.bounds([startlat, startlat], [endlat, endlat]).getCenter();
-
-				// var map = L.map('mapdiv');
-
-				// L.tileLayer.provider('OneMap.Grey').addTo(map);
-
-				// L.control.layers(baseMaps).addTo(map);
 
 				//图标生成与颜色设置   
 				var greenIcon = new L.Icon({
