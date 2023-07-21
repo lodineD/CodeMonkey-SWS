@@ -1,6 +1,6 @@
 
-var blueIcon = new L.Icon({
-    iconUrl: './images/marker-icon.png',
+var greenIcon = new L.Icon({
+    iconUrl: './images/marker-icon-green.png',
     shadowUrl: './images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -10,6 +10,15 @@ var blueIcon = new L.Icon({
 
 var RedIcon = new L.Icon({
     iconUrl: './images/marker-icon-red.png',
+    shadowUrl: './images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+var yellowIcon = new L.Icon({
+    iconUrl: './images/marker-icon-yellow.png',
     shadowUrl: './images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -27,17 +36,22 @@ function fetchData() {
 
             data.forEach((data) => {
                 const { latitude, longitude, car_num } = data;
+                var num = car_num * 2;
                 console.log("Latitude:", latitude);
                 console.log("Longitude:", longitude);
                 console.log("Car Number:", car_num);
 
                 // 显示标记点，并弹出窗口
-                if (car_num > 9) {
+                if (num > 9) {
                     var point = L.marker([latitude, longitude], { icon: RedIcon }).addTo(map);
                     point.bindPopup(`Car Number: ${car_num}`);
                 }
+                else if (num > 5){
+                    var point = L.marker([latitude, longitude], { icon: yellowIcon }).addTo(map);
+                    point.bindPopup(`Car Number: ${car_num}`);
+                }
                 else {
-                    var point = L.marker([latitude, longitude], { icon: blueIcon }).addTo(map);
+                    var point = L.marker([latitude, longitude], { icon: greenIcon }).addTo(map);
                     point.bindPopup(`Car Number: ${car_num}`);
                 }
 
