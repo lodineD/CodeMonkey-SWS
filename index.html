@@ -64,12 +64,7 @@
 		</ul>
 	</div>
 
-	<div id='mapdiv' style='position: fixed;
-    	top: 0;
-    	left: 0;
-   	 	height: 100vh;
-    	width: calc(100% - 270px); 
-    	margin-left: 270px'></div>
+	<div id='mapdiv' class="map-style-begame"></div>
 
 	<script src="./work/initmap.js"></script>
 	<script src="./work/call_db.js"></script>
@@ -105,7 +100,11 @@
 		let isTrafficExpanded = true;
 		let isHistoryExpanded = true;
 		let isLocationExpanded = true;
+		let ismapExpanded = true;
 		function toggleSidebar() {
+			const mapContainer = document.getElementById('mapdiv');
+			mapContainer.classList.toggle('map-style-begame');
+
 			const mainFeature = document.getElementById('sidebar');
 			mainFeature.classList.toggle('sidebar-collapsed');
 
@@ -129,14 +128,24 @@
 			menuFeature = document.getElementById('main-feature');
 			menuFeature.classList.toggle('not-expand');
 
-			mapfeature = document.getElementById('mapdiv');
-			mapfeature.classList.toggle('map-style')
+			// mapfeature = document.getElementById('mapdiv');
+			// mapfeature.classList.toggle('map-style')
 
 			if (isHistoryExpanded) toggleOptionHistory();
 			if (isTrafficExpanded) toggleOptionTraffic();
 			if (isLocationExpanded) toggleOptionLocation();
+			if (ismapExpanded) togglemap();
+
 			isExpanded = !isExpanded;
 		}
+
+		function togglemap(){
+			if (isExpanded) {
+				mapContainer.classList.remove('map-style-begame');
+				mapContainer.classList.add('map-style-collapsed');
+			}
+		}
+
 		function toggleOptionTraffic() {
 			if (isExpanded) {
 				const trafficExpanded = document.getElementById('traffic-expanded');
@@ -199,7 +208,7 @@
 			console.log('Starting Point Longitude:', window.startingPointLongitude);
 			console.log('Destination Latitude:', window.destinationLatitude);
 			console.log('Destination Longitude:', window.destinationLongitude);
-			
+
 
 			Routing();
 		}
