@@ -16,35 +16,34 @@
 </head>
 
 <body>
-	<div class="sidebar-expanded">
-		<ul id="main-feature">
-			<li class="menu-item toggle" onclick="toggleSidebar()">
-				<i class="ri-arrow-right-s-line arrow-rotate" id="arrow-icon"></i>
-			</li>
+	<div id="sidebar" class="sidebar-expanded">
+		<li class="menu-item toggle" onclick="toggleSidebar()">
+			<i class="ri-arrow-right-s-line arrow-rotate" id="arrow-icon"></i>
+		</li>
+		<ul class="main-feature" id="main-feature">
 			<li class="menu-item" onclick="toggleOptionTraffic()">
 				<i class="ri-compass-discover-line"></i>
-
-				<span class="menu-text">Traffic Info</span>
+				<span id="menu-text-t" class="menu-text">Traffic Info</span>
 				<div class="inline-arrow inline-arrow-rotate" id="traffic-arrow">
 					<i class="ri-arrow-right-s-line"></i>
 				</div>
 			</li>
 			<li class="sub-menu-traffic-expanded" id="traffic-expanded">
-
-				<i class="ri-send-plane-line"></i>
-				<div>
+				<div style="height: 0;">
+					<i class="ri-send-plane-line"></i>
 					<span>Enter starting point:</span>
 					<input class="input-style" type="text" id="starting-point" placeholder="coordinate or place name"
 						v-model="username" required><br>
+					<i class="ri-send-plane-line"></i>
 					<span>Enter destination:</span>
 					<input class="input-style" type="text" id="destination" placeholder="coordinate or place name"
 						v-model="password" required><br>
 				</div>
 				<button class="button-style" type="submit" onclick="submit()">Searching</button>
 			</li>
-			<li class="menu-item" onclick="toggleOptionHistory(event)">
+			<li class="menu-item" onclick="toggleOptionHistory()">
 				<i class="ri-history-line"></i>
-				<span class="menu-text">History</span>
+				<span id="menu-text-h" class="menu-text">History</span>
 				<div class="inline-arrow inline-arrow-rotate" id="history-arrow">
 					<i class="ri-arrow-right-s-line"></i>
 				</div>
@@ -54,7 +53,7 @@
 			</li>
 			<li class="menu-item" onclick="toggleOptionLocation()">
 				<i class="ri-user-location-line"></i>
-				<span class="menu-text">Current Location</span>
+				<span id="menu-text-l" class="menu-text">Current Location</span>
 				<div class="inline-arrow inline-arrow-rotate" id="location-arrow">
 					<i class="ri-arrow-right-s-line"></i>
 				</div>
@@ -102,46 +101,81 @@
 	</script>
 
 	<script>
+		let isExpanded = true;
+		let isTrafficExpanded = true;
+		let isHistoryExpanded = true;
+		let isLocationExpanded = true;
 		function toggleSidebar() {
-			const mainFeature = document.getElementById('main-feature');
-			mainFeature.classList.toggle('not-expand');
+			const mainFeature = document.getElementById('sidebar');
+			mainFeature.classList.toggle('sidebar-collapsed');
 
 			const arrowIcon = document.getElementById('arrow-icon');
 			arrowIcon.classList.toggle('arrow-rotate');
+
+			menuText = document.getElementById('menu-text-t');
+			menuText.classList.toggle('hidden');
+			menuText = document.getElementById('menu-text-h');
+			menuText.classList.toggle('hidden');
+			menuText = document.getElementById('menu-text-l');
+			menuText.classList.toggle('hidden');
+
+			menuText = document.getElementById('traffic-arrow');
+			menuText.classList.toggle('hidden');
+			menuText = document.getElementById('history-arrow');
+			menuText.classList.toggle('hidden');
+			menuText = document.getElementById('location-arrow');
+			menuText.classList.toggle('hidden');
+
+			menuFeature = document.getElementById('main-feature');
+			menuFeature.classList.toggle('not-expand');
+
+			mapfeature = document.getElementById('mapdiv');
+			mapfeature.classList.toggle('map-style')
+
+			if (isHistoryExpanded) toggleOptionHistory();
+			if (isTrafficExpanded) toggleOptionTraffic();
+			if (isLocationExpanded) toggleOptionLocation();
+			isExpanded = !isExpanded;
 		}
 		function toggleOptionTraffic() {
-			const trafficExpanded = document.getElementById('traffic-expanded');
-			trafficExpanded.classList.toggle('sub-menu-traffic-expanded');
+			if (isExpanded) {
+				const trafficExpanded = document.getElementById('traffic-expanded');
+				trafficExpanded.classList.toggle('sub-menu-traffic-expanded');
 
-			const trafficArrow = document.getElementById('traffic-arrow');
-			trafficArrow.classList.toggle('inline-arrow-rotate');
+				const trafficArrow = document.getElementById('traffic-arrow');
+				trafficArrow.classList.toggle('inline-arrow-rotate');
 
-			// 获取"Traffic Info"子菜单中的内容元素
-			const contentElements = trafficExpanded.querySelectorAll('input, button, span, .ri-send-plane-line');
+				// 获取"Traffic Info"子菜单中的内容元素
+				const contentElements = trafficExpanded.querySelectorAll('input, button, span, .ri-send-plane-line');
 
-			// 遍历内容元素并切换其可见性
-			for (const element of contentElements) {
-				element.classList.toggle('hidden');
+				// 遍历内容元素并切换其可见性
+				for (const element of contentElements) {
+					element.classList.toggle('hidden');
+				}
+				isTrafficExpanded = !isTrafficExpanded;
 			}
-
 		}
 
-		function toggleOptionHistory(event) {
-			event.stopPropagation();
+		function toggleOptionHistory() {
+			if (isExpanded) {
+				const historyExpanded = document.getElementById('history-expanded');
+				historyExpanded.classList.toggle('sub-menu-history');
 
-			const historyExpanded = document.getElementById('history-expanded');
-			historyExpanded.classList.toggle('sub-menu-history');
-
-			const historyArrow = document.getElementById('history-arrow');
-			historyArrow.classList.toggle('inline-arrow-rotate');
+				const historyArrow = document.getElementById('history-arrow');
+				historyArrow.classList.toggle('inline-arrow-rotate');
+				isHistoryExpanded = !isHistoryExpanded;
+			}
 		}
 
 		function toggleOptionLocation() {
-			const locationExpanded = document.getElementById('location-expanded');
-			locationExpanded.classList.toggle('sub-menu-location');
+			if (isExpanded) {
+				const locationExpanded = document.getElementById('location-expanded');
+				locationExpanded.classList.toggle('sub-menu-location');
 
-			const locationArrow = document.getElementById('location-arrow');
-			locationArrow.classList.toggle('inline-arrow-rotate');
+				const locationArrow = document.getElementById('location-arrow');
+				locationArrow.classList.toggle('inline-arrow-rotate');
+				isLocationExpanded = !isLocationExpanded;
+			}
 		}
 
 		function submit() {
@@ -151,6 +185,8 @@
 			const startingPoint = startingPointInput.value;
 			const destination = destinationInput.value;
 
+			var location_1 = startingPoint;
+			var location_2 = destination;
 			const startingPointCoords = startingPoint.split(',');
 			const destinationCoords = destination.split(',');
 
@@ -163,6 +199,7 @@
 			console.log('Starting Point Longitude:', window.startingPointLongitude);
 			console.log('Destination Latitude:', window.destinationLatitude);
 			console.log('Destination Longitude:', window.destinationLongitude);
+			
 
 			Routing();
 		}
@@ -211,8 +248,8 @@
 				var center = L.bounds([startlat, startlat], [endlat, endlat]).getCenter();
 
 				//图标生成与颜色设置   
-				var greenIcon = new L.Icon({
-					iconUrl: './images/marker-icon-green.png',
+				var goldIcon = new L.Icon({
+					iconUrl: './images/marker-icon-gold.png',
 					shadowUrl: './images/marker-shadow.png',
 					iconSize: [25, 41],
 					iconAnchor: [12, 41],
@@ -230,7 +267,7 @@
 				});
 
 				var startmarker = L.marker([startlat, startlng], { icon: blackIcon }).addTo(map);
-				var endmarker = L.marker([endlat, endlng], { icon: greenIcon }).addTo(map);
+				var endmarker = L.marker([endlat, endlng], { icon: goldIcon }).addTo(map);
 				console.log("ready pointing!");
 				// startmarker.bindPopup(`Car Number: 5`);
 				// var startmarker = L.marker([1.30011, 103.8422],{ icon: greenIcon }).addTo(map);
