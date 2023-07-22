@@ -467,8 +467,11 @@
 
 					var min_destance = 100;
 					var min_camera_start = -1;
+
 					for (var k = 0; k < camera_latitudeArray.length; k++) {
-						var templen = TemptStartpointLat + TemptStartpointLog - camera_latitudeArray[k] - camera_longitudeArray[k];
+						var templen = Math.abs(TemptStartpointLat + TemptStartpointLog - camera_latitudeArray[k] - camera_longitudeArray[k]);
+						console.log("start templen:");
+						console.log(templen);
 						if ((templen < maxarea) && (templen < min_destance)) {
 							min_destance = templen;
 							min_camera_start = k;
@@ -478,8 +481,9 @@
 					min_destance = 100;
 					var min_camera_end = -1;
 					for (var j = 0; j < camera_latitudeArray.length; j++) {
-						var templen = TemptEndPointLat + TemptEndPointLog - camera_latitudeArray[j] - camera_longitudeArray[j];
-						console
+						var templen = Math.abs(TemptEndPointLat + TemptEndPointLog - camera_latitudeArray[j] - camera_longitudeArray[j]);
+						console.log("end templen:");
+						console.log(templen);
 						if ((templen < maxarea) && (templen < min_destance)) {
 							min_destance = templen;
 							min_camera_end = j;
@@ -499,6 +503,7 @@
 						currentPolyline.push(polyline);
 						// 加入地图
 						polyline.addTo(map);
+						console("no green");
 
 					}
 					else if (min_camera_end > -1 && min_camera_start == -1) {
@@ -512,6 +517,7 @@
 							currentPolyline.push(polyline);
 							// 加入地图
 							polyline.addTo(map);
+							console.log("end green");
 						}
 						else if (camera_car_number[min_camera_end] <= 9) {
 							var polyline = L.polyline(arrayOfArrays, {
@@ -523,6 +529,7 @@
 							currentPolyline.push(polyline);
 							// 加入地图
 							polyline.addTo(map);
+							
 						}
 						else {
 							var polyline = L.polyline(arrayOfArrays, {
