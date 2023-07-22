@@ -2,11 +2,11 @@
     margin: 0;
 }
 
-.hidden{
+.hidden {
     display: none;
 }
 
-.sidebar-expanded {
+.sidebar.expanded {
     display: inline-block;
     left: 0px;
     top: 0;
@@ -15,13 +15,12 @@
     height: 100vh;
     border-radius: 8px;
     position: relative;
-    z-index: 2000;
     transition: 0.75s;
     padding: 8px;
     box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
 }
 
-.sidebar-collapsed {
+.sidebar {
     width: 50px;
     /* 其他样式... */
     background-color: #409EFF;
@@ -62,8 +61,13 @@ li {
     background-color: hsl(211, 96%, 45%);
 }
 
-.menu-text {
+.menu-text.expanded {
+    display: flex;
     margin-left: 8px;
+}
+
+.menu-text {
+    display: none;
 }
 
 .disappear {
@@ -81,13 +85,15 @@ li {
     transform: rotate(180deg);
 }
 
-.main-feature {
+.main-feature.expanded {
     position: absolute;
     top: 50px;
     width: 250px;
 }
 
-.not-expand {
+.main-feature {
+    position: absolute;
+    top: 50px;
     width: 50px;
 }
 
@@ -96,24 +102,43 @@ li {
     left: 220px;
 }
 
-.sub-menu-traffic-expanded {
+.inline-arrow.hidden {
+    display: none;
+}
+
+.inline-arrow-rotate {
+    transform: rotate(90deg);
+}
+
+.sub-menu-traffic.expanded {
     background-color: #f2f6fc;
     height: 150px;
-    transition: 0.75s;
+    transition: 0.5s;
     border-radius: 8px;
     padding: 20px 35px;
     box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4);
     position: relative;
-    z-index: 10;
+    display: flex;
 }
 
-.sub-menu-collapsed {
-    transition: 1s;
-    display: none;
+.sub-menu-traffic {
+    height: 0px;
+}
+
+.sub-menu-history.expanded {
+
+    background-color: #f2f6fc;
+    height: 500px;
+    transition: 0.5s;
+    border-radius: 8px;
+    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
 }
 
 .sub-menu-history {
+    height: 0px;
+}
 
+.sub-menu-location.expanded {
     background-color: #f2f6fc;
     height: 100px;
     transition: 0.5s;
@@ -122,15 +147,7 @@ li {
 }
 
 .sub-menu-location {
-    background-color: #f2f6fc;
-    height: 100px;
-    transition: 0.5s;
-    border-radius: 8px;
-    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
-}
-
-.inline-arrow-rotate {
-    transform: rotate(90deg);
+    height: 0px;
 }
 
 .input-style {
@@ -163,7 +180,8 @@ li {
     margin-left: 70px'
 }
 
-.checkbox {
+.checkbox.expanded {
+    display: flex;
     position: absolute;
     left: 190px;
     top: 12px;
@@ -171,8 +189,10 @@ li {
     height: 30px;
     background: #409EFF;
     border-radius: 15px;
-    /* border-top: 0.02em solid #ececec;
-    border-bottom: 0.02em solid #ececec; */
+}
+
+.checkbox {
+    display: none;
 }
 
 .checkbox .inner {
@@ -183,7 +203,6 @@ li {
     bottom: 6px;
     background: #C0C4CC;
     border-radius: 9px;
-    /* box-shadow: inset 0 0 10px rgba(0,0,0,0.5); */
 }
 
 .checkbox .inner.on {
@@ -206,4 +225,24 @@ li {
 .checkbox .inner.on .switch {
     left: 28px;
     transition: 0.5s;
+}
+
+.map-style.expanded {
+    position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: calc(100% - 270px); 
+	margin-left: 270px;
+    transition: 0.75s;
+}
+
+.map-style {
+    position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: calc(100% - 70px); 
+	margin-left: 70px;
+    transition: 0.75s;
 }
