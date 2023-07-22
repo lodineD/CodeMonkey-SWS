@@ -1,5 +1,3 @@
-// import { bounds, icon } from "leaflet";
-
 var baseMaps = {
     "Default": L.tileLayer.provider('OneMap.Default'),
     "Original": L.tileLayer.provider('OneMap.Original'),

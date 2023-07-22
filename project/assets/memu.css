@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.sidebar.expanded {
+    display: inline-block;
+    left: 0px;
+    top: 0;
+    width: 250px;
+    background-color: #409EFF;
+    height: 100vh;
+    border-radius: 8px;
+    position: relative;
+    transition: 0.75s;
+    padding: 8px;
+    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
+}
+
+.sidebar {
+    width: 50px;
+    /* 其他样式... */
+    background-color: #409EFF;
+    height: 100vh;
+    border-radius: 8px;
+    position: relative;
+    padding: 8px;
+    transition: 0.75s;
+    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
+}
+
+ul,
+li {
+    padding: 0;
+    list-style: none;
+}
+
+.menu-item {
+    height: 45px;
+    font-size: 16px;
+    color: #f2f6fc;
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    padding: 0 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    border-width: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.menu-item i {
+    font-size: 20px;
+}
+
+.menu-item:hover {
+    background-color: hsl(211, 96%, 45%);
+}
+
+.menu-text.expanded {
+    display: flex;
+    margin-left: 8px;
+}
+
+.menu-text {
+    display: none;
+}
+
+.disappear {
+    display: none;
+}
+
+.toggle {
+    position: absolute;
+    width: calc(100% -8px);
+    top: 5px;
+    justify-content: center;
+}
+
+.arrow-rotate {
+    transform: rotate(180deg);
+}
+
+.main-feature.expanded {
+    position: absolute;
+    top: 50px;
+    width: 250px;
+}
+
+.main-feature {
+    position: absolute;
+    top: 50px;
+    width: 50px;
+}
+
+.inline-arrow {
+    position: absolute;
+    left: 220px;
+}
+
+.inline-arrow.hidden {
+    display: none;
+}
+
+.inline-arrow-rotate {
+    transform: rotate(90deg);
+}
+
+.sub-menu-traffic.expanded {
+    background-color: #f2f6fc;
+    height: 150px;
+    transition: 0.5s;
+    border-radius: 8px;
+    padding: 20px 35px;
+    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4);
+    position: relative;
+    display: flex;
+}
+
+.sub-menu-traffic {
+    height: 0px;
+}
+
+.sub-menu-history.expanded {
+
+    background-color: #f2f6fc;
+    height: 500px;
+    transition: 0.5s;
+    border-radius: 8px;
+    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
+}
+
+.sub-menu-history {
+    height: 0px;
+}
+
+.sub-menu-location.expanded {
+    background-color: #f2f6fc;
+    height: 100px;
+    transition: 0.5s;
+    border-radius: 8px;
+    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
+}
+
+.sub-menu-location {
+    height: 0px;
+}
+
+.input-style {
+    margin: 5px 5px 5px 5px;
+    height: 25px;
+    background-color: hsl(0, 0%, 100%);
+    box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
+    border-radius: 4px;
+    border-style: hidden;
+}
+
+.button-style {
+    width: 120px;
+    height: 30px;
+    padding: 0;
+    margin: 10px 5px 5px 25px;
+    background-color: hsl(0, 0%, 100%);
+    box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
+    border-style: hidden;
+    border-radius: 8px;
+    position: absolute;
+    top: 130px;
+}
+
+.button-style:hover {
+    background-color: #87cefa;
+}
+
+.map-style {
+    margin-left: 70px'
+}
+
+.checkbox.expanded {
+    display: flex;
+    position: absolute;
+    left: 190px;
+    top: 12px;
+    width: 60px;
+    height: 30px;
+    background: #409EFF;
+    border-radius: 15px;
+}
+
+.checkbox {
+    display: none;
+}
+
+.checkbox .inner {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    right: 6px;
+    bottom: 6px;
+    background: #C0C4CC;
+    border-radius: 9px;
+}
+
+.checkbox .inner.on {
+    background: #67C23A;
+    transition: 0.5s;
+}
+
+.checkbox .inner .switch {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    top: -2px;
+    left: -2px;
+    background: #fff;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .5);
+    transition: 0.5s;
+}
+
+.checkbox .inner.on .switch {
+    left: 28px;
+    transition: 0.5s;
+}
+
+.map-style.expanded {
+    position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: calc(100% - 270px); 
+	margin-left: 270px;
+    transition: 0.75s;
+}
+
+.map-style {
+    position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: calc(100% - 70px); 
+	margin-left: 70px;
+    transition: 0.75s;
+}

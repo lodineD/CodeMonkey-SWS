@@ -4,250 +4,74 @@
 	<title>OneMap 2.0</title>
 
 	<link rel="stylesheet" href="./assets/leaflet.css" />
-	<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel = "stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+	<link rel="stylesheet" href="./assets/memu.css">
+
 	<script src="./library/leaflet.js"></script>
 	<script src="./library/jquery.min.js"></script>
 	<script src="./library/leaflet-providers-added-onemap.js"></script>
 	<script src="./library/Polyline.encoded.js"></script>
-	<script src="./library/axios.min.js"></script>
-	<style>
-		* {
-		  margin: 0;
-		}
-	  
-		.sidebar-expanded {
-		  left: 0px;
-		  top: 0;
-		  width: 250px;
-		  /* 其他样式... */
-		  background-color: #409EFF;
-		  height: 100vh;
-		  border-radius: 8px;
-		  position: relative;
-		  z-index: 2000;
-		  transition: 1s;
-		  padding: 8px;
-		  box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
-		}
-		
-		.sidebar-collapsed {
-		  width: 50px;
-		  /* 其他样式... */
-		  background-color: #409EFF;
-		  height:100vh;
-		  border-radius: 8px;
-		  position: relative;
-		  padding: 8px;
-		  transition: 1s;
-		  box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
-		}
-	  
-		ul, 
-		li {
-		  padding: 0;
-		  list-style: none;
-		}
-	  
-		.menu-item {
-		  height: 45px;
-		  font-size: 16px;
-		  color: #f2f6fc;
-		  align-items: center;
-		  display: flex;
-		  justify-content: flex-start;
-		  position: relative;
-		  padding: 0 15px;
-		  border-radius: 8px;
-		  cursor: pointer;
-		  border-width: 10px;
-		  transition: background-color 0.2s ease;
-		}
-		
-		.menu-item i {
-		  font-size: 20px;
-		}
-	  
-		.menu-item:hover {
-		  background-color: hsl(211, 96%, 45%);
-		}
-	  
-		.menu-text {
-		  margin-left: 8px;
-		}
-		
-		.disappear {
-		  display: none;
-		}
-	  
-		.toggle {
-		  position: absolute;
-		  width: calc(100% -8px);
-		  top: 5px;
-		  justify-content: center;
-		}
-	  
-		.arrow-rotate {
-		  transform: rotate(180deg);
-		}
-	  
-		.main-feature {
-		  position: absolute;
-		  top: 50px;
-		  width: 250px;
-		}
-	  
-		.not-expand {
-		  width: 50px;
-		}
-	  
-		/* .popover {
-		  position: absolute;
-		  top: 50%;
-		  left: calc(100% + 8px);
-		  transform: translateY(-50%);
-		  border-radius: 2px;
-		  background-color: #fff;
-		  color: #333;
-		  padding: 8px;
-		  font-size: 12px;
-		  display: none;
-		  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
-		}
-	  
-		.popover::before {
-		  content: '';
-		  border-width: 6px;
-		  left: -12px;
-		  top: 50%;
-		  position: absolute;
-		  transform: translateY(-50%);
-		  border-style: solid;
-		  border-right-color: #fff;
-		  border-top-color: transparent;
-		  border-left-color: transparent;
-		  border-block-color: transparent;
-		} */
-	  
-		.inline-arrow {
-		  position: absolute;
-		  left: 220px;
-		}
-	  
-		.sub-menu-traffic-expanded {
-		  background-color: #f2f6fc;
-		  height: 150px;
-		  transition: 1s ;
-		  border-radius: 8px;
-		  padding:20px 35px;
-		  box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4);
-		  position: relative;
-		  z-index: 10;
-		}
-	  
-		.sub-menu-collapsed {
-		  transition: 1s;
-		  display: none;
-		}
-	  
-		.sub-menu-history {
-		  background-color: #f2f6fc;
-		  height: 100px;
-		  transition: 0.5s ;
-		  border-radius: 8px;
-		  box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
-		}
-	  
-		.sub-menu-location {
-		  background-color: #f2f6fc;
-		  height: 100px;
-		  transition: 0.5s ;
-		  border-radius: 8px;
-		  box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
-		}
-	  
-		.inline-arrow-rotate {
-		  transform: rotate(90deg);
-		}
-	  
-		.input-style {
-		  margin: 5px 5px 5px 5px;
-		  height: 25px;
-		  background-color: hsl(0, 0%, 100%);
-		  box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
-		  border-radius: 4px;
-		  border-style: hidden;
-		}
-	  
-		.button-style {
-		  width: 120px;
-		  height: 30px;
-		  padding: 0;
-		  margin: 10px 5px 5px 25px;
-		  background-color: hsl(0, 0%, 100%);
-		  box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
-		  border-style: hidden;
-		  border-radius: 8px;
-		}
-	  
-		.button-style:hover {
-		  background-color: #87cefa;
-		}
-	  </style>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </head>
 
 <body>
-	<!-- <h1>Singapore Map</h1> -->
-	
-	<!-- <div id='mapdiv' style='height:700px; margin-left: auto; width: 1200px;'> -->
-	<div class="sidebar-expanded">
-		<li class="menu-item toggle" @click="toggleSidebar">
-			<i class="ri-arrow-right-s-line" :class="{'arrow-rotate': isExpanded}"></i>
+	<div id="sidebar" class="sidebar">
+		<li class="menu-item toggle">
+			<i class="ri-arrow-right-s-line" id="arrow-icon" onclick="toggleSidebar()"></i>
 		</li>
-		<ul class="main-feature" :class="{'not-expand': !isExpanded}">
-		  <li class="menu-item" @click="toggleOptionTraffic">
-			  <i class="ri-compass-discover-line"></i>
-			  <span class="menu-text" :class="{'disappear': !isExpanded}">Traffic Info</span>
-			  <div :class="{'inline-arrow-rotate': OptTrafficIsPutdown}" class = "inline-arrow">
-				<i class="ri-arrow-right-s-line"></i>
-			  </div>
-			  <!-- <div class="popover">Traffic Info</div> -->
-		  </li>
-		  <li class="sub-menu-traffic-expanded">
-			  <i class="ri-send-plane-line"></i>
-			  <span>Enter starting point:</span>
-			  <input class="input-style" type="text" placeholder="corrdinate or place name" v-model="username" required><br>
-			  <i class="ri-send-plane-line"></i>
-			  <span>Enter destination:</span>
-			  <input class="input-style" type="text" placeholder="corrdinate or place name" v-model="password" required><br>
-			  <button class="button-style" type="submit" @click="submit">Searching</button>
-		  </li>
-		  <li class="menu-item" @click="toggleOptionHistory">
-			  <i class="ri-history-line"></i>
-			  <span class="menu-text" :class="{'disappear': !isExpanded}">History</span>
-			  <div :class="{'inline-arrow-rotate': OptHistoryIsPutdown}" class = "inline-arrow">
-				<i class="ri-arrow-right-s-line"></i>
-			  </div>
-		  </li>
-		  <li :class="{'sub-menu-history': isExpanded && OptHistoryIsPutdown}">
-			  
-		  </li>
-		  <li class="menu-item" @click="toggleOptionLocation">
-			  <i class="ri-user-location-line"></i>
-			  <span class="menu-text" :class="{'disappear': !isExpanded}">Current Location</span>
-			  <div :class="{'inline-arrow-rotate': OptLocationIsPutdown}" class = "inline-arrow">
-				<i class="ri-arrow-right-s-line"></i>
-			  </div>
-		  </li>
-		  <li :class="{'sub-menu-location': isExpanded && OptLocationIsPutdown}">
-			  
-		  </li>
+		<div class="checkbox" id="switch">
+			<div class="inner" id="switch-inner" onclick="toggleSwitch()">
+				<div class = "switch"></div>
+			</div>
+		</div>
+		<ul class="main-feature" id="main-feature">
+			<li class="menu-item" onclick="toggleOptionTraffic()">
+				<i class="ri-compass-discover-line"></i>
+				<span id="menu-text-t" class="menu-text">Traffic Info</span>
+				<div class="inline-arrow hidden" id="traffic-arrow">
+					<i class="ri-arrow-right-s-line"></i>
+				</div>
+			</li>
+			<li class="sub-menu-traffic" id="traffic-expanded">
+				<div>
+					<i class="ri-send-plane-line hidden"></i>
+					<span class="hidden">Enter starting point:</span>
+					<input class="input-style hidden" type="text" id="starting-point" placeholder="coordinate or place name" required><br>
+					<i class="ri-send-plane-line hidden"></i>
+					<span class="hidden">Enter destination:</span>
+					<input class="input-style hidden" type="text" id="destination" placeholder="coordinate or place name" required><br>
+				</div>
+				<button class="button-style hidden" type="submit" onclick="submit()">Searching</button>
+			</li>
+			<li class="menu-item" onclick="toggleOptionHistory()">
+				<i class="ri-history-line"></i>
+				<span id="menu-text-h" class="menu-text">History</span>
+				<div class="inline-arrow hidden" id="history-arrow">
+					<i class="ri-arrow-right-s-line"></i>
+				</div>
+			</li>
+			<li class="sub-menu-history" id="history-expanded">
+				<!-- Add History Submenu Content Here -->
+			</li>
+			<li class="menu-item" onclick="toggleOptionLocation()">
+				<i class="ri-user-location-line"></i>
+				<span id="menu-text-l" class="menu-text">Current Location</span>
+				<div class="inline-arrow hidden" id="location-arrow">
+					<i class="ri-arrow-right-s-line"></i>
+				</div>
+			</li>
+			<li class="sub-menu-location" id="location-expanded">
+				<!-- Add Current Location Submenu Content Here -->
+			</li>
 		</ul>
 	</div>
-	
-	<!-- </div><script src="./work/initmap.js"></script> -->
-	
+
+	<div id='mapdiv' class="map-style"></div>
+
+	<script src="./work/initmap.js"></script>
 	<script src="./work/call_db.js"></script>
+
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 			// 加载initmap.js脚本
@@ -273,8 +97,292 @@
 			document.head.appendChild(script);
 		}
 	</script>
-	<!-- <script src="./work/Routing.js"></script> -->
 
+	<script>
+		let isExpanded = false;
+		let isTrafficExpanded = false;
+		let isHistoryExpanded = false;
+		let isLocationExpanded = false;
+		//let ismapExpanded = true;
+		let pointArray = [];
+		function toggleSwitch() {
+			const switchContainer = document.getElementById('switch-inner');
+			const isOn = Array.from(switchContainer.classList).includes('on');
+			if (isOn) {
+				switchContainer.classList.remove('on');
+				clearData();
+			} else {
+				switchContainer.classList.add('on');
+				showData();
+			}
+		}
+		function toggleSidebar() {
+			const mapContainer = document.getElementById('mapdiv');
+			mapContainer.classList.toggle('expanded');
+
+			const sideBar= document.getElementById('sidebar');
+			//isExpanded = Array.from(sideBar.classList).includes('expanded');
+
+			sideBar.classList.toggle('expanded');
+
+			const arrowIcon = document.getElementById('arrow-icon');
+			arrowIcon.classList.toggle('arrow-rotate');
+
+			menuText = document.getElementsByClassName('menu-text');
+			for (let i = 0; i < menuText.length; i++) {
+				menuText[i].classList.toggle('expanded');
+			}
+			
+			const switchContainer = document.getElementById('switch');
+			switchContainer.classList.toggle('expanded');
+
+			menuText = document.getElementById('traffic-arrow');
+			menuText.classList.toggle('hidden');
+			menuText = document.getElementById('history-arrow');
+			menuText.classList.toggle('hidden');
+			menuText = document.getElementById('location-arrow');
+			menuText.classList.toggle('hidden');
+
+			menuFeature = document.getElementById('main-feature');
+			menuFeature.classList.toggle('expanded');
+
+			if (isHistoryExpanded) toggleOptionHistory();
+			if (isTrafficExpanded) toggleOptionTraffic();
+			if (isLocationExpanded) toggleOptionLocation();
+			//if (ismapExpanded) togglemap();
+
+			isExpanded = !isExpanded;
+		}
+
+		// function togglemap(){
+		// 	if (isExpanded) {
+		// 		mapContainer.classList.remove('map-style-begame');
+		// 		mapContainer.classList.add('map-style-collapsed');
+		// 	}
+		// }
+
+		function toggleOptionTraffic() {
+			if (isExpanded) {
+				const trafficExpanded = document.getElementById('traffic-expanded');
+				trafficExpanded.classList.toggle('expanded');
+
+				const trafficArrow = document.getElementById('traffic-arrow');
+				trafficArrow.classList.toggle('inline-arrow-rotate');
+
+				// 获取"Traffic Info"子菜单中的内容元素
+				const contentElements = trafficExpanded.querySelectorAll('input, button, span, .ri-send-plane-line');
+
+				// 遍历内容元素并切换其可见性
+				for (const element of contentElements) {
+					element.classList.toggle('hidden');
+				}
+				isTrafficExpanded = !isTrafficExpanded;
+			}
+		}
+
+		function toggleOptionHistory() {
+			if (isExpanded) {
+				const historyExpanded = document.getElementById('history-expanded');
+				historyExpanded.classList.toggle('expanded');
+
+				const historyArrow = document.getElementById('history-arrow');
+				historyArrow.classList.toggle('inline-arrow-rotate');
+
+				isHistoryExpanded = !isHistoryExpanded;
+			}
+		}
+
+		function toggleOptionLocation() {
+			if (isExpanded) {
+				const locationExpanded = document.getElementById('location-expanded');
+				locationExpanded.classList.toggle('expanded');
+
+				const locationArrow = document.getElementById('location-arrow');
+				locationArrow.classList.toggle('inline-arrow-rotate');
+				isLocationExpanded = !isLocationExpanded;
+			}
+		}
+
+		function submit() {
+			const startingPointInput = document.getElementById('starting-point');
+			const destinationInput = document.getElementById('destination');
+
+			const startingPoint = startingPointInput.value;
+			const destination = destinationInput.value;
+			console.log(startingPoint);
+			console.log(destination);
+
+			var location_1 = startingPoint;
+			var location_2 = destination;
+			// const startingPointCoords = startingPoint.split(',');
+			// const destinationCoords = destination.split(',');
+			// var location = "Singapore";
+
+            // 调用API的端点URL
+            var apiUrl = "https://developers.onemap.sg/";
+
+            // 构建API请求URL
+            var requestUrl_1 = apiUrl + "commonapi/search?searchVal=" + location_1 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
+
+            // 发送GET请求
+            $.get(requestUrl_1, function (data) {
+                console.log(data);
+                // 提取LATITUDE和LONGITUDE信息
+                window.startingPointLatitude = data.results[0].LATITUDE;
+                window.startingPointLongitude = data.results[0].LONGITUDE;
+
+                // var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+                // $("#result").html(resultText);
+                
+            });
+
+            var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + location_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
+			$.get(requestUrl_2, function (data) {
+                console.log(data);
+                // 提取LATITUDE和LONGITUDE信息
+                window.destinationLatitude = data.results[0].LATITUDE;
+                window.destinationLongitude = data.results[0].LONGITUDE;
+
+                // var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+                // $("#result").html(resultText);
+                
+            });
+
+			// window.startingPointLatitude = parseFloat(startingPointCoords[0]);
+			// window.startingPointLongitude = parseFloat(startingPointCoords[1]);
+			// window.destinationLatitude = parseFloat(destinationCoords[0]);
+			// window.destinationLongitude = parseFloat(destinationCoords[1]);
+
+			console.log('Starting Point Latitude:', window.startingPointLatitude);
+			console.log('Starting Point Longitude:', window.startingPointLongitude);
+			console.log('Destination Latitude:', window.destinationLatitude);
+			console.log('Destination Longitude:', window.destinationLongitude);
+
+
+			Routing();
+		}
+		// var startlat = '1.30000';
+		// var startlng = '103.84223';
+		// var endlat = '1.31801';
+		// var endlng = '103.84224';
+		// 1.30000,103.84223
+		// 1.31801,103.84224
+
+		function Routing() {
+
+			var startlat = window.startingPointLatitude;
+			var startlng = window.startingPointLongitude;
+			var endlat = window.destinationLatitude;
+			var endlng = window.destinationLongitude;
+
+			console.log(startlat);
+			console.log(endlat);
+
+			getRoute();
+
+			function getRoute() {
+
+				var api_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwNTU4LCJ1c2VyX2lkIjoxMDU1OCwiZW1haWwiOiJjaGVuZ2hhbmcwNTE2QDE2My5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2ODk2NjM1MjEsImV4cCI6MTY5MDA5NTUyMSwibmJmIjoxNjg5NjYzNTIxLCJqdGkiOiIxMDFkNDMxNWQwOTNhMGM3ZmEzNDExOGJjYTNkNWVjZiJ9.-GmctpGP-J4BRaVmziNXrV7EBmEdxNSeL8uu2gzMe8I'; // 替换为您的API Token
+
+				var url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${startlat},${startlng}&end=${endlat},${endlng}&routeType=drive&token=${api_token}`;
+
+				$.ajax({
+					url: url,
+					type: 'GET',
+					success: function (response) {
+						// 处理响应数据
+						console.log(response);
+						decodeGeometry(response);
+						// 在这里根据返回的数据进行相应的操作
+					},
+					error: function (error) {
+						console.log('请求失败:', error);
+					}
+				});
+			};
+
+			function decodeGeometry(sampleRoute) {
+
+				var center = L.bounds([startlat, startlat], [endlat, endlat]).getCenter();
+
+				//图标生成与颜色设置   
+				var goldIcon = new L.Icon({
+					iconUrl: './images/marker-icon-gold.png',
+					shadowUrl: './images/marker-shadow.png',
+					iconSize: [25, 41],
+					iconAnchor: [12, 41],
+					popupAnchor: [1, -34],
+					shadowSize: [41, 41]
+				});
+
+				var blackIcon = new L.Icon({
+					iconUrl: './images/marker-icon-black.png',
+					shadowUrl: './images/marker-shadow.png',
+					iconSize: [25, 41],
+					iconAnchor: [12, 41],
+					popupAnchor: [1, -34],
+					shadowSize: [41, 41]
+				});
+
+				var startmarker = L.marker([startlat, startlng], { icon: blackIcon }).addTo(map);
+				var endmarker = L.marker([endlat, endlng], { icon: goldIcon }).addTo(map);
+				console.log("ready pointing!");
+				// startmarker.bindPopup(`Car Number: 5`);
+				// var startmarker = L.marker([1.30011, 103.8422],{ icon: greenIcon }).addTo(map);
+
+				// var asdf = L.marker([1.30011, 103.8422]).addTo(map);
+
+
+				//得到route（未编译）
+				var geometryOfRoute = sampleRoute.route_geometry;
+
+				//解码
+				var polyline = L.polyline(L.PolylineUtil.decode(geometryOfRoute, 5), {
+					color: "purple",
+					weight: 5,
+					smoothFactor: 1
+				});
+
+				//边界
+				var bounds = polyline.getBounds();
+
+				//加入线条
+				polyline.addTo(map);
+
+				//缩放到边界
+				map.fitBounds(bounds);
+			}
+		}
+		function showData() {
+			const data = window.processData;
+			data.forEach((data) => {
+				const { latitude, longitude, car_num } = data;
+				var num = car_num * 2;
+				console.log("Latitude:", latitude);
+				console.log("Longitude:", longitude);
+				console.log("Car Number:", num);
+				let point;
+				// 显示标记点，并弹出窗口
+				if (num > 9) {
+					point = L.marker([latitude, longitude], { icon: RedIcon }).addTo(map);
+					point.bindPopup(`Car Number: ${num}`);
+				} else if (num > 5) {
+					point = L.marker([latitude, longitude], { icon: yellowIcon }).addTo(map);
+					point.bindPopup(`Car Number: ${num}`);
+				} else {
+					point = L.marker([latitude, longitude], { icon: greenIcon }).addTo(map);
+					point.bindPopup(`Car Number: ${num}`);
+				}
+				pointArray.push(point);
+			});
+		}
+		function clearData() {
+			pointArray.forEach((point) => {
+				map.removeLayer(point);
+			});
+			pointArray = [];
+		}
+	</script>
 </body>
 
 </html>

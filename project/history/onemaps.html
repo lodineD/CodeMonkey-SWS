@@ -140,13 +140,14 @@
 
             // 发送GET请求
             $.get(requestUrl, function (data) {
+                console.log(data);
                 // 提取LATITUDE和LONGITUDE信息
                 startlat = data.results[0].LATITUDE;
                 startlng = data.results[0].LONGITUDE;
 
                 // var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
                 // $("#result").html(resultText);
-                initMap();
+                
             });
         });
     </script> -->

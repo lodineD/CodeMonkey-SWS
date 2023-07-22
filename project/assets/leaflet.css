@@ -66,6 +66,25 @@
 .leaflet-marker-pane  { z-index: 6; }
 .leaflet-popup-pane   { z-index: 7; }
 
+.map-style-collapsed{
+	position: fixed;
+    top: 0;
+    left: 0;
+   	height: 100vh;
+    width: calc(100% - 100px); 
+    margin-left: 100px
+}
+
+.map-style-begame{
+	position: fixed;
+    top: 0;
+    left: 0;
+   	height: 100vh;
+    width: calc(100% - 270px); 
+    margin-left: 270px
+}
+
+
 .leaflet-vml-shape {
 	width: 1px;
 	height: 1px;
