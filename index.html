@@ -403,7 +403,7 @@
 					var num = currentPolyline.length;
 					Tempt_currentPolyline = urrentPolyline[num - 1];
 					console.log(Tempt_currentPolyline);
-					map.remove(Tempt_currentPolyline);
+					map.removeLayer(Tempt_currentPolyline);
 					currentPolyline.pop();
 				}
 				if (currentPolyline.length === 0) {
@@ -586,7 +586,9 @@
 						}
 					}
 					else {
-						var midnum = (camera_car_number[min_camera_end] + camera_car_number[min_camera_start]) / 2;
+						var midnum = Math.max((camera_car_number[min_camera_end], camera_car_number[min_camera_start]));
+						console.log("midnum");
+						console.log(midnum);
 						if (midnum <= 4) {
 							var polyline = L.polyline(arrayOfArrays, {
 								color: "green",
