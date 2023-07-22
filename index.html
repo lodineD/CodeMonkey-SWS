@@ -235,7 +235,7 @@
 		let camera_longitudeArray = [];
 		let camera_car_number = [];
 
-		let maxarea = null;
+		let maxarea = 0.02;
 
 		function submit() {
 			const startingPointInput = document.getElementById('starting-point');
@@ -445,7 +445,7 @@
 					var instruction_1 = decodePoly[i];
 					var instruction_2 = decodePoly[i + 1];
 
-					// console.log(instruction_1);
+					console.log(instruction_1);
 					// 需要转换为与decodeploy一样的格式
 					var arrayOfArrays = [];
 					arrayOfArrays.push(instruction_1);
@@ -467,21 +467,21 @@
 
 					var min_destance = 100;
 					var min_cemera_start = -1;
-					for (var i = 0; i < camera_latitudeArray.length; i++) {
-						var templen = TemptStartpointLat + TemptStartpointLog - camera_latitudeArray[i] - camera_longitudeArray[i];
+					for (var k = 0; k < camera_latitudeArray.length; k++) {
+						var templen = TemptStartpointLat + TemptStartpointLog - camera_latitudeArray[k] - camera_longitudeArray[k];
 						if ((templen < maxarea) && (templen < min_destance)) {
 							min_destance = templen;
-							min_cemera_start = i;
+							min_cemera_start = k;
 						}
 					}
 
 					min_destance = 100;
 					var min_cemera_end = -1;
-					for (var i = 0; i < camera_latitudeArray.length; i++) {
-						var templen = TemptEndPointLat + TemptEndPointLog - camera_latitudeArray[i] - camera_longitudeArray[i];
+					for (var j = 0; j < camera_latitudeArray.length; j++) {
+						var templen = TemptEndPointLat + TemptEndPointLog - camera_latitudeArray[j] - camera_longitudeArray[j];
 						if ((templen < maxarea) && (templen < min_destance)) {
 							min_destance = templen;
-							min_cemera_end = i;
+							min_cemera_end = j;
 						}
 					}
 
