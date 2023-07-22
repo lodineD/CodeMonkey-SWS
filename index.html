@@ -466,26 +466,30 @@
 					var TemptEndPointLog = instruction_2[1];
 
 					var min_destance = 100;
-					var min_cemera_start = -1;
+					var min_camera_start = -1;
 					for (var k = 0; k < camera_latitudeArray.length; k++) {
 						var templen = TemptStartpointLat + TemptStartpointLog - camera_latitudeArray[k] - camera_longitudeArray[k];
 						if ((templen < maxarea) && (templen < min_destance)) {
 							min_destance = templen;
-							min_cemera_start = k;
+							min_camera_start = k;
 						}
 					}
 
 					min_destance = 100;
-					var min_cemera_end = -1;
+					var min_camera_end = -1;
 					for (var j = 0; j < camera_latitudeArray.length; j++) {
 						var templen = TemptEndPointLat + TemptEndPointLog - camera_latitudeArray[j] - camera_longitudeArray[j];
+						console
 						if ((templen < maxarea) && (templen < min_destance)) {
 							min_destance = templen;
-							min_cemera_end = j;
+							min_camera_end = j;
 						}
 					}
 
-					if (min_cemera_end == -1 && min_cemera_start == -1) {
+					console.log(min_camera_start);
+					console.log(min_camera_end);
+
+					if (min_camera_end == -1 && min_camera_start == -1) {
 						var polyline = L.polyline(arrayOfArrays, {
 							color: "green",
 							weight: 5,
@@ -497,8 +501,8 @@
 						polyline.addTo(map);
 
 					}
-					else if (min_cemera_end > -1 && min_cemera_start == -1) {
-						if (camera_car_number[min_cemera_end] <= 4) {
+					else if (min_camera_end > -1 && min_camera_start == -1) {
+						if (camera_car_number[min_camera_end] <= 4) {
 							var polyline = L.polyline(arrayOfArrays, {
 								color: "green",
 								weight: 5,
@@ -509,7 +513,7 @@
 							// 加入地图
 							polyline.addTo(map);
 						}
-						else if (camera_car_number[min_cemera_end] <= 9) {
+						else if (camera_car_number[min_camera_end] <= 9) {
 							var polyline = L.polyline(arrayOfArrays, {
 								color: "yellow",
 								weight: 5,
@@ -532,8 +536,8 @@
 							polyline.addTo(map);
 						}
 					}
-					else if (min_cemera_end == -1 && min_cemera_start > -1) {
-						if (camera_car_number[min_cemera_start] <= 4) {
+					else if (min_camera_end == -1 && min_camera_start > -1) {
+						if (camera_car_number[min_camera_start] <= 4) {
 							var polyline = L.polyline(arrayOfArrays, {
 								color: "green",
 								weight: 5,
@@ -544,7 +548,7 @@
 							// 加入地图
 							polyline.addTo(map);
 						}
-						else if (camera_car_number[min_cemera_start] <= 9) {
+						else if (camera_car_number[min_camera_start] <= 9) {
 							var polyline = L.polyline(arrayOfArrays, {
 								color: "yellow",
 								weight: 5,
@@ -568,7 +572,7 @@
 						}
 					}
 					else {
-						var midnum = (camera_car_number[min_cemera_end] + camera_car_number[min_cemera_start]) / 2;
+						var midnum = (camera_car_number[min_camera_end] + camera_car_number[min_camera_start]) / 2;
 						if (midnum <= 4) {
 							var polyline = L.polyline(arrayOfArrays, {
 								color: "green",
