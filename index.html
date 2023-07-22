@@ -398,7 +398,11 @@
 				// var colors = ["green", "yellow", "red"]; // 定义不同分段的颜色
 
 				// 检查地图上是否已存在折线，并在存在时将其移除
-				currentPolyline = [];
+
+				while (currentPolyline.length > 0) {
+					map.remove(currentPolyline[currentPolyline.length - 1]);
+					currentPolyline.pop();
+				}
 				if (currentPolyline.length === 0) {
 					console.log("currentPolyline已经弹出为空!")
 				}
@@ -529,7 +533,7 @@
 							currentPolyline.push(polyline);
 							// 加入地图
 							polyline.addTo(map);
-							
+
 						}
 						else {
 							var polyline = L.polyline(arrayOfArrays, {
