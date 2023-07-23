@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HTTP Request in JavaScript</title>
+</head>
+<body>
+  <script>
+    const url = "https://www.onemap.gov.sg/api/public/routingsvc/route?start=1.320981%2C103.844150&end=1.326762%2C103.8559&routeType=pt&date=2022-12-13&time=07%3A35%3A00&mode=TRANSIT&maxWalkDistance=1000&numItineraries=3";
+
+    const headers = {
+      "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlMzc1ZTYyMWYyMjRkODVlYjQ5MDhlNDkyYmRhNTVjMyIsImlzcyI6Imh0dHA6Ly9pbnRlcm5hbC1hbGItb20tcHJkZXppdC1pdC0xMjIzNjk4OTkyLmFwLXNvdXRoZWFzdC0xLmVsYi5hbWF6b25hd3MuY29tL2FwaS92Mi91c2VyL3Bhc3N3b3JkIiwiaWF0IjoxNjkwMTI0NDI0LCJleHAiOjE2OTAzODM2MjQsIm5iZiI6MTY5MDEyNDQyNCwianRpIjoiTjF5M0lhaXhQS0ZtWWtIMSIsInVzZXJfaWQiOjEzNSwiZm9yZXZlciI6ZmFsc2V9.7j6RgcEMqmYfBEF42GKnTDJUl7SHbjsi6zM2mCjT1Q0"
+    };
+
+    fetch(url, {
+      method: 'GET',
+      headers: headers
+    })
+    .then(response => response.text())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+  </script>
+</body>
+</html>
