@@ -26,7 +26,7 @@
 		</div>
 		<ul class="main-feature" id="main-feature">
 			<li class="menu-item" onclick="toggleOptionTraffic()">
-				<i class="ri-compass-discover-line"></i>
+				<i class="ri-search-2-line"></i>
 				<span id="menu-text-t" class="menu-text">Traffic Info</span>
 				<div class="inline-arrow hidden" id="traffic-arrow">
 					<i class="ri-arrow-right-s-line"></i>
@@ -45,7 +45,15 @@
 						onkeyup="showResultsEnd()" autocomplete="off" required><br>
 					<div id="results-container-end" class="suggestion-box-end"></div>
 				</div>
-				<button class="button-style hidden" type="submit" onclick="submit()">Searching</button>
+				<!-- <div class="button-container"> -->
+					<!-- 这里是三个并排的按钮 -->
+				<button class="button-style active hidden button-one ri-car-line" onclick="toggleActive(this)" id="1"></button>
+				<!-- <span class="button-space"></span> -->
+				<button class="button-style hidden button-two ri-riding-fill" onclick="toggleActive(this)" id="2"></button>
+				<!-- <span class="button-space"></span> -->
+				<button class="button-style hidden button-three ri-walk-line" onclick="toggleActive(this)" id="3"></button>
+				<!-- </div> -->
+				<button class="submit-button-style hidden ri-search-line" type="submit" onclick="submit()"></button>
 			</li>
 			<li class="menu-item" onclick="toggleOptionHistory()">
 				<i class="ri-history-line"></i>
@@ -110,8 +118,9 @@
 		let isHistoryExpanded = false;
 		let isLocationExpanded = false;
 		let numOptions = 0;
-
+		let RouteType = 'drive';
 		let pointArray = [];
+
 		function toggleSwitch() {
 			const switchContainer = document.getElementById('switch-inner');
 			const isOn = Array.from(switchContainer.classList).includes('on');
@@ -178,6 +187,20 @@
 				isTrafficExpanded = !isTrafficExpanded;
 			}
 		}
+
+		function toggleActive(button) {
+            const buttons = document.getElementsByClassName("button-style");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            button.classList.add("active");
+			if (button.id === "1") RouteType = "drive";
+			else if (button.id === "2") RouteType = "cycle";
+			else if (button.id === "3") RouteType = "walk";
+			console.log(RouteType);
+        }
+        const firstButton = document.getElementById("1");
+        toggleActive(firstButton);
 
 		function toggleOptionHistory() {
 			if (isExpanded) {
@@ -431,17 +454,16 @@
 		let maxarea = 0.000065;
 
 		const MAX_USER = 5;
-		let RouteType = 'drive';
-
+		
 		function submit() {
 			const startingPoint = startPoint.value;
 			const destination = endPoint.value;
-			console.log(startingPoint);
-			console.log(destination);
+		
 			window.startingPointLatitude = null;
 			window.startingPointLongitude = null;
 			window.destinationLatitude = null;
 			window.destinationLongitude = null;
+
 			let start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
 			let start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
 			let end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
@@ -451,10 +473,6 @@
 
 			var location_1 = startingPoint;
 			var location_2 = destination;
-
-			// const startingPointCoords = startingPoint.split(',');
-			// const destinationCoords = destination.split(',');
-			// var location = "Singapore";
 
 			//调用API的端点URL
 			var apiUrl = "https://developers.onemap.sg/";
@@ -466,13 +484,13 @@
 			$.get(requestUrl_1, function (data) {
 				console.log(data);
 				// 储存LATITUDE信息到数组
-				for (var i = 0; i < data.results.length; i++) {
-					start_latitudeArray.push(data.results[i].LATITUDE);
-				}
-				// 储存LONGITUDE信息到数组
-				for (var i = 0; i < data.results.length; i++) {
-					start_longitudeArray.push(data.results[i].LONGITUDE);
-				}
+				// for (var i = 0; i < data.results.length; i++) {
+				// 	start_latitudeArray.push(data.results[i].LATITUDE);
+				// }
+				// // 储存LONGITUDE信息到数组
+				// for (var i = 0; i < data.results.length; i++) {
+				// 	start_longitudeArray.push(data.results[i].LONGITUDE);
+				// }
 
 				// 提取LATITUDE和LONGITUDE信息
 				window.startingPointLatitude = data.results[0].LATITUDE;
@@ -490,30 +508,16 @@
 					// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
 					// $("#result").html(resultText);
 
-					for (var i = 0; i < data.results.length; i++) {
-						end_longitudeArray.push(data.results[i].LONGITUDE);
-					}
-					for (var i = 0; i < data.results.length; i++) {
-						end_latitudeArray.push(data.results[i].LATITUDE);
-					}
+					// for (var i = 0; i < data.results.length; i++) {
+					// 	end_longitudeArray.push(data.results[i].LONGITUDE);
+					// }
+					// for (var i = 0; i < data.results.length; i++) {
+					// 	end_latitudeArray.push(data.results[i].LATITUDE);
+					// }
 
 					if (window.destinationLatitude === null || window.destinationLongitude === null)
 						return;
-					// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-					// $("#result").html(resultText);
-
-					// 用webstore储存
-
-					// if (start_userArray_lat.length >= MAX_USER) {
-					// 	start_userArray_lat.shift();
-					// }
-					// if (start_userArray_log.length >= MAX_USER) {
-					// 	start_userArray_log.shift();
-					// }
-					// start_userArray_lat.push(window.startingPointLatitude);
-					// start_userArray_log.push(window.startingPointLongitude);
-					// localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
-					// localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+				
 					const historyContainer = document.getElementById('history-records');
 					let isExist = false;
 					for (let i = 0; i < 5; i++) {
@@ -549,7 +553,6 @@
 							option.appendChild(textNode1);
 							option.appendChild(newlineNode);
 							option.appendChild(textNode2);
-							// option.textContent = `option${numOptions}`;
 							option.classList.add('records-text');
 							option.classList.add('records-option');
 							option.setAttribute("id", `option${i}`);
@@ -590,26 +593,7 @@
 					Routing(window.startingPointLatitude, window.startingPointLongitude, window.destinationLatitude, window.destinationLongitude, RouteType);
 
 				});
-				// if (end_userArray_lat.length >= MAX_USER) {
-				// 	end_userArray_lat.shift();
-				// }
-				// if (end_userArray_log.length >= MAX_USER) {
-				// 	end_userArray_log.shift();
-				// }
-				// end_userArray_lat.push(window.destinationLatitude);
-				// end_userArray_log.push(window.destinationLongitude);
-				// localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
-				// localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
 			});
-
-			// console.log('Starting Point Latitude:', window.startingPointLatitude);
-			// console.log('Starting Point Longitude:', window.startingPointLongitude);
-			// console.log('Destination Latitude:', window.destinationLatitude);
-			// console.log('Destination Longitude:', window.destinationLongitude);
-
-			// if (window.destinationLatitude === null || window.destinationLongitude === null
-			// 	|| window.startingPointLatitude === null || window.startingPointLongitude === null)
-			// 	return;
 		}
 		// var startlat = '1.30000';
 		// var startlng = '103.84223';
@@ -631,83 +615,7 @@
 			Routing(start_userArray_lat[id], start_userArray_log[id], end_userArray_lat[id], end_userArray_log[id], RouteType_userArray[id]);
 		}
 
-		// function showHistory_1() {
-		// 	// 抓控件
-		// 	const showhistory_1 = document.getElementById('记得改');
-		// 	showhistory_1.innerHTML = '';
-		// 	// 抓元素
-		// 	const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-		// 	const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-		// 	const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-		// 	const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-		// 	const RouteType_userArray = (localStorage.getItem('RouteType_users')) || [];
-
-		// 	Routing(start_userArray_lat[0], start_userArray_log[0], end_userArray_lat[0], end_userArray_log[0], RouteType_userArray[0]);
-		// }
-		// function showHistory_2() {
-		// 	// 抓控件
-		// 	const showhistory_2 = document.getElementById('记得改');
-		// 	showhistory_2.innerHTML = '';
-		// 	// 抓元素
-		// 	const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-		// 	const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-		// 	const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-		// 	const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-		// 	const RouteType_userArray = (localStorage.getItem('RouteType_users')) || [];
-
-		// 	Routing(start_userArray_lat[1], start_userArray_log[1], end_userArray_lat[1], end_userArray_log[1], RouteType_userArray[1]);
-
-		// }
-		// function showHistory_3() {
-		// 	// 抓控件
-		// 	const showhistory_3 = document.getElementById('记得改');
-		// 	showhistory_3.innerHTML = '';
-		// 	// 抓元素
-		// 	const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-		// 	const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-		// 	const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-		// 	const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-		// 	const RouteType_userArray = (localStorage.getItem('RouteType_users')) || [];
-
-		// 	Routing(start_userArray_lat[2], start_userArray_log[2], end_userArray_lat[2], end_userArray_log[2], RouteType_userArray[2]);
-
-		// }
-		// function showHistory_4() {
-		// 	// 抓控件
-		// 	const showhistory_4 = document.getElementById('记得改');
-		// 	showhistory_4.innerHTML = '';
-		// 	// 抓元素
-		// 	const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-		// 	const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-		// 	const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-		// 	const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-		// 	const RouteType_userArray = (localStorage.getItem('RouteType_users')) || [];
-
-		// 	Routing(start_userArray_lat[3], start_userArray_log[3], end_userArray_lat[3], end_userArray_log[3], RouteType_userArray[3]);
-
-		// }
-		// function showHistory_5() {
-		// 	// 抓控件
-		// 	const showhistory_5 = document.getElementById('记得改');
-		// 	showhistory_5.innerHTML = '';
-		// 	// 抓元素
-		// 	const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-		// 	const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-		// 	const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-		// 	const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-		// 	const RouteType_userArray = (localStorage.getItem('RouteType_users')) || [];
-
-		// 	Routing(start_userArray_lat[4], start_userArray_log[4], end_userArray_lat[4], end_userArray_log[4], RouteType_userArray[4]);
-
-		// }
-
-		function Routing(startlat, startlng, endlat, endlng) {
-
-			// var startlat = window.startingPointLatitude;
-			// var startlng = window.startingPointLongitude;
-			// var endlat = window.destinationLatitude;
-			// var endlng = window.destinationLongitude;
-
+		function Routing(startlat, startlng, endlat, endlng, RouteType) {
 			console.log(startlat);
 			console.log(endlat);
 
@@ -715,9 +623,11 @@
 
 			function getRoute() {
 
-				var api_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwNTU4LCJ1c2VyX2lkIjoxMDU1OCwiZW1haWwiOiJjaGVuZ2hhbmcwNTE2QDE2My5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2ODk2NjM1MjEsImV4cCI6MTY5MDA5NTUyMSwibmJmIjoxNjg5NjYzNTIxLCJqdGkiOiIxMDFkNDMxNWQwOTNhMGM3ZmEzNDExOGJjYTNkNWVjZiJ9.-GmctpGP-J4BRaVmziNXrV7EBmEdxNSeL8uu2gzMe8I'; // 替换为您的API Token
+				var api_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vaW50ZXJuYWwtYWxiLW9tLXByZGV6aXQtaXQtMTIyMzY5ODk5Mi5hcC1zb3V0aGVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hcGkvdjIvdXNlci9wYXNzd29yZCIsImlhdCI6MTY4OTkyMDE5NywiZXhwIjoxNjkwMTc5Mzk3LCJuYmYiOjE2ODk5MjAxOTcsImp0aSI6IkFPWFg5V0Jrd3VtSFR5RUQiLCJzdWIiOiJkODhkZGQzMzU2MGVkNzlkNzkwOTI0ODY1MGE4NmNhNCIsInVzZXJfaWQiOjExOSwiZm9yZXZlciI6ZmFsc2V9.hNSBBu3isk8qmVLq2wB2TmZ4ErbZvoFObsfqNdvwNTM'; // 替换为您的API Token
 
-				var url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${startlat},${startlng}&end=${endlat},${endlng}&routeType=drive&token=${api_token}`;
+				var url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${startlat},${startlng}&end=${endlat},${endlng}&routeType=${RouteType}&token=${api_token}`;
+
+				console.log(url);
 
 				$.ajax({
 					url: url,
