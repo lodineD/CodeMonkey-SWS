@@ -413,6 +413,7 @@
 		let camera_car_number = [];
 
 		let maxarea = 0.00007;
+		const MAX_USER = 5;
 
 		function submit() {
 			const startingPoint = startPoint.value;
@@ -451,6 +452,12 @@
 				// 用webstore储存
 				let start_userArray_lat = JSON.pare(localStorage.getItem('start_users_lat')) || [];
 				let start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
+				if (start_userArray_lat.length >= MAX_USER) {
+					start_userArray_lat.shift();
+				}
+				if (start_userArray_log.length >= MAX_USER) {
+					start_userArray_log.shift();
+				}
 				start_userArray_lat.push(window.startingPointLatitude);
 				start_userArray_log.push(window.startingPointLongitude);
 				localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
@@ -472,7 +479,13 @@
 
 				// 用webstore储存
 				let end_userArray_lat = JSON.pare(localStorage.getItem('end_users_lat')) || [];
-				let start_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
+				let end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
+				if (end_userArray_lat.length >= MAX_USER) {
+					end_userArray_lat.shift();
+				}
+				if (end_userArray_log.length >= MAX_USER) {
+					end_userArray_log.shift();
+				}
 				end_userArray_lat.push(window.destinationLatitude);
 				end_userArray_log.push(window.destinationLongitude);
 				localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
@@ -507,8 +520,71 @@
 		// 1.30000,103.84223
 		// 1.31801,103.84224
 
-		function showHistory() {
-			// const 
+		function showHistory_1() {
+			// 抓控件
+			const showhistory_1 = document.getElementById('记得改');
+			showhistory_1.innerHTML = '';
+			// 抓元素
+			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
+			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
+			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
+			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
+			
+			Routing(start_userArray_lat[0], start_userArray_log[0],end_userArray_lat[0],end_userArray_log[0]);
+
+
+		}
+		function showHistory_2() {
+			// 抓控件
+			const showhistory_2 = document.getElementById('记得改');
+			showhistory_2.innerHTML = '';
+			// 抓元素
+			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
+			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
+			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
+			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
+			
+			Routing(start_userArray_lat[1], start_userArray_log[1],end_userArray_lat[1],end_userArray_log[1]);
+
+		}
+		function showHistory_3() {
+			// 抓控件
+			const showhistory_3 = document.getElementById('记得改');
+			showhistory_3.innerHTML = '';
+			// 抓元素
+			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
+			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
+			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
+			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
+			
+			Routing(start_userArray_lat[2], start_userArray_log[2],end_userArray_lat[2],end_userArray_log[2]);
+
+		}
+		function showHistory_4() {
+			// 抓控件
+			const showhistory_4 = document.getElementById('记得改');
+			showhistory_4.innerHTML = '';
+			// 抓元素
+			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
+			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
+			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
+			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
+			
+			Routing(start_userArray_lat[3], start_userArray_log[3],end_userArray_lat[3],end_userArray_log[3]);
+
+		}
+		function showHistory_5() {
+			// 抓控件
+			const showhistory_5 = document.getElementById('记得改');
+			showhistory_5.innerHTML = '';
+			// 抓元素
+			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
+			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
+			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
+			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
+			
+			Routing(start_userArray_lat[4], start_userArray_log[4],end_userArray_lat[4],end_userArray_log[4]);
+
 		}
 
 		function Routing(startlat, startlng, endlat, endlng) {
