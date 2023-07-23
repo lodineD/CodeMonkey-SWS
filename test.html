@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Storage API 示例 - 多个用户名</title>
+</head>
+<body>
+    <h1>Web Storage API 示例 - 多个用户名</h1>
+    <label for="username">用户名：</label>
+    <input type="text" id="username">
+    <button onclick="saveUsername()">保存</button>
+
+    <p>已保存的用户名：</p>
+    <ul id="userList"></ul>
+
+    <script>
+        // 保存用户名到localStorage
+        function saveUsername() {
+            const username = document.getElementById('username').value;
+            let userArray = JSON.parse(localStorage.getItem('users')) || [];
+            userArray.push(username);
+            localStorage.setItem('users', JSON.stringify(userArray));
+            displaySavedUsernames();
+        }
+
+        // 从localStorage获取所有用户名并显示
+        function displaySavedUsernames() {
+            const userListElement = document.getElementById('userList');
+            userListElement.innerHTML = '';
+            const userArray = JSON.parse(localStorage.getItem('users')) || [];
+            if (userArray.length > 0) {
+                userArray.forEach(username => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = username;
+                    userListElement.appendChild(listItem);
+                });
+            } else {
+                const listItem = document.createElement('li');
+                listItem.textContent = '尚未保存用户名。';
+                userListElement.appendChild(listItem);
+            }
+        }
+
+        // 页面加载时显示已保存的用户名
+        window.onload = function() {
+            displaySavedUsernames();
+        };
+    </script>
+</body>
+</html>
