@@ -456,7 +456,7 @@
 			// const destinationCoords = destination.split(',');
 			// var location = "Singapore";
 
-			调用API的端点URL
+			//调用API的端点URL
 			var apiUrl = "https://developers.onemap.sg/";
 
 			// 构建API请求URL
@@ -478,6 +478,8 @@
 				window.startingPointLatitude = data.results[0].LATITUDE;
 				window.startingPointLongitude = data.results[0].LONGITUDE;
 
+				if (window.startingPointLatitude === null || window.startingPointLongitude === null)
+					return;
 				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
 				// $("#result").html(resultText);
 
@@ -512,6 +514,9 @@
 					end_latitudeArray.push(data.results[i].LATITUDE);
 				}
 
+				if (window.destinationLatitude === null || window.destinationLongitude === null)
+					return;
+
 				// if (end_userArray_lat.length >= MAX_USER) {
 				// 	end_userArray_lat.shift();
 				// }
@@ -524,9 +529,14 @@
 				// localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
 			});
 
-			if (window.destinationLatitude === null || window.destinationLongitude === null
-				|| window.startingPointLatitude === null || window.startingPointLongitude === null)
-				return;
+			console.log('Starting Point Latitude:', window.startingPointLatitude);
+			console.log('Starting Point Longitude:', window.startingPointLongitude);
+			console.log('Destination Latitude:', window.destinationLatitude);
+			console.log('Destination Longitude:', window.destinationLongitude);
+
+			// if (window.destinationLatitude === null || window.destinationLongitude === null
+			// 	|| window.startingPointLatitude === null || window.startingPointLongitude === null)
+			// 	return;
 
 			const historyContainer = document.getElementById('history-records');
 			let isExist = false;
@@ -595,7 +605,7 @@
 					}
 				}
 			}
-			//  historyContainer.style.display = 'none';
+			
 			console.log('Starting Point Latitude:', window.startingPointLatitude);
 			console.log('Starting Point Longitude:', window.startingPointLongitude);
 			console.log('Destination Latitude:', window.destinationLatitude);
