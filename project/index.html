@@ -36,12 +36,14 @@
 				<div>
 					<i class="ri-send-plane-line hidden"></i>
 					<span class="hidden">Enter starting point:</span>
-					<input class="input-style hidden" type="text" id="starting-point"
-						placeholder="coordinate or place name" required><br>
+					<input class="input-style hidden" type="text" id="starting-point" placeholder="Enter the place name"
+						onkeyup="showResultsStart()" autocomplete="off" required><br>
+					<div id="results-container-start" class="suggestion-box-start"></div>
 					<i class="ri-send-plane-line hidden"></i>
 					<span class="hidden">Enter destination:</span>
-					<input class="input-style hidden" type="text" id="destination"
-						placeholder="coordinate or place name" required><br>
+					<input class="input-style hidden" type="text" id="destination" placeholder="Enter the place name"
+						onkeyup="showResultsEnd()" autocomplete="off" required><br>
+					<div id="results-container-end" class="suggestion-box-end"></div>
 				</div>
 				<button class="button-style hidden" type="submit" onclick="submit()">Searching</button>
 			</li>
@@ -64,7 +66,8 @@
 			</li>
 			<li class="sub-menu-location" id="location-expanded">
 				<!-- Add Current Location Submenu Content Here -->
-
+				<div id="location-info">
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -151,17 +154,9 @@
 			if (isHistoryExpanded) toggleOptionHistory();
 			if (isTrafficExpanded) toggleOptionTraffic();
 			if (isLocationExpanded) toggleOptionLocation();
-			//if (ismapExpanded) togglemap();
 
 			isExpanded = !isExpanded;
 		}
-
-		// function togglemap(){
-		// 	if (isExpanded) {
-		// 		mapContainer.classList.remove('map-style-begame');
-		// 		mapContainer.classList.add('map-style-collapsed');
-		// 	}
-		// }
 
 		function toggleOptionTraffic() {
 			if (isExpanded) {
@@ -201,25 +196,227 @@
 
 				const locationArrow = document.getElementById('location-arrow');
 				locationArrow.classList.toggle('inline-arrow-rotate');
+				
+				const constElements = locationExpanded.querySelectorAll('p');
+				for (const element of constElements) {
+					element.classList.toggle('hidden');
+				}
+
+				const locationInfo = document.getElementById('location-info');
+				if (!isLocationExpanded) {
+					getCurrentLocation_map();
+					const option_1 = document.createElement('li');
+					const option_2 = document.createElement('li');
+					option_1.textContent = window.current_user_longitude;
+					option_2.textContent = window.current_user_latitude;
+					locationInfo.appendChild(option_1);
+					locationInfo.appendChild(option_2);
+				}
+				else {
+					locationInfo.innerHTML = '';
+					clearCurrentLocation_map();
+				}
+				
 				isLocationExpanded = !isLocationExpanded;
 			}
 		}
 
-		// submit时要调用currentline
-		let currentPolyline = null;
-		let currentstartmarker = null;
-		let currentendmarker = null;
 		let start_latitudeArray = [];
 		let start_longitudeArray = [];
 		let end_latitudeArray = [];
 		let end_longitudeArray = [];
+		let search_Building = [];
+
+		const startPoint = document.getElementById('starting-point');
+		const endPoint = document.getElementById('destination');
+		const resultsContainerStart = document.getElementById('results-container-start');
+		const resultsContainerEnd = document.getElementById('results-container-end');
+
+		resultsContainerStart.addEventListener('click', (event) => {
+			// 检查点击的是否为选项文本（li元素） 
+			console.log('event on click');
+			if (event.target.classList.contains('suggestion-text')) {
+				// 获取选中的文本
+				const selectedText = event.target.textContent;
+
+				// 将选中的文本替换输入框的内容
+				startPoint.value = selectedText;
+			}
+		});
+
+		startPoint.addEventListener('blur', () => {
+			setTimeout(() => {
+				resultsContainerStart.style.display = 'none';
+			}, 100);
+		});
+
+		startPoint.addEventListener('focus', () => {
+			resultsContainerStart.style.display = 'list-item';
+			const searchText = startPoint.value;
+			if (searchText.trim() === '') {
+				resultsContainerStart.innerHTML = '';
+				resultsContainerStart.style.height = 0;
+			}
+		});
+
+		resultsContainerEnd.addEventListener('click', (event) => {
+			// 检查点击的是否为选项文本（li元素） 
+			console.log('event on click');
+			if (event.target.classList.contains('suggestion-text')) {
+				// 获取选中的文本
+				const selectedText = event.target.textContent;
+
+				// 将选中的文本替换输入框的内容
+				endPoint.value = selectedText;
+			}
+		});
+
+		endPoint.addEventListener('blur', () => {
+			setTimeout(() => {
+				resultsContainerEnd.style.display = 'none';
+			}, 100);
+		});
+
+		endPoint.addEventListener('focus', () => {
+			resultsContainerEnd.style.display = 'list-item';
+			const searchText = endPoint.value;
+			if (searchText.trim() === '') {
+				resultsContainerEnd.innerHTML = '';
+				resultsContainerEnd.style.height = 0;
+			}
+		});
+
+
+		function showResultsStart() {
+			const searchText_1 = startPoint.value;
+			console.log(searchText_1);
+
+			if (searchText_1.trim() === '') {
+				resultsContainerStart.innerHTML = '';
+				resultsContainerStart.style.height = 0;
+				return;
+			}
+
+			// 调用API并获取结果
+			var apiUrl = "https://developers.onemap.sg/";
+
+			// 构建API请求URL
+			var requestUrl_1 = apiUrl + "commonapi/search?searchVal=" + searchText_1 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
+
+			// 发送GET请求
+			$.get(requestUrl_1, function (data) {
+				console.log(data);
+				start_latitudeArray = [];
+				start_longitudeArray = [];
+				search_Building = [];
+
+				// 储存LATITUDE信息到数组
+				for (var i = 0; i < data.results.length; i++) {
+					start_latitudeArray.push(data.results[i].LATITUDE);
+				}
+				// 储存LONGITUDE信息到数组
+				for (var i = 0; i < data.results.length; i++) {
+					start_longitudeArray.push(data.results[i].LONGITUDE);
+				}
+
+				// 储存BUILDING的信息
+				for (var i = 0; i < Math.min(5, data.results.length); i++) {
+					search_Building.push(data.results[i].BUILDING + " " + data.results[i].BLK_NO);
+				}
+
+				resultsContainerStart.innerHTML = '';
+
+				search_Building.forEach(result => {
+					const option = document.createElement('li');
+					option.textContent = result;
+					option.classList.add('suggestion-text');
+					resultsContainerStart.appendChild(option);
+				});
+
+				resultsContainerStart.style.paddingTop = 0;
+				resultsContainerStart.style.height = `${30 * Math.min(5, data.results.length)}px`;
+				// 提取LATITUDE和LONGITUDE信息
+				// window.startingPointLatitude = data.results[0].LATITUDE;
+				// window.startingPointLongitude = data.results[0].LONGITUDE;
+
+				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+				// $("#result").html(resultText);
+
+			});
+		}
+
+		function showResultsEnd() {
+			const searchText_2 = endPoint.value;
+			console.log(searchText_2);
+
+			if (searchText_2.trim() === '') {
+				resultsContainerEnd.innerHTML = '';
+				resultsContainerEnd.style.height = 0;
+				return;
+			}
+
+			// 调用API并获取结果
+			var apiUrl = "https://developers.onemap.sg/";
+
+			// 构建API请求URL
+			var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + searchText_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
+
+			// 发送GET请求
+			$.get(requestUrl_2, function (data) {
+				console.log(data);
+				end_latitudeArray = [];
+				end_longitudeArray = [];
+				search_Building = [];
+
+				// 储存LATITUDE信息到数组
+				for (var i = 0; i < data.results.length; i++) {
+					end_latitudeArray.push(data.results[i].LATITUDE);
+				}
+				// 储存LONGITUDE信息到数组
+				for (var i = 0; i < data.results.length; i++) {
+					end_longitudeArray.push(data.results[i].LONGITUDE);
+				}
+				// 储存BUILDING的信息
+				for (var i = 0; i < Math.min(5, data.results.length); i++) {
+					search_Building.push(data.results[i].BUILDING + " " + data.results[i].BLK_NO);
+				}
+
+				resultsContainerEnd.innerHTML = '';
+
+				search_Building.forEach(result => {
+					const option = document.createElement('li');
+					option.textContent = result;
+					option.classList.add('suggestion-text');
+					resultsContainerEnd.appendChild(option);
+				});
+
+				resultsContainerEnd.style.paddingTop = 0;
+				resultsContainerEnd.style.height = `${30 * Math.min(5, data.results.length)}px`;
+
+
+				// 提取LATITUDE和LONGITUDE信息
+				// window.startingPointLatitude = data.results[0].LATITUDE;
+				// window.startingPointLongitude = data.results[0].LONGITUDE;
+
+				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+				// $("#result").html(resultText);
+
+			});
+		}
+
+		let currentPolyline = [];
+		let currentstartmarker = null;
+		let currentendmarker = null;
+
+		let camera_latitudeArray = [];
+		let camera_longitudeArray = [];
+		let camera_car_number = [];
+
+		let maxarea = 0.000065;
 
 		function submit() {
-			const startingPointInput = document.getElementById('starting-point');
-			const destinationInput = document.getElementById('destination');
-
-			const startingPoint = startingPointInput.value;
-			const destination = destinationInput.value;
+			const startingPoint = startPoint.value;
+			const destination = endPoint.value;
 			console.log(startingPoint);
 			console.log(destination);
 
@@ -366,45 +563,41 @@
 				currentstartmarker = startmarker;
 				currentendmarker = endmarker;
 
-				// 检查地图上是否已存在折线，并在存在时将其移除
-				// if (currentPolyline) {
-				// 	map.removeLayer(currentPolyline);
-				// }
 				var sum_geometryOfRoute = sampleRoute.route_geometry;
 				var decodePoly = L.PolylineUtil.decode(sum_geometryOfRoute, 5);
-				console.log(decodePoly);
+				// console.log(decodePoly);
 				var sum_polyline = L.polyline(decodePoly, {
 					color: "purple",
 					weight: 5,
 					smoothFactor: 1
 				});
 
-				var colors = ["green", "yellow", "red"]; // 定义不同分段的颜色
+				// var colors = ["green", "yellow", "red"]; // 定义不同分段的颜色
 
-				// for (var i = 0; i < sampleRoute.route_instructions.length - 1; i++) {
-				// 	var instruction_1 = sampleRoute.route_instructions[i];
-				// 	var instruction_2 = sampleRoute.route_instructions[i + 1];
-				// 	var PointOfRoute_1 = instruction_1[3]; // 经纬度坐标点所在索引为3
-				// 	var PointOfRoute_2 = instruction_2[3];
-				// 	// console.log(PointOfRoute);
-				// 	// 需要转换为与decodeploy一样的格式
-				// 	var coordinatesArray_1 = PointOfRoute_1.split(',').map(parseFloat);
-				// 	var coordinatesArray_2 = PointOfRoute_2.split(',').map(parseFloat);
-				// 	var arrayOfArrays = [];
-				// 	arrayOfArrays.push(coordinatesArray_1);
-				// 	arrayOfArrays.push(coordinatesArray_2);
-				// 	console.log(arrayOfArrays);
-				// 	// 绘制当前分段的折线，并使用不同颜色
-				// 	var colorIndex = i % colors.length; // 根据索引选择颜色
-				// 	var polyline = L.polyline(arrayOfArrays, {
-				// 		color: colors[colorIndex],
-				// 		weight: 5,
-				// 		smoothFactor: 1
-				// 	});
+				// 检查地图上是否已存在折线，并在存在时将其移除
+				console.log(currentPolyline);
+				while (currentPolyline.length > 0) {
+					var num = currentPolyline.length;
+					Tempt_currentPolyline = urrentPolyline[num - 1];
+					console.log(Tempt_currentPolyline);
+					map.removeLayer(Tempt_currentPolyline);
+					currentPolyline.pop();
+				}
+				if (currentPolyline.length === 0) {
+					console.log("currentPolyline已经弹出为空!")
+				}
 
-				// 	// 加入地图
-				// 	polyline.addTo(map);
-				// }
+				const camera_data = window.processData;
+				camera_latitudeArray = [];
+				camera_latitudeArray = [];
+				camera_longitudeArray = [];
+				camera_data.forEach((data) => {
+					const { latitude, longitude, car_num } = data;
+					var num = car_num * 2;
+					camera_latitudeArray.push(latitude);
+					camera_longitudeArray.push(longitude);
+					camera_car_number.push(num);
+				});
 
 				for (var i = 0; i < decodePoly.length - 1; i++) {
 					var instruction_1 = decodePoly[i];
@@ -415,29 +608,177 @@
 					var arrayOfArrays = [];
 					arrayOfArrays.push(instruction_1);
 					arrayOfArrays.push(instruction_2);
-					console.log(arrayOfArrays);
-					// 绘制当前分段的折线，并使用不同颜色
-					var colorIndex = i % colors.length; // 根据索引选择颜色
-					var polyline = L.polyline(arrayOfArrays, {
-						color: colors[colorIndex],
-						weight: 5,
-						smoothFactor: 1
-					});
-					// 加入地图
-					polyline.addTo(map);
+
+					// 转换点的经纬度
+					var TemptStartpointLat = instruction_1[0];
+					var TemptStartpointLog = instruction_1[1];
+					var TemptEndPointLat = instruction_2[0];
+					var TemptEndPointLog = instruction_2[1];
+
+					var min_destance = 100;
+					var min_camera_start = -1;
+
+					for (var k = 0; k < camera_latitudeArray.length; k++) {
+						var templen = Math.abs(TemptStartpointLat + TemptStartpointLog - camera_latitudeArray[k] - camera_longitudeArray[k]);
+						console.log("start templen:");
+						console.log(templen);
+						if ((templen < maxarea) && (templen < min_destance)) {
+							min_destance = templen;
+							min_camera_start = k;
+						}
+					}
+
+					min_destance = 100;
+					var min_camera_end = -1;
+					for (var j = 0; j < camera_latitudeArray.length; j++) {
+						var templen = Math.abs(TemptEndPointLat + TemptEndPointLog - camera_latitudeArray[j] - camera_longitudeArray[j]);
+						console.log("end templen:");
+						console.log(templen);
+						if ((templen < maxarea) && (templen < min_destance)) {
+							min_destance = templen;
+							min_camera_end = j;
+						}
+					}
+
+					console.log(min_camera_start);
+					console.log(min_camera_end);
+
+					if (min_camera_end == -1 && min_camera_start == -1) {
+						var polyline = L.polyline(arrayOfArrays, {
+							color: "green",
+							weight: 5,
+							smoothFactor: 1
+						});
+						// polyline加入储存，便于删除
+						currentPolyline.push(polyline);
+						// 加入地图
+						polyline.addTo(map);
+						console.log("no green");
+
+					}
+					else if (min_camera_end > -1 && min_camera_start == -1) {
+						if (camera_car_number[min_camera_end] <= 4) {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "green",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+							console.log("end green");
+						}
+						else if (camera_car_number[min_camera_end] <= 9) {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "yellow",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+
+						}
+						else {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "red",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+						}
+					}
+					else if (min_camera_end == -1 && min_camera_start > -1) {
+						if (camera_car_number[min_camera_start] <= 4) {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "green",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+						}
+						else if (camera_car_number[min_camera_start] <= 9) {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "yellow",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+						}
+						else {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "red",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+						}
+					}
+					else {
+						var midnum = Math.max((camera_car_number[min_camera_end], camera_car_number[min_camera_start]));
+						console.log("midnum");
+						console.log(midnum);
+						if (midnum <= 4) {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "green",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+						}
+						else if (midnum <= 9) {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "yellow",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+						}
+						else {
+							var polyline = L.polyline(arrayOfArrays, {
+								color: "red",
+								weight: 5,
+								smoothFactor: 1
+							});
+							// polyline入储存，便于删除
+							currentPolyline.push(polyline);
+							// 加入地图
+							polyline.addTo(map);
+						}
+
+					}
 				}
+				console.log(currentPolyline);
 
 				//边界
 				// sum_polyline.addTo(map);
 				var bounds = sum_polyline.getBounds();
 
-				// 更新currentployline，以免多条线一起出现在地图上
-				// currentPolyline = polyline;
-				//缩放到边界
+				// 缩放到边界
 				map.fitBounds(bounds);
 
-
 			}
+
 		}
 		function showData() {
 			const data = window.processData;
@@ -468,6 +809,29 @@
 			});
 			pointArray = [];
 		}
+	
+		let currentlocation_point = null;
+
+		function getCurrentLocation_map() {
+			var blueIcon = new L.Icon({
+				iconUrl: './images/marker-icon.png',
+				shadowUrl: './images/marker-shadow.png',
+				iconSize: [25, 41],
+				iconAnchor: [12, 41],
+				popupAnchor: [1, -34],
+				shadowSize: [41, 41]
+			});
+			currentlocation_point = [window.current_user_latitude, window.current_user_longitude];
+			currentlocation_point_draw = L.marker(currentlocation_point, { icon: blueIcon }).addTo(map);
+			currentlocation_point_draw.bindPopup(`You are here!`);
+			map.setView(currentlocation_point, 16);
+		}
+
+		function clearCurrentLocation_map() {
+			map.removeLayer(currentlocation_point_draw);
+			map.setView([1.3521, 103.8198], 13);
+		}
+	
 	</script>
 </body>
 

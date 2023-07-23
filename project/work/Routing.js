@@ -6,8 +6,6 @@
 // 1.31801,103.84224
 
 function Routing() {
-
-
     var startlat = window.startingPointLatitude;
     var startlng = window.startingPointLongitude;
     var endlat = window.destinationLatitude;

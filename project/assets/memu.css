@@ -17,7 +17,8 @@
     position: relative;
     transition: 0.75s;
     padding: 8px;
-    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
+    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4);
+    overflow: auto;
 }
 
 .sidebar {
@@ -152,11 +153,18 @@ li {
 
 .input-style {
     margin: 5px 5px 5px 5px;
-    height: 25px;
+    height: 30px;
+    width: 170px;
     background-color: hsl(0, 0%, 100%);
     box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
     border-radius: 4px;
     border-style: hidden;
+    border: 1px solid #ccc;
+}
+
+.input-style:focus {
+    border: 2px solid #409EFF;
+    outline: none;
 }
 
 .button-style {
@@ -169,11 +177,13 @@ li {
     border-style: hidden;
     border-radius: 8px;
     position: absolute;
-    top: 130px;
+    top: 140px;
+    cursor: pointer;
 }
 
 .button-style:hover {
     background-color: #87cefa;
+    cursor: pointer;
 }
 
 .map-style {
@@ -203,6 +213,7 @@ li {
     bottom: 6px;
     background: #C0C4CC;
     border-radius: 9px;
+    cursor: pointer;
 }
 
 .checkbox .inner.on {
@@ -220,11 +231,13 @@ li {
     background: #fff;
     box-shadow: 0 2px 3px rgba(0, 0, 0, .5);
     transition: 0.5s;
+    cursor: pointer;
 }
 
 .checkbox .inner.on .switch {
     left: 28px;
     transition: 0.5s;
+    cursor: pointer;
 }
 
 .map-style.expanded {
@@ -246,3 +259,69 @@ li {
 	margin-left: 70px;
     transition: 0.75s;
 }
+
+.suggestion-box-start {
+    display: none;
+    position: absolute;
+    top: 75px;
+    left: 30px;
+    width: 180px;
+    height: 150px;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    border-top: none;
+    z-index: 1;
+    box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
+    border-radius: 8px;
+    padding: 0px 5px 0px 5px;
+}
+
+.suggestion-box-end {
+    display: none;
+    position: absolute;
+    top: 136px;
+    left: 30px;
+    width: 180px;
+    height: 150px;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    border-top: none;
+    z-index: 1;
+    box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
+    border-radius: 8px;
+    padding: 0px 5px 0px 5px;
+}
+
+.suggestion-text {
+    position: relative;
+    line-height: 30px;
+    left: 5px;
+    vertical-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.suggestion-text:hover {
+    background-color: #EBEEF5;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    width: 7.5px;
+}
+  
+  /* 修改滚动条的滑块（thumb）样式 */
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+  
+  /* 修改滚动条的轨道（track）样式 */
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
