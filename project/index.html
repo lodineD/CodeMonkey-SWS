@@ -438,10 +438,10 @@
 			const destination = endPoint.value;
 			console.log(startingPoint);
 			console.log(destination);
-			// window.startingPointLatitude = null;
-			// window.startingPointLongitude = null;
-			// window.destinationLatitude = null;
-			// window.destinationLongitude = null;
+			window.startingPointLatitude = null;
+			window.startingPointLongitude = null;
+			window.destinationLatitude = null;
+			window.destinationLongitude = null;
 			let start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
 			let start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
 			let end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
@@ -456,73 +456,73 @@
 			// const destinationCoords = destination.split(',');
 			// var location = "Singapore";
 
-			// 调用API的端点URL
-			// var apiUrl = "https://developers.onemap.sg/";
+			调用API的端点URL
+			var apiUrl = "https://developers.onemap.sg/";
 
-			// // 构建API请求URL
-			// var requestUrl_1 = apiUrl + "commonapi/search?searchVal=" + location_1 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
+			// 构建API请求URL
+			var requestUrl_1 = apiUrl + "commonapi/search?searchVal=" + location_1 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
 
-			// // 发送GET请求
-			// $.get(requestUrl_1, function (data) {
-			// 	console.log(data);
-			// 	// 储存LATITUDE信息到数组
-			// 	for (var i = 0; i < data.results.length; i++) {
-			// 		start_latitudeArray.push(data.results[i].LATITUDE);
-			// 	}
-			// 	// 储存LONGITUDE信息到数组
-			// 	for (var i = 0; i < data.results.length; i++) {
-			// 		start_longitudeArray.push(data.results[i].LONGITUDE);
-			// 	}
+			// 发送GET请求
+			$.get(requestUrl_1, function (data) {
+				console.log(data);
+				// 储存LATITUDE信息到数组
+				for (var i = 0; i < data.results.length; i++) {
+					start_latitudeArray.push(data.results[i].LATITUDE);
+				}
+				// 储存LONGITUDE信息到数组
+				for (var i = 0; i < data.results.length; i++) {
+					start_longitudeArray.push(data.results[i].LONGITUDE);
+				}
 
-			// 	// 提取LATITUDE和LONGITUDE信息
-			// 	window.startingPointLatitude = data.results[0].LATITUDE;
-			// 	window.startingPointLongitude = data.results[0].LONGITUDE;
+				// 提取LATITUDE和LONGITUDE信息
+				window.startingPointLatitude = data.results[0].LATITUDE;
+				window.startingPointLongitude = data.results[0].LONGITUDE;
 
-			// 	// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-			// 	// $("#result").html(resultText);
+				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+				// $("#result").html(resultText);
 
-			// 	// 用webstore储存
+				// 用webstore储存
 
-			// 	// if (start_userArray_lat.length >= MAX_USER) {
-			// 	// 	start_userArray_lat.shift();
-			// 	// }
-			// 	// if (start_userArray_log.length >= MAX_USER) {
-			// 	// 	start_userArray_log.shift();
-			// 	// }
-			// 	// start_userArray_lat.push(window.startingPointLatitude);
-			// 	// start_userArray_log.push(window.startingPointLongitude);
-			// 	// localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
-			// 	// localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
-			// });
+				// if (start_userArray_lat.length >= MAX_USER) {
+				// 	start_userArray_lat.shift();
+				// }
+				// if (start_userArray_log.length >= MAX_USER) {
+				// 	start_userArray_log.shift();
+				// }
+				// start_userArray_lat.push(window.startingPointLatitude);
+				// start_userArray_log.push(window.startingPointLongitude);
+				// localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
+				// localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+			});
 
-			// var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + location_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
-			// $.get(requestUrl_2, function (data) {
-			// 	console.log(data);
-			// 	// 提取LATITUDE和LONGITUDE信息
-			// 	window.destinationLatitude = data.results[0].LATITUDE;
-			// 	window.destinationLongitude = data.results[0].LONGITUDE;
+			var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + location_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
+			$.get(requestUrl_2, function (data) {
+				console.log(data);
+				// 提取LATITUDE和LONGITUDE信息
+				window.destinationLatitude = data.results[0].LATITUDE;
+				window.destinationLongitude = data.results[0].LONGITUDE;
 
-			// 	// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-			// 	// $("#result").html(resultText);
+				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+				// $("#result").html(resultText);
 
-			// 	for (var i = 0; i < data.results.length; i++) {
-			// 		end_longitudeArray.push(data.results[i].LONGITUDE);
-			// 	}
-			// 	for (var i = 0; i < data.results.length; i++) {
-			// 		end_latitudeArray.push(data.results[i].LATITUDE);
-			// 	}
+				for (var i = 0; i < data.results.length; i++) {
+					end_longitudeArray.push(data.results[i].LONGITUDE);
+				}
+				for (var i = 0; i < data.results.length; i++) {
+					end_latitudeArray.push(data.results[i].LATITUDE);
+				}
 
-			// 	// if (end_userArray_lat.length >= MAX_USER) {
-			// 	// 	end_userArray_lat.shift();
-			// 	// }
-			// 	// if (end_userArray_log.length >= MAX_USER) {
-			// 	// 	end_userArray_log.shift();
-			// 	// }
-			// 	// end_userArray_lat.push(window.destinationLatitude);
-			// 	// end_userArray_log.push(window.destinationLongitude);
-			// 	// localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
-			// 	// localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
-			// });
+				// if (end_userArray_lat.length >= MAX_USER) {
+				// 	end_userArray_lat.shift();
+				// }
+				// if (end_userArray_log.length >= MAX_USER) {
+				// 	end_userArray_log.shift();
+				// }
+				// end_userArray_lat.push(window.destinationLatitude);
+				// end_userArray_log.push(window.destinationLongitude);
+				// localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
+				// localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
+			});
 
 			if (window.destinationLatitude === null || window.destinationLongitude === null
 				|| window.startingPointLatitude === null || window.startingPointLongitude === null)
@@ -579,6 +579,7 @@
 								minAccessTimes = i;
 							}
 						}
+						let i = minAccessTimes;
 						start_userArray_lat[i] = window.startingPointLatitude;
 						start_userArray_log[i] = window.startingPointLongitude;
 						end_userArray_lat[i] = window.destinationLatitude;
