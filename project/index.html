@@ -45,14 +45,12 @@
 						onkeyup="showResultsEnd()" autocomplete="off" required><br>
 					<div id="results-container-end" class="suggestion-box-end"></div>
 				</div>
-				<!-- <div class="button-container"> -->
-					<!-- 这里是三个并排的按钮 -->
-				<button class="button-style active hidden button-one ri-car-line" onclick="toggleActive(this)" id="1"></button>
-				<!-- <span class="button-space"></span> -->
-				<button class="button-style hidden button-two ri-riding-fill" onclick="toggleActive(this)" id="2"></button>
-				<!-- <span class="button-space"></span> -->
-				<button class="button-style hidden button-three ri-walk-line" onclick="toggleActive(this)" id="3"></button>
-				<!-- </div> -->
+				<button class="button-style active hidden button-one ri-car-line" onclick="toggleActive(this)"
+					id="1"></button>
+				<button class="button-style hidden button-two ri-riding-fill" onclick="toggleActive(this)"
+					id="2"></button>
+				<button class="button-style hidden button-three ri-walk-line" onclick="toggleActive(this)"
+					id="3"></button>
 				<button class="submit-button-style hidden ri-search-line" type="submit" onclick="submit()"></button>
 			</li>
 			<li class="menu-item" onclick="toggleOptionHistory()">
@@ -189,18 +187,18 @@
 		}
 
 		function toggleActive(button) {
-            const buttons = document.getElementsByClassName("button-style");
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove("active");
-            }
-            button.classList.add("active");
+			const buttons = document.getElementsByClassName("button-style");
+			for (let i = 0; i < buttons.length; i++) {
+				buttons[i].classList.remove("active");
+			}
+			button.classList.add("active");
 			if (button.id === "1") RouteType = "drive";
 			else if (button.id === "2") RouteType = "cycle";
 			else if (button.id === "3") RouteType = "walk";
 			console.log(RouteType);
-        }
-        const firstButton = document.getElementById("1");
-        toggleActive(firstButton);
+		}
+		const firstButton = document.getElementById("1");
+		toggleActive(firstButton);
 
 		function toggleOptionHistory() {
 			if (isExpanded) {
@@ -454,11 +452,11 @@
 		let maxarea = 0.000065;
 
 		const MAX_USER = 5;
-		
+
 		function submit() {
 			const startingPoint = startPoint.value;
 			const destination = endPoint.value;
-		
+
 			window.startingPointLatitude = null;
 			window.startingPointLongitude = null;
 			window.destinationLatitude = null;
@@ -517,10 +515,10 @@
 
 					if (window.destinationLatitude === null || window.destinationLongitude === null)
 						return;
-				
+
 					const historyContainer = document.getElementById('history-records');
 					let isExist = false;
-					for (let i = 0; i < 5; i++) {
+					for (let i = 0; i < start_latitudeArray.length; i++) {
 						if (start_userArray_lat[i] === window.startingPointLatitude
 							&& start_userArray_log[i] === window.startingPointLongitude
 							&& end_userArray_lat[i] === window.destinationLatitude
@@ -561,27 +559,26 @@
 							option.addEventListener("click", showHistory.bind(null, numOptions));
 							numOptions++;
 						} else {
-							if (!isExist) {
-								let minAccessTimes = 0;
-								for (let i = 1; i < 5; i++) {
-									if (accessTimes_userArray[minAccessTimes] > accessTimes_userArray[i]) {
-										minAccessTimes = i;
-									}
+							let minAccessTimes = 0;
+							for (let i = 1; i < 5; i++) {
+								if (accessTimes_userArray[minAccessTimes] > accessTimes_userArray[i]) {
+									minAccessTimes = i;
 								}
-								let i = minAccessTimes;
-								start_userArray_lat[i] = window.startingPointLatitude;
-								start_userArray_log[i] = window.startingPointLongitude;
-								end_userArray_lat[i] = window.destinationLatitude;
-								end_userArray_log[i] = window.destinationLongitude;
-								RouteType_userArray[i] = RouteType;
-								accessTimes_userArray[i] = 1;
-								localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
-								localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
-								localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
-								localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
-								localStorage.setItem('RouteType_users', JSON.stringify(RouteType_userArray));
-								localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
 							}
+							let i = minAccessTimes;
+							console.log(i);
+							start_userArray_lat[i] = window.startingPointLatitude;
+							start_userArray_log[i] = window.startingPointLongitude;
+							end_userArray_lat[i] = window.destinationLatitude;
+							end_userArray_log[i] = window.destinationLongitude;
+							RouteType_userArray[i] = RouteType;
+							accessTimes_userArray[i] = 1;
+							localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
+							localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+							localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
+							localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
+							localStorage.setItem('RouteType_users', JSON.stringify(RouteType_userArray));
+							localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
 						}
 					}
 
@@ -607,10 +604,11 @@
 			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
 			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
 			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-			const RouteType_userArray = (localStorage.getItem('RouteType_users')) || [];
+			const RouteType_userArray = JSON.parse(localStorage.getItem('RouteType_users')) || [];
+			const accessTimes_userArray = JSON.parse(localStorage.getItem('accessTimes_users')) || [];
 
-			// const showhistory = document.getElementById(`option${id}`);
-			// showhistory.innerHTML = '';
+			accessTimes_userArray[id]++;
+			localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
 
 			Routing(start_userArray_lat[id], start_userArray_log[id], end_userArray_lat[id], end_userArray_log[id], RouteType_userArray[id]);
 		}
