@@ -461,7 +461,7 @@
 
 			// 构建API请求URL
 			var requestUrl_1 = apiUrl + "commonapi/search?searchVal=" + location_1 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
-
+			var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + location_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
 			// 发送GET请求
 			$.get(requestUrl_1, function (data) {
 				console.log(data);
@@ -480,43 +480,116 @@
 
 				if (window.startingPointLatitude === null || window.startingPointLongitude === null)
 					return;
-				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-				// $("#result").html(resultText);
 
-				// 用webstore储存
+				$.get(requestUrl_2, function (data) {
+					console.log(data);
+					// 提取LATITUDE和LONGITUDE信息
+					window.destinationLatitude = data.results[0].LATITUDE;
+					window.destinationLongitude = data.results[0].LONGITUDE;
 
-				// if (start_userArray_lat.length >= MAX_USER) {
-				// 	start_userArray_lat.shift();
-				// }
-				// if (start_userArray_log.length >= MAX_USER) {
-				// 	start_userArray_log.shift();
-				// }
-				// start_userArray_lat.push(window.startingPointLatitude);
-				// start_userArray_log.push(window.startingPointLongitude);
-				// localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
-				// localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
-			});
+					// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+					// $("#result").html(resultText);
 
-			var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + location_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
-			$.get(requestUrl_2, function (data) {
-				console.log(data);
-				// 提取LATITUDE和LONGITUDE信息
-				window.destinationLatitude = data.results[0].LATITUDE;
-				window.destinationLongitude = data.results[0].LONGITUDE;
+					for (var i = 0; i < data.results.length; i++) {
+						end_longitudeArray.push(data.results[i].LONGITUDE);
+					}
+					for (var i = 0; i < data.results.length; i++) {
+						end_latitudeArray.push(data.results[i].LATITUDE);
+					}
 
-				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-				// $("#result").html(resultText);
+					if (window.destinationLatitude === null || window.destinationLongitude === null)
+						return;
+					// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+					// $("#result").html(resultText);
 
-				for (var i = 0; i < data.results.length; i++) {
-					end_longitudeArray.push(data.results[i].LONGITUDE);
-				}
-				for (var i = 0; i < data.results.length; i++) {
-					end_latitudeArray.push(data.results[i].LATITUDE);
-				}
+					// 用webstore储存
 
-				if (window.destinationLatitude === null || window.destinationLongitude === null)
-					return;
+					// if (start_userArray_lat.length >= MAX_USER) {
+					// 	start_userArray_lat.shift();
+					// }
+					// if (start_userArray_log.length >= MAX_USER) {
+					// 	start_userArray_log.shift();
+					// }
+					// start_userArray_lat.push(window.startingPointLatitude);
+					// start_userArray_log.push(window.startingPointLongitude);
+					// localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
+					// localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+					const historyContainer = document.getElementById('history-records');
+					let isExist = false;
+					for (let i = 0; i < 5; i++) {
+						if (start_userArray_lat[i] === window.startingPointLatitude
+							&& start_userArray_log[i] === window.startingPointLongitude
+							&& end_userArray_lat[i] === window.destinationLatitude
+							&& end_userArray_log[i] === window.destinationLongitude
+							&& RouteType_userArray[i] === RouteType) {
+							accessTimes_userArray[i]++;
+							isExist = true;
+							break;
+						}
+					}
+					if (!isExist) {
+						if (numOptions < 5) {
+							let i = numOptions;
+							start_userArray_lat[i] = window.startingPointLatitude;
+							start_userArray_log[i] = window.startingPointLongitude;
+							end_userArray_lat[i] = window.destinationLatitude;
+							end_userArray_log[i] = window.destinationLongitude;
+							RouteType_userArray[i] = RouteType;
+							accessTimes_userArray[i] = 1;
+							localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
+							localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+							localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
+							localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
+							localStorage.setItem('RouteType_users', JSON.stringify(RouteType_userArray));
+							localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
+							const option = document.createElement('button');
+							const textNode1 = document.createTextNode("FROM: " + startingPoint);
+							const textNode2 = document.createTextNode("TO: " + destination);
+							const newlineNode = document.createElement("br");
+							option.appendChild(textNode1);
+							option.appendChild(newlineNode);
+							option.appendChild(textNode2);
+							// option.textContent = `option${numOptions}`;
+							option.classList.add('records-text');
+							option.classList.add('records-option');
+							option.setAttribute("id", `option${i}`);
+							historyContainer.appendChild(option);
+							option.style.display = 'none';
+							option.addEventListener("click", showHistory.bind(null, numOptions));
+							numOptions++;
+						} else {
+							if (!isExist) {
+								let minAccessTimes = 0;
+								for (let i = 1; i < 5; i++) {
+									if (accessTimes_userArray[minAccessTimes] > accessTimes_userArray[i]) {
+										minAccessTimes = i;
+									}
+								}
+								let i = minAccessTimes;
+								start_userArray_lat[i] = window.startingPointLatitude;
+								start_userArray_log[i] = window.startingPointLongitude;
+								end_userArray_lat[i] = window.destinationLatitude;
+								end_userArray_log[i] = window.destinationLongitude;
+								RouteType_userArray[i] = RouteType;
+								accessTimes_userArray[i] = 1;
+								localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
+								localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+								localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
+								localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
+								localStorage.setItem('RouteType_users', JSON.stringify(RouteType_userArray));
+								localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
+							}
+						}
+					}
 
+					console.log('Starting Point Latitude:', window.startingPointLatitude);
+					console.log('Starting Point Longitude:', window.startingPointLongitude);
+					console.log('Destination Latitude:', window.destinationLatitude);
+					console.log('Destination Longitude:', window.destinationLongitude);
+
+					Routing(window.startingPointLatitude, window.startingPointLongitude, window.destinationLatitude, window.destinationLongitude, RouteType);
+
+				});
 				// if (end_userArray_lat.length >= MAX_USER) {
 				// 	end_userArray_lat.shift();
 				// }
@@ -529,89 +602,14 @@
 				// localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
 			});
 
-			console.log('Starting Point Latitude:', window.startingPointLatitude);
-			console.log('Starting Point Longitude:', window.startingPointLongitude);
-			console.log('Destination Latitude:', window.destinationLatitude);
-			console.log('Destination Longitude:', window.destinationLongitude);
+			// console.log('Starting Point Latitude:', window.startingPointLatitude);
+			// console.log('Starting Point Longitude:', window.startingPointLongitude);
+			// console.log('Destination Latitude:', window.destinationLatitude);
+			// console.log('Destination Longitude:', window.destinationLongitude);
 
 			// if (window.destinationLatitude === null || window.destinationLongitude === null
 			// 	|| window.startingPointLatitude === null || window.startingPointLongitude === null)
 			// 	return;
-
-			const historyContainer = document.getElementById('history-records');
-			let isExist = false;
-			for (let i = 0; i < 5; i++) {
-				if (start_userArray_lat[i] === window.startingPointLatitude
-					&& start_userArray_log[i] === window.startingPointLongitude
-					&& end_userArray_lat[i] === window.destinationLatitude
-					&& end_userArray_log[i] === window.destinationLongitude
-					&& RouteType_userArray[i] === RouteType) {
-					accessTimes_userArray[i]++;
-					isExist = true;
-					break;
-				}
-			}
-			if (!isExist) {
-				if (numOptions < 5) {
-					let i = numOptions;
-					start_userArray_lat[i] = window.startingPointLatitude;
-					start_userArray_log[i] = window.startingPointLongitude;
-					end_userArray_lat[i] = window.destinationLatitude;
-					end_userArray_log[i] = window.destinationLongitude;
-					RouteType_userArray[i] = RouteType;
-					accessTimes_userArray[i] = 1;
-					localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
-					localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
-					localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
-					localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
-					localStorage.setItem('RouteType_users', JSON.stringify(RouteType_userArray));
-					localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
-					const option = document.createElement('button');
-					const textNode1 = document.createTextNode("FROM: " + startingPoint);
-					const textNode2 = document.createTextNode("TO: " + destination);
-					const newlineNode = document.createElement("br");
-					option.appendChild(textNode1);
-					option.appendChild(newlineNode);
-					option.appendChild(textNode2);
-					// option.textContent = `option${numOptions}`;
-					option.classList.add('records-text');
-					option.classList.add('records-option');
-					option.setAttribute("id", `option${i}`);
-					historyContainer.appendChild(option);
-					option.style.display = 'none';
-					option.addEventListener("click", showHistory.bind(null, numOptions));
-					numOptions++;
-				} else {
-					if (!isExist) {
-						let minAccessTimes = 0;
-						for (let i = 1; i < 5; i++) {
-							if (accessTimes_userArray[minAccessTimes] > accessTimes_userArray[i]) {
-								minAccessTimes = i;
-							}
-						}
-						let i = minAccessTimes;
-						start_userArray_lat[i] = window.startingPointLatitude;
-						start_userArray_log[i] = window.startingPointLongitude;
-						end_userArray_lat[i] = window.destinationLatitude;
-						end_userArray_log[i] = window.destinationLongitude;
-						RouteType_userArray[i] = RouteType;
-						accessTimes_userArray[i] = 1;
-						localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
-						localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
-						localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
-						localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
-						localStorage.setItem('RouteType_users', JSON.stringify(RouteType_userArray));
-						localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
-					}
-				}
-			}
-			
-			console.log('Starting Point Latitude:', window.startingPointLatitude);
-			console.log('Starting Point Longitude:', window.startingPointLongitude);
-			console.log('Destination Latitude:', window.destinationLatitude);
-			console.log('Destination Longitude:', window.destinationLongitude);
-
-			Routing(window.startingPointLatitude, window.startingPointLongitude, window.destinationLatitude, window.destinationLongitude, RouteType);
 		}
 		// var startlat = '1.30000';
 		// var startlng = '103.84223';
