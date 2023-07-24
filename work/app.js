@@ -1,7 +1,6 @@
 const mysql = require("mysql");
 const express = require("express");
 const app = express();
-const fs = require("fs");
 
 let connection = null;
 
@@ -38,33 +37,9 @@ function database() {
 
 }
 
-function dataAPI() {
-    app.get("/get-API", (req, res) => {
-        // 读取本地 JSON 文件
-        fs.readFile("../data/hello.txt", "utf8", (err, data) => {
-            if (err) {
-                console.log("Failed to read JSON file: " + err.message);
-                res.status(500).json({ error: "Failed to fetch data from the JSON file" });
-                return;
-            }
-
-            try {
-                // 将 JSON 数据解析
-                const jsonData = JSON.parse(data);
-                res.json(jsonData);// 发送给客户端
-            } catch (parseError) {
-                console.log("Failed to parse JSON data: " + parseError.message);
-                res.status(500).json({ error: "Failed to parse JSON data" });
-            }
-        });
-    });
-}
-
-
 database();
-// dataAPI();
 
-// setInterval(database, 300000);
+setInterval(database, 300000);
 
 app.get('/README.html', (req, res) => {
     res.status(200).send('0K');

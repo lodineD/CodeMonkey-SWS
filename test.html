@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>HTTP Request in JavaScript</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
+
 <body>
-  <script>
-    const url = "https://www.onemap.gov.sg/api/public/routingsvc/route?start=1.320981%2C103.844150&end=1.326762%2C103.8559&routeType=pt&date=2022-12-13&time=07%3A35%3A00&mode=TRANSIT&maxWalkDistance=1000&numItineraries=3";
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://www.onemap.gov.sg/api/public/routingsvc/route?start=1.320981%2C103.844150&end=1.326762%2C103.8559&routeType=drive&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vaW50ZXJuYWwtYWxiLW9tLXByZGV6aXQtaXQtMTIyMzY5ODk5Mi5hcC1zb3V0aGVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hcGkvdjIvdXNlci9wYXNzd29yZCIsImlhdCI6MTY4OTkyMDE5NywiZXhwIjoxNjkwMTc5Mzk3LCJuYmYiOjE2ODk5MjAxOTcsImp0aSI6IkFPWFg5V0Jrd3VtSFR5RUQiLCJzdWIiOiJkODhkZGQzMzU2MGVkNzlkNzkwOTI0ODY1MGE4NmNhNCIsInVzZXJfaWQiOjExOSwiZm9yZXZlciI6ZmFsc2V9.hNSBBu3isk8qmVLq2wB2TmZ4ErbZvoFObsfqNdvwNTM');
+        xhr.onreadystatechange = function () {
+            // 确保请求已完成并且响应已成功返回
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                // 处理返回的文本数据
+                console.log(xhr.responseText);
+            } else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status !== 200) {
+                // 处理请求错误
+                console.error('请求失败，状态码：', xhr.status);
+            }
+        };
 
-    const headers = {
-      "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vaW50ZXJuYWwtYWxiLW9tLXByZGV6aXQtaXQtMTIyMzY5ODk5Mi5hcC1zb3V0aGVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hcGkvdjIvdXNlci9wYXNzd29yZCIsImlhdCI6MTY4OTkyMDE5NywiZXhwIjoxNjkwMTc5Mzk3LCJuYmYiOjE2ODk5MjAxOTcsImp0aSI6IkFPWFg5V0Jrd3VtSFR5RUQiLCJzdWIiOiJkODhkZGQzMzU2MGVkNzlkNzkwOTI0ODY1MGE4NmNhNCIsInVzZXJfaWQiOjExOSwiZm9yZXZlciI6ZmFsc2V9.hNSBBu3isk8qmVLq2wB2TmZ4ErbZvoFObsfqNdvwNTM"
-    };
-
-    fetch(url, {
-      method: 'GET',
-      headers: headers
-    })
-    .then(response => response.text())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-  </script>
+        // 发送请求
+        xhr.send();
+    </script>
 </body>
+
 </html>
