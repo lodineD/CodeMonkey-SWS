@@ -631,7 +631,7 @@
 
 				var api_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwNTU4LCJ1c2VyX2lkIjoxMDU1OCwiZW1haWwiOiJjaGVuZ2hhbmcwNTE2QDE2My5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2OTAxODAwNjEsImV4cCI6MTY5MDYxMjA2MSwibmJmIjoxNjkwMTgwMDYxLCJqdGkiOiI2MGNlZTg5YjliMGMyNjI0N2E0OTZiYTNkODk4YzE2MCJ9.2AnqvXNhp_6HLrwTApySCpyfq7FbG3toQsgRhq4DZ7g'; // 替换为您的API Token
 
-				var url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${startlat},${startlng}&end=${endlat},${endlng}&routeType=drive&token=${api_token}`;
+				var url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${startlat},${startlng}&end=${endlat},${endlng}&routeType=${RouteType}&token=${api_token}`;
 
 				$.ajax({
 					url: url,
