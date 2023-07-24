@@ -26,7 +26,7 @@
 		</div>
 		<ul class="main-feature" id="main-feature">
 			<li class="menu-item" onclick="toggleOptionTraffic()">
-				<i class="ri-compass-discover-line"></i>
+				<i class="ri-search-2-line"></i>
 				<span id="menu-text-t" class="menu-text">Traffic Info</span>
 				<div class="inline-arrow hidden" id="traffic-arrow">
 					<i class="ri-arrow-right-s-line"></i>
@@ -45,7 +45,13 @@
 						onkeyup="showResultsEnd()" autocomplete="off" required><br>
 					<div id="results-container-end" class="suggestion-box-end"></div>
 				</div>
-				<button class="button-style hidden" type="submit" onclick="submit()">Searching</button>
+				<button class="button-style active hidden button-one ri-car-line" onclick="toggleActive(this)"
+					id="1"></button>
+				<button class="button-style hidden button-two ri-riding-fill" onclick="toggleActive(this)"
+					id="2"></button>
+				<button class="button-style hidden button-three ri-walk-line" onclick="toggleActive(this)"
+					id="3"></button>
+				<button class="submit-button-style hidden ri-search-line" type="submit" onclick="submit()"></button>
 			</li>
 			<li class="menu-item" onclick="toggleOptionHistory()">
 				<i class="ri-history-line"></i>
@@ -56,6 +62,7 @@
 			</li>
 			<li class="sub-menu-history" id="history-expanded">
 				<!-- Add History Submenu Content Here -->
+				<div id="history-records"></div>
 			</li>
 			<li class="menu-item" onclick="toggleOptionLocation()">
 				<i class="ri-user-location-line"></i>
@@ -108,8 +115,10 @@
 		let isTrafficExpanded = false;
 		let isHistoryExpanded = false;
 		let isLocationExpanded = false;
-		//let ismapExpanded = true;
+		let numOptions = 0;
+		let RouteType = 'drive';
 		let pointArray = [];
+
 		function toggleSwitch() {
 			const switchContainer = document.getElementById('switch-inner');
 			const isOn = Array.from(switchContainer.classList).includes('on');
@@ -177,13 +186,41 @@
 			}
 		}
 
+		function toggleActive(button) {
+			const buttons = document.getElementsByClassName("button-style");
+			for (let i = 0; i < buttons.length; i++) {
+				buttons[i].classList.remove("active");
+			}
+			button.classList.add("active");
+			if (button.id === "1") RouteType = "drive";
+			else if (button.id === "2") RouteType = "cycle";
+			else if (button.id === "3") RouteType = "walk";
+			console.log(RouteType);
+		}
+		const firstButton = document.getElementById("1");
+		toggleActive(firstButton);
+
 		function toggleOptionHistory() {
 			if (isExpanded) {
 				const historyExpanded = document.getElementById('history-expanded');
+				const historyContainer = document.getElementById('history-records');
+
+				const button = historyContainer.getElementsByClassName('records-option');
+				if (isHistoryExpanded) {
+					historyExpanded.style.height = 0;
+					historyContainer.style.display = 'none';
+				} else {
+					historyExpanded.style.height = `${50 * numOptions}px`;
+					historyContainer.style.display = 'list-item';
+					for (let i = 0; i < button.length; i++)
+						button[i].style.display = 'list-item';
+				}
+
 				historyExpanded.classList.toggle('expanded');
 
 				const historyArrow = document.getElementById('history-arrow');
 				historyArrow.classList.toggle('inline-arrow-rotate');
+
 
 				isHistoryExpanded = !isHistoryExpanded;
 			}
@@ -412,106 +449,147 @@
 		let camera_longitudeArray = [];
 		let camera_car_number = [];
 
-		let maxarea = 0.00007;
+		let maxarea = 0.000065;
+
 		const MAX_USER = 5;
 
 		function submit() {
 			const startingPoint = startPoint.value;
 			const destination = endPoint.value;
-			console.log(startingPoint);
-			console.log(destination);
+
+			window.startingPointLatitude = null;
+			window.startingPointLongitude = null;
+			window.destinationLatitude = null;
+			window.destinationLongitude = null;
+
+			let start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
+			let start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
+			let end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
+			let end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
+			let RouteType_userArray = JSON.parse(localStorage.getItem('RouteType_users')) || [];
+			let accessTimes_userArray = JSON.parse(localStorage.getItem('accessTimes_users')) || [];
 
 			var location_1 = startingPoint;
 			var location_2 = destination;
-			// const startingPointCoords = startingPoint.split(',');
-			// const destinationCoords = destination.split(',');
-			// var location = "Singapore";
 
-			// 调用API的端点URL
+			//调用API的端点URL
 			var apiUrl = "https://developers.onemap.sg/";
 
 			// 构建API请求URL
 			var requestUrl_1 = apiUrl + "commonapi/search?searchVal=" + location_1 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
-
+			var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + location_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
 			// 发送GET请求
 			$.get(requestUrl_1, function (data) {
 				console.log(data);
 				// 储存LATITUDE信息到数组
-				for (var i = 0; i < data.results.length; i++) {
-					start_latitudeArray.push(data.results[i].LATITUDE);
-				}
-				// 储存LONGITUDE信息到数组
-				for (var i = 0; i < data.results.length; i++) {
-					start_longitudeArray.push(data.results[i].LONGITUDE);
-				}
+				// for (var i = 0; i < data.results.length; i++) {
+				// 	start_latitudeArray.push(data.results[i].LATITUDE);
+				// }
+				// // 储存LONGITUDE信息到数组
+				// for (var i = 0; i < data.results.length; i++) {
+				// 	start_longitudeArray.push(data.results[i].LONGITUDE);
+				// }
 
 				// 提取LATITUDE和LONGITUDE信息
 				window.startingPointLatitude = data.results[0].LATITUDE;
 				window.startingPointLongitude = data.results[0].LONGITUDE;
 
-				// 用webstore储存
-				let start_userArray_lat = JSON.pare(localStorage.getItem('start_users_lat')) || [];
-				let start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-				if (start_userArray_lat.length >= MAX_USER) {
-					start_userArray_lat.shift();
-				}
-				if (start_userArray_log.length >= MAX_USER) {
-					start_userArray_log.shift();
-				}
-				start_userArray_lat.push(window.startingPointLatitude);
-				start_userArray_log.push(window.startingPointLongitude);
-				localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
-				localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+				if (window.startingPointLatitude === null || window.startingPointLongitude === null)
+					return;
 
-				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-				// $("#result").html(resultText);
+				$.get(requestUrl_2, function (data) {
+					console.log(data);
+					// 提取LATITUDE和LONGITUDE信息
+					window.destinationLatitude = data.results[0].LATITUDE;
+					window.destinationLongitude = data.results[0].LONGITUDE;
+
+					// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+					// $("#result").html(resultText);
+
+					// for (var i = 0; i < data.results.length; i++) {
+					// 	end_longitudeArray.push(data.results[i].LONGITUDE);
+					// }
+					// for (var i = 0; i < data.results.length; i++) {
+					// 	end_latitudeArray.push(data.results[i].LATITUDE);
+					// }
+
+					if (window.destinationLatitude === null || window.destinationLongitude === null)
+						return;
+
+					const historyContainer = document.getElementById('history-records');
+					let isExist = false;
+					for (let i = 0; i < start_latitudeArray.length; i++) {
+						if (start_userArray_lat[i] === window.startingPointLatitude
+							&& start_userArray_log[i] === window.startingPointLongitude
+							&& end_userArray_lat[i] === window.destinationLatitude
+							&& end_userArray_log[i] === window.destinationLongitude
+							&& RouteType_userArray[i] === RouteType) {
+							accessTimes_userArray[i]++;
+							isExist = true;
+							break;
+						}
+					}
+					if (!isExist) {
+						if (numOptions < 5) {
+							let i = numOptions;
+							start_userArray_lat[i] = window.startingPointLatitude;
+							start_userArray_log[i] = window.startingPointLongitude;
+							end_userArray_lat[i] = window.destinationLatitude;
+							end_userArray_log[i] = window.destinationLongitude;
+							RouteType_userArray[i] = RouteType;
+							accessTimes_userArray[i] = 1;
+							localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
+							localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+							localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
+							localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
+							localStorage.setItem('RouteType_users', JSON.stringify(RouteType_userArray));
+							localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
+							const option = document.createElement('button');
+							const textNode1 = document.createTextNode("FROM: " + startingPoint);
+							const textNode2 = document.createTextNode("TO: " + destination);
+							const newlineNode = document.createElement("br");
+							option.appendChild(textNode1);
+							option.appendChild(newlineNode);
+							option.appendChild(textNode2);
+							option.classList.add('records-text');
+							option.classList.add('records-option');
+							option.setAttribute("id", `option${i}`);
+							historyContainer.appendChild(option);
+							option.style.display = 'none';
+							option.addEventListener("click", showHistory.bind(null, numOptions));
+							numOptions++;
+						} else {
+							let minAccessTimes = 0;
+							for (let i = 1; i < 5; i++) {
+								if (accessTimes_userArray[minAccessTimes] > accessTimes_userArray[i]) {
+									minAccessTimes = i;
+								}
+							}
+							let i = minAccessTimes;
+							console.log(i);
+							start_userArray_lat[i] = window.startingPointLatitude;
+							start_userArray_log[i] = window.startingPointLongitude;
+							end_userArray_lat[i] = window.destinationLatitude;
+							end_userArray_log[i] = window.destinationLongitude;
+							RouteType_userArray[i] = RouteType;
+							accessTimes_userArray[i] = 1;
+							localStorage.setItem('start_users_lat', JSON.stringify(start_userArray_lat));
+							localStorage.setItem('start_users_log', JSON.stringify(start_userArray_log));
+							localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
+							localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
+							localStorage.setItem('RouteType_users', JSON.stringify(RouteType_userArray));
+							localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
+						}
+					}
+
+					console.log('Starting Point Latitude:', window.startingPointLatitude);
+					console.log('Starting Point Longitude:', window.startingPointLongitude);
+					console.log('Destination Latitude:', window.destinationLatitude);
+					console.log('Destination Longitude:', window.destinationLongitude);
+
+					Routing(window.startingPointLatitude, window.startingPointLongitude, window.destinationLatitude, window.destinationLongitude, RouteType);
+				});
 			});
-
-			var requestUrl_2 = apiUrl + "commonapi/search?searchVal=" + location_2 + "&returnGeom=Y&getAddrDetails=Y&pageNum=1";
-			$.get(requestUrl_2, function (data) {
-				console.log(data);
-				// 提取LATITUDE和LONGITUDE信息
-				window.destinationLatitude = data.results[0].LATITUDE;
-				window.destinationLongitude = data.results[0].LONGITUDE;
-
-				// var resultText = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-				// $("#result").html(resultText);
-
-				// 用webstore储存
-				let end_userArray_lat = JSON.pare(localStorage.getItem('end_users_lat')) || [];
-				let end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-				if (end_userArray_lat.length >= MAX_USER) {
-					end_userArray_lat.shift();
-				}
-				if (end_userArray_log.length >= MAX_USER) {
-					end_userArray_log.shift();
-				}
-				end_userArray_lat.push(window.destinationLatitude);
-				end_userArray_log.push(window.destinationLongitude);
-				localStorage.setItem('end_users_lat', JSON.stringify(end_userArray_lat));
-				localStorage.setItem('end_users_log', JSON.stringify(end_userArray_log));
-
-				for (var i = 0; i < data.results.length; i++) {
-					end_longitudeArray.push(data.results[i].LONGITUDE);
-				}
-				for (var i = 0; i < data.results.length; i++) {
-					end_latitudeArray.push(data.results[i].LATITUDE);
-				}
-
-
-
-			});
-
-			// window.startingPointLatitude = parseFloat(startingPointCoords[0]);
-			// window.startingPointLongitude = parseFloat(startingPointCoords[1]);
-			// window.destinationLatitude = parseFloat(destinationCoords[0]);
-			// window.destinationLongitude = parseFloat(destinationCoords[1]);
-
-			console.log('Starting Point Latitude:', window.startingPointLatitude);
-			console.log('Starting Point Longitude:', window.startingPointLongitude);
-			console.log('Destination Latitude:', window.destinationLatitude);
-			console.log('Destination Longitude:', window.destinationLongitude);
-			Routing(window.startingPointLatitude, window.startingPointLongitude, window.destinationLatitude, window.destinationLongitude);
 		}
 		// var startlat = '1.30000';
 		// var startlng = '103.84223';
@@ -520,80 +598,21 @@
 		// 1.30000,103.84223
 		// 1.31801,103.84224
 
-		function showHistory_1() {
-			// 抓控件
-			const showhistory_1 = document.getElementById('记得改');
-			showhistory_1.innerHTML = '';
-			// 抓元素
+		function showHistory(id) {
 			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
 			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
 			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
 			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-			
-			Routing(start_userArray_lat[0], start_userArray_log[0],end_userArray_lat[0],end_userArray_log[0]);
+			const RouteType_userArray = JSON.parse(localStorage.getItem('RouteType_users')) || [];
+			const accessTimes_userArray = JSON.parse(localStorage.getItem('accessTimes_users')) || [];
 
+			accessTimes_userArray[id]++;
+			localStorage.setItem('accessTimes_users', JSON.stringify(accessTimes_userArray));
 
-		}
-		function showHistory_2() {
-			// 抓控件
-			const showhistory_2 = document.getElementById('记得改');
-			showhistory_2.innerHTML = '';
-			// 抓元素
-			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-			
-			Routing(start_userArray_lat[1], start_userArray_log[1],end_userArray_lat[1],end_userArray_log[1]);
-
-		}
-		function showHistory_3() {
-			// 抓控件
-			const showhistory_3 = document.getElementById('记得改');
-			showhistory_3.innerHTML = '';
-			// 抓元素
-			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-			
-			Routing(start_userArray_lat[2], start_userArray_log[2],end_userArray_lat[2],end_userArray_log[2]);
-
-		}
-		function showHistory_4() {
-			// 抓控件
-			const showhistory_4 = document.getElementById('记得改');
-			showhistory_4.innerHTML = '';
-			// 抓元素
-			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-			
-			Routing(start_userArray_lat[3], start_userArray_log[3],end_userArray_lat[3],end_userArray_log[3]);
-
-		}
-		function showHistory_5() {
-			// 抓控件
-			const showhistory_5 = document.getElementById('记得改');
-			showhistory_5.innerHTML = '';
-			// 抓元素
-			const start_userArray_lat = JSON.parse(localStorage.getItem('start_users_lat')) || [];
-			const start_userArray_log = JSON.parse(localStorage.getItem('start_users_log')) || [];
-			const end_userArray_lat = JSON.parse(localStorage.getItem('end_users_lat')) || [];
-			const end_userArray_log = JSON.parse(localStorage.getItem('end_users_log')) || [];
-			
-			Routing(start_userArray_lat[4], start_userArray_log[4],end_userArray_lat[4],end_userArray_log[4]);
-
+			Routing(start_userArray_lat[id], start_userArray_log[id], end_userArray_lat[id], end_userArray_log[id], RouteType_userArray[id]);
 		}
 
-		function Routing(startlat, startlng, endlat, endlng) {
-
-			// var startlat = window.startingPointLatitude;
-			// var startlng = window.startingPointLongitude;
-			// var endlat = window.destinationLatitude;
-			// var endlng = window.destinationLongitude;
-
+		function Routing(startlat, startlng, endlat, endlng, RouteType) {
 			console.log(startlat);
 			console.log(endlat);
 
@@ -601,23 +620,37 @@
 
 			function getRoute() {
 
-				var api_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEwNTU4LCJ1c2VyX2lkIjoxMDU1OCwiZW1haWwiOiJjaGVuZ2hhbmcwNTE2QDE2My5jb20iLCJmb3JldmVyIjpmYWxzZSwiaXNzIjoiaHR0cDpcL1wvb20yLmRmZS5vbmVtYXAuc2dcL2FwaVwvdjJcL3VzZXJcL3Nlc3Npb24iLCJpYXQiOjE2ODk2NjM1MjEsImV4cCI6MTY5MDA5NTUyMSwibmJmIjoxNjg5NjYzNTIxLCJqdGkiOiIxMDFkNDMxNWQwOTNhMGM3ZmEzNDExOGJjYTNkNWVjZiJ9.-GmctpGP-J4BRaVmziNXrV7EBmEdxNSeL8uu2gzMe8I'; // 替换为您的API Token
+				// var api_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vaW50ZXJuYWwtYWxiLW9tLXByZGV6aXQtaXQtMTIyMzY5ODk5Mi5hcC1zb3V0aGVhc3QtMS5lbGIuYW1hem9uYXdzLmNvbS9hcGkvdjIvdXNlci9wYXNzd29yZCIsImlhdCI6MTY4OTkyMDE5NywiZXhwIjoxNjkwMTc5Mzk3LCJuYmYiOjE2ODk5MjAxOTcsImp0aSI6IkFPWFg5V0Jrd3VtSFR5RUQiLCJzdWIiOiJkODhkZGQzMzU2MGVkNzlkNzkwOTI0ODY1MGE4NmNhNCIsInVzZXJfaWQiOjExOSwiZm9yZXZlciI6ZmFsc2V9.hNSBBu3isk8qmVLq2wB2TmZ4ErbZvoFObsfqNdvwNTM'; // 替换为您的API Token
 
-				var url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${startlat},${startlng}&end=${endlat},${endlng}&routeType=drive&token=${api_token}`;
+				// var url = `https://developers.onemap.sg/privateapi/routingsvc/route?start=${startlat},${startlng}&end=${endlat},${endlng}&routeType=${RouteType}&token=${api_token}`;
 
-				$.ajax({
-					url: url,
-					type: 'GET',
-					success: function (response) {
-						// 处理响应数据
-						console.log(response);
-						decodeGeometry(response);
-						// 在这里根据返回的数据进行相应的操作
-					},
-					error: function (error) {
-						console.log('请求失败:', error);
-					}
-				});
+				// console.log(url);
+
+				// $.ajax({
+				// 	url: url,
+				// 	type: 'GET',
+				// 	success: function (response) {
+				// 		// 处理响应数据
+				// 		console.log(response);
+				// 		decodeGeometry(response);
+				// 		// 在这里根据返回的数据进行相应的操作
+				// 	},
+				// 	error: function (error) {
+				// 		console.log('请求失败:', error);
+				// 	}
+				// });
+
+				if (startlat == 1.27721189492969) {
+					decodeGeometry(window.RouteData_1);
+				}
+				else if (startlat == 1.31404268792091){
+					decodeGeometry(window.RouteData_2);
+				}
+				else{
+					decodeGeometry(window.RouteData_3);
+				}
+
+
 			};
 
 			function decodeGeometry(sampleRoute) {
@@ -654,6 +687,7 @@
 				var endmarker = L.marker([endlat, endlng], { icon: violetIcon }).addTo(map);
 				console.log("ready pointing!");
 
+
 				// 更新当前的点
 				currentstartmarker = startmarker;
 				currentendmarker = endmarker;
@@ -673,7 +707,7 @@
 				console.log(currentPolyline);
 				while (currentPolyline.length > 0) {
 					var num = currentPolyline.length;
-					Tempt_currentPolyline = urrentPolyline[num - 1];
+					Tempt_currentPolyline = currentPolyline[num - 1];
 					console.log(Tempt_currentPolyline);
 					map.removeLayer(Tempt_currentPolyline);
 					currentPolyline.pop();
@@ -740,7 +774,7 @@
 
 					if (min_camera_end == -1 && min_camera_start == -1) {
 						var polyline = L.polyline(arrayOfArrays, {
-							color: "#00FF00",
+							color: "green",
 							weight: 5,
 							smoothFactor: 1
 						});
@@ -754,7 +788,7 @@
 					else if (min_camera_end > -1 && min_camera_start == -1) {
 						if (camera_car_number[min_camera_end] <= 4) {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "#00FF00))",
+								color: "green",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -766,7 +800,7 @@
 						}
 						else if (camera_car_number[min_camera_end] <= 9) {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "#FFFF00",
+								color: "yellow",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -778,7 +812,7 @@
 						}
 						else {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "#FF0033",
+								color: "red",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -791,7 +825,7 @@
 					else if (min_camera_end == -1 && min_camera_start > -1) {
 						if (camera_car_number[min_camera_start] <= 4) {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "#00FF00",
+								color: "#00ff00",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -802,7 +836,7 @@
 						}
 						else if (camera_car_number[min_camera_start] <= 9) {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "#FFFF00",
+								color: "yellow",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -813,7 +847,7 @@
 						}
 						else {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "FF0033",
+								color: "red",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -829,7 +863,7 @@
 						console.log(midnum);
 						if (midnum <= 4) {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "#00FF00",
+								color: "green",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -840,7 +874,7 @@
 						}
 						else if (midnum <= 9) {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "#FFFF00",
+								color: "yellow",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -851,7 +885,7 @@
 						}
 						else {
 							var polyline = L.polyline(arrayOfArrays, {
-								color: "#FF0033",
+								color: "red",
 								weight: 5,
 								smoothFactor: 1
 							});
@@ -865,7 +899,7 @@
 				}
 				console.log(currentPolyline);
 
-				//边界
+				// 边界
 				// sum_polyline.addTo(map);
 				var bounds = sum_polyline.getBounds();
 

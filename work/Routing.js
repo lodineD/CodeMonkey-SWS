@@ -85,7 +85,7 @@ function Routing() {
         //解码
         var polyline = L.polyline(L.PolylineUtil.decode(geometryOfRoute, 5), {
             color: "purple",
-            weight: 5,
+            weight: 8,
             smoothFactor: 1
         });
 

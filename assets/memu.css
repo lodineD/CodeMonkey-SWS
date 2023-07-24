@@ -113,8 +113,8 @@ li {
 
 .sub-menu-traffic.expanded {
     background-color: #f2f6fc;
-    height: 150px;
-    transition: 0.5s;
+    height: 200px;
+    transition: 0.25s;
     border-radius: 8px;
     padding: 20px 35px;
     box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4);
@@ -127,12 +127,12 @@ li {
 }
 
 .sub-menu-history.expanded {
-
     background-color: #f2f6fc;
-    height: 500px;
-    transition: 0.5s;
+    transition: 0.25s;
     border-radius: 8px;
-    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
+    box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4);
+    position: relative; 
+     display: flex;
 }
 
 .sub-menu-history {
@@ -142,7 +142,7 @@ li {
 .sub-menu-location.expanded {
     background-color: #f2f6fc;
     height: 100px;
-    transition: 0.5s;
+    transition: 0.25s;
     border-radius: 8px;
     box-shadow: 03px 4px 16px rgba(26, 27, 27, 0.4)
 }
@@ -167,22 +167,22 @@ li {
     outline: none;
 }
 
-.button-style {
-    width: 120px;
+.submit-button-style {
+    width: 170px;
     height: 30px;
+    left: 40px;
     padding: 0;
-    margin: 10px 5px 5px 25px;
     background-color: hsl(0, 0%, 100%);
     box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
     border-style: hidden;
     border-radius: 8px;
     position: absolute;
-    top: 140px;
+    top: 190px;
     cursor: pointer;
 }
 
-.button-style:hover {
-    background-color: #87cefa;
+.submit-button-style:hover {
+    background-color: #E4E7ED;
     cursor: pointer;
 }
 
@@ -325,3 +325,77 @@ li {
     border-radius: 5px;
 }
 
+.records-option {
+    display: list-item;
+    width: 205px;
+    height: 40px;
+    margin: 5px 10% 10px 10%;
+    background-color: hsl(0, 0%, 100%);
+    box-shadow: 03px 2px 2px rgba(167, 171, 171, 0.4);
+    border-style: hidden;
+    border-radius: 8px;
+}
+
+.records-option:hover {
+    background-color: #E4E7ED;
+    cursor: pointer;
+}
+
+.records-text {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 130px;
+  } */
+  
+  /* 这里是按钮的共用样式 */
+  .button-style {
+    position: absolute;
+    top: 140px;
+    width: 50px;
+    height: 30px;
+    justify-content: center;
+    padding: 0;
+    margin: 5px;
+    background-color: hsl(0, 0%, 100%);
+    box-shadow: 0 3px 2px rgba(167, 171, 171, 0.4);
+    border-style: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .button-style:hover {
+    background-color: #E4E7ED;
+  }
+  
+  /* 这里是按钮之间的空隙 */
+  .button-space {
+    width: 10px; /* 调整这个值来控制按钮之间的间距 */
+  }
+  
+  .button-style.active {
+    background-color: #409EFF;
+    color: #f2f6fc;
+  }
+  
+  .button-one {
+    position: absolute;
+    top: 143px;
+  }
+
+  .button-two {
+    position: absolute;
+    top: 143px;
+    left: 95px;
+  }
+
+  .button-three {
+    position: absolute;
+    top: 143px;
+    left: 155px;
+  }

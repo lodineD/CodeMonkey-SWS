@@ -1,0 +1,383 @@
+{
+  "status_message": "Found route between points",
+  "route_geometry": "}{|FaczxRyFeA]Eo@CAMAKl@w@bAoAHKlBgCHKnBsCFKHKrBeCDGFGvBwCFIJHdDbCHFdCjBtDbDdHjGzDbBhBx@xAd@LD`ExATHjA`@JFbBv@bAl@JF\\JrCvB|BdB~B~AVRtAhA^XzCbCpAfAlF`El@j@d@b@tAdAtAfAjA|@pAbAt@p@`BrAfAz@dE`D|BnBz@l@RNLHTI`Ae@hEmBRGVzAVxAZrD`@tBTzC",
+  "status": 0,
+  "route_instructions": [
+    [
+      "Head",
+      "SELEGIE ROAD",
+      189,
+      "1.299985,103.849613",
+      23,
+      "189m",
+      "North",
+      "North",
+      "driving",
+      "Head North On Selegie Road"
+    ],
+    [
+      "Right",
+      "MIDDLE ROAD",
+      573,
+      "1.301632,103.850005",
+      67,
+      "573m",
+      "East",
+      "North",
+      "driving",
+      "Turn Right Onto Middle Road"
+    ],
+    [
+      "Right",
+      "VICTORIA STREET",
+      587,
+      "1.298488,103.854036",
+      67,
+      "587m",
+      "South West",
+      "South East",
+      "driving",
+      "Turn Right Onto Victoria Street"
+    ],
+    [
+      "Slight Right",
+      "HILL STREET",
+      553,
+      "1.2945,103.850593",
+      63,
+      "553m",
+      "South West",
+      "South West",
+      "driving",
+      "Merge Right Onto Hill Street"
+    ],
+    [
+      "Straight",
+      "NEW BRIDGE ROAD",
+      1521,
+      "1.290094,103.848318",
+      173,
+      "1521m",
+      "South",
+      "South West",
+      "driving",
+      "Continue Onto New Bridge Road"
+    ],
+    [
+      "Slight Left",
+      "CANTONMENT ROAD",
+      196,
+      "1.279558,103.83962",
+      26,
+      "196m",
+      "South East",
+      "South West",
+      "driving",
+      "Make A Slight Left Onto Cantonment Road"
+    ],
+    [
+      "Right",
+      "NEIL ROAD",
+      362,
+      "1.278014,103.840454",
+      41,
+      "362m",
+      "West",
+      "South East",
+      "driving",
+      "Turn Right Onto Neil Road"
+    ],
+    [
+      "Left",
+      "NEIL ROAD",
+      0,
+      "1.277354,103.837274",
+      0,
+      "0m",
+      "North",
+      "West",
+      "driving",
+      "You Have Arrived At Your Destination, On The Left"
+    ]
+  ],
+  "route_name": [
+    "MIDDLE ROAD",
+    "NEW BRIDGE ROAD"
+  ],
+  "route_summary": {
+    "start_point": "SELEGIE ROAD",
+    "end_point": "NEIL ROAD",
+    "total_time": 456,
+    "total_distance": 3979
+  },
+  "alternativeroute": [
+    {
+      "status_message": "Found route between points",
+      "route_geometry": "}{|FaczxRyFeA]Eo@CAMAKl@w@bAoAHKlBgCHKnBsCFKHKrBeCDGFGvBwCFIDY`@k@nBgCPL|B|An@`@v@j@jAv@zAbAhBnA|FtDv@b@pBbAzAx@TJx@`@dAj@tExBFB`B~@pBhAd@VjB~@nAv@\\JRFRJVLxAr@lAj@vBdANDPJbErBrAt@NLhAf@HDjAj@bBz@rAp@`Af@`@RzAt@tAp@PJ`Ad@l@TNXv@n@`@^Zd@bB`Db@dAVj@\\f@dA~@pAhAr@n@PV\\v@f@jANf@VzAVxAZrD`@tBTzC",
+      "status": 0,
+      "route_instructions": [
+        [
+          "Head",
+          "SELEGIE ROAD",
+          189,
+          "1.299985,103.849613",
+          23,
+          "189m",
+          "North",
+          "North",
+          "driving",
+          "Head North On Selegie Road"
+        ],
+        [
+          "Right",
+          "MIDDLE ROAD",
+          718,
+          "1.301632,103.850005",
+          83,
+          "718m",
+          "East",
+          "North",
+          "driving",
+          "Turn Right Onto Middle Road"
+        ],
+        [
+          "Right",
+          "NORTH BRIDGE ROAD",
+          1479,
+          "1.297725,103.855071",
+          167,
+          "1479m",
+          "South West",
+          "South East",
+          "driving",
+          "Turn Right Onto North Bridge Road"
+        ],
+        [
+          "Slight Left",
+          "SOUTH BRIDGE ROAD",
+          700,
+          "1.286582,103.847854",
+          79,
+          "700m",
+          "South West",
+          "South West",
+          "driving",
+          "Keep Left Onto South Bridge Road"
+        ],
+        [
+          "Slight Right",
+          "SOUTH BRIDGE ROAD",
+          111,
+          "1.281173,103.844655",
+          13,
+          "111m",
+          "South West",
+          "South West",
+          "driving",
+          "Make A Slight Right To Stay On South Bridge Road"
+        ],
+        [
+          "Straight",
+          "NEIL ROAD",
+          844,
+          "1.280498,103.843939",
+          95,
+          "844m",
+          "South West",
+          "South West",
+          "driving",
+          "Continue Onto Neil Road"
+        ],
+        [
+          "Left",
+          "NEIL ROAD",
+          0,
+          "1.277354,103.837274",
+          0,
+          "0m",
+          "North",
+          "West",
+          "driving",
+          "You Have Arrived At Your Destination, On The Left"
+        ]
+      ],
+      "route_name": [
+        "NORTH BRIDGE ROAD",
+        "SOUTH BRIDGE ROAD"
+      ],
+      "route_summary": {
+        "start_point": "SELEGIE ROAD",
+        "end_point": "NEIL ROAD",
+        "total_time": 458,
+        "total_distance": 4039
+      },
+      "viaRoute": "NORTH BRIDGE ROAD",
+      "subtitle": "Alternative suggestion"
+    }
+  ],
+  "viaRoute": "HILL STREET",
+  "subtitle": "Fastest route, assuming usual traffic",
+  "phyroute": {
+    "status_message": "Found route between points",
+    "route_geometry": "}{|FaczxRyFeA]Eo@CAMAKl@w@bAoAHKlBgCHKbClBnFhEr@aAHANLJ@`AsA`BpAxBwCnCgDdHjGzDbBhBx@xAd@LD`ExATHjA`@JFbBv@bAl@JF\\JrCvB|BdB~B~AVRtAhA^XzCbCpAfAlF`El@j@d@b@tAdAtAfAjA|@pAbAt@_AdB|@tBfAbAb@nAXjAPbCJhBCl@MLMr@n@PV\\v@f@jANf@VzAVxAZrD`@tBTzC",
+    "status": 0,
+    "route_instructions": [
+      [
+        "Head",
+        "SELEGIE ROAD",
+        189,
+        "1.299985,103.849613",
+        23,
+        "189m",
+        "North",
+        "North",
+        "driving",
+        "Head North On Selegie Road"
+      ],
+      [
+        "Right",
+        "MIDDLE ROAD",
+        229,
+        "1.301632,103.850005",
+        28,
+        "229m",
+        "East",
+        "North",
+        "driving",
+        "Turn Right Onto Middle Road"
+      ],
+      [
+        "Right",
+        "BENCOOLEN STREET",
+        270,
+        "1.300427,103.85162",
+        36,
+        "270m",
+        "South West",
+        "South East",
+        "driving",
+        "Turn Right Onto Bencoolen Street"
+      ],
+      [
+        "Left",
+        "LORONG PAYAH",
+        130,
+        "1.298571,103.850062",
+        26,
+        "130m",
+        "South East",
+        "South West",
+        "driving",
+        "Turn Left Onto Lorong Payah"
+      ],
+      [
+        "Right",
+        "WATERLOO STREET",
+        71,
+        "1.29779,103.850737",
+        14,
+        "71m",
+        "South West",
+        "South East",
+        "driving",
+        "Turn Right Onto Waterloo Street"
+      ],
+      [
+        "Left",
+        "BRAS BASAH ROAD",
+        232,
+        "1.297304,103.850334",
+        29,
+        "232m",
+        "South East",
+        "South West",
+        "driving",
+        "Turn Left Onto Bras Basah Road"
+      ],
+      [
+        "Right",
+        "VICTORIA STREET",
+        222,
+        "1.295969,103.851933",
+        25,
+        "222m",
+        "South West",
+        "South East",
+        "driving",
+        "Turn Right Onto Victoria Street"
+      ],
+      [
+        "Slight Right",
+        "HILL STREET",
+        553,
+        "1.2945,103.850593",
+        63,
+        "553m",
+        "South West",
+        "South West",
+        "driving",
+        "Merge Right Onto Hill Street"
+      ],
+      [
+        "Straight",
+        "NEW BRIDGE ROAD",
+        1055,
+        "1.290094,103.848318",
+        124,
+        "1055m",
+        "South",
+        "South West",
+        "driving",
+        "Continue Onto New Bridge Road"
+      ],
+      [
+        "Left",
+        "KEONG SAIK ROAD",
+        493,
+        "1.282773,103.842317",
+        76,
+        "493m",
+        "South East",
+        "South West",
+        "driving",
+        "Turn Left Onto Keong Saik Road"
+      ],
+      [
+        "Right",
+        "NEIL ROAD",
+        525,
+        "1.278791,103.841667",
+        59,
+        "525m",
+        "South West",
+        "South East",
+        "driving",
+        "Turn Right Onto Neil Road"
+      ],
+      [
+        "Left",
+        "NEIL ROAD",
+        0,
+        "1.277354,103.837274",
+        0,
+        "0m",
+        "North",
+        "West",
+        "driving",
+        "You Have Arrived At Your Destination, On The Left"
+      ]
+    ],
+    "route_name": [
+      "NEW BRIDGE ROAD",
+      "KEONG SAIK ROAD"
+    ],
+    "route_summary": {
+      "start_point": "SELEGIE ROAD",
+      "end_point": "NEIL ROAD",
+      "total_time": 576,
+      "total_distance": 3963
+    },
+    "viaRoute": "BRAS BASAH ROAD",
+    "subtitle": "Shortest distance"
+  }
+}
